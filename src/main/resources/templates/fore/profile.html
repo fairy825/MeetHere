@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/fore/navigator::html" ></head>
+<title>修改个人信息</title>
+
+<body>
+<script>
+    $(function(){
+        var data4Vue = {
+            uri: 'users',
+            uploadUri:'users/upload',
+            // users:[{id:1},{id:2}],
+            bean: { id: 0, name: ''},
+            image:'',
+            id:'',
+            faceUrl:'img/faceImage/0.jpg'
+        };
+
+        //ViewModel
+        var vue = new Vue({
+            el: '#workingArea',
+            data: data4Vue,
+            mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+                this.get();
+            },
+            methods: {
+                get:function(){
+                    var id = getUrlParms("id");
+
+                    this.id = id;
+                    var url = this.uri+"/"+id;
+                    axios.get(url).then(function(response) {
+                        vue.bean = response.data.data;
+                        console.log(vue.bean);
+                        if(vue.bean.faceImage==""||vue.bean.faceImage==null){
+                            vue.faceUrl ='img/faceImage/0.jpg'
+                        }else
+                            vue.faceUrl = vue.bean.faceImage
+                    })
+                },
+                update:function () {
+                    var url = this.uri;
+                    axios.put(url,vue.bean).then(function(response){
+                        var result = response.data;
+                        if(result.status==200){
+                            $("span.errorMessage").html("修改成功");
+                            $("div.loginErrorMessageDiv").css("visibility","visible");
+                        }
+                    });
+                },
+                getImage: function (event) {
+                    this.image = event.target.files[0];
+                    console.log(vue.image);
+                    var url = this.uploadUri;
+                    var formData = new FormData();
+                    formData.append("image", vue.image);
+                    console.log(formData.get("image"));
+                    console.log(vue.id);
+                    var id = vue.id;
+                    axios.post(url,formData,id).then(function(response){
+                        var result = response.data;
+                        if(result.status==200){
+                            vue.faceUrl =response.data.data;
+                            console.log(vue.faceUrl);
+                            $("span.errorMessage").html("头像修改成功");
+                            $("div.loginErrorMessageDiv").css("visibility","visible");
+                        }
+                    });
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
+<body>
+<!-- Header -->
+<style>
+    #register_div{
+        /* 居中*/
+        float: left;
+        /*position: absolute;
+        left: 50%; top: 100%;
+        width: 500px; height: 330px;
+        /* 透明遮罩层 */
+        height: 120%;
+        background:rgba(255,255,255,0.6)
+    }
+
+    #left{
+        line-height:30px;
+
+        height:500px;
+        width:300px;
+        float:left;
+        padding:5px;
+        font-size: 20px;
+    }
+    #section {
+        position: relative;
+        width:600px;
+        float: left;
+        padding:10px;
+        margin-left: 2cm;
+    }
+    #bottom {
+        position: relative;
+
+        float: bottom;
+        padding:10px;
+        margin-left: -11cm;
+        margin-right: 4cm;
+        margin-top: -2cm;
+        margin-bottom: 8cm;
+
+    }
+    #right {
+        /*width:500px;
+        float:right;
+        float: top;
+        padding:0px;*/
+        position: relative;
+        line-height:30px;
+        height:500px;
+        width:300px;
+        float:left;
+        padding:0px;
+        font-size: 5px;
+
+    }
+
+    #content{
+        width: 800px;
+        /* float: right; */
+        padding: 15px;
+        position: relative;
+        margin-bottom: 11cm;
+        /* margin-right: 4cm; */
+        margin-left: 250px;
+    }
+    #footer {
+        background-color:cornflowerblue;
+        color:white;
+        clear:both;
+        text-align:center;
+        padding:5px;
+    }
+</style>
+<div id="workingArea">
+    <div id="content">
+        <h5 style="color: dimgray;margin-bottom: 30px;">
+            您的位置:
+            <ol class="breadcrumb">
+                <li><a href="profile">个人中心</a></li>
+                <li class="active">修改信息</li>
+            </ol>
+        </h5>
+        <div id="loginSmallDiv" class="loginSmallDiv">
+            <div class="loginErrorMessageDiv">
+                <div class="alert alert-danger" >
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                    <span class="errorMessage"></span>
+                </div>
+            </div>
+            <lable>头像</lable>
+            <input id="singlePic" type="file" @change="getImage($event)" name="image" />
+            <img height="50px" :src="faceUrl">
+            <br>
+            <lable for="successfulInput" style="color: dimgray;margin-bottom: 20px;">昵称</lable>
+            <input type="text"  v-model.trim="bean.nickname"  class="form-control" style="
+    margin-top: 10px;
+    width: 500px;
+">
+            <br><br>
+            <lable for="successfulInput" style="color: dimgray;">电话</lable>
+            <input type="text"  v-model.trim="bean.phoneNumber" class="form-control" style="
+    margin-top: 10px;
+    width: 500px;
+">
+            <br><br>
+            <lable for="successfulInput" style="color: dimgray;">邮箱</lable>
+            <input type="text"  v-model.trim="bean.email" class="form-control" style="
+    margin-top: 10px;
+    width: 500px;
+">
+            <br><br>
+
+            <div style="margin-top:20px">
+                <button  @click="update" class="btn btn-primary" id="btn-reg">确认修改</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- All JavaScript libraries -->
+<script src="static/js/jquery.min.js" th:src="@{~/js/jquery.min.js}"></script>
+<script src="static/js/bootstrap.min.js" th:src="@{~/js/bootstrap.min.js}"></script>
+<!-- Custom JavaScript -->
+<script src="static/js/main.js" th:src="@{~/js/main.js}"></script>
+</body>
+</html>

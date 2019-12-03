@@ -1,0 +1,117 @@
+<!-- 模仿天猫整站springboot 教程 为how2j.cn 版权所有-->
+<!-- 本教程仅用于学习使用，切勿用于非法用途，由此引起一切后果与本站无关-->
+<!-- 供购买者学习，请勿私自传播，否则自行承担相关法律责任-->
+
+<div th:fragment="html"> 
+
+<script> 
+function imgAndInfoPageRegisterListeners(vue){
+    // $("button.loginSubmitButton").click(function(){
+    //     var url =  "forelogin";
+    //     if(0==vue.user.name.length){
+    //         $("span.errorMessage").html("请输入用户名");
+    //         $("div.loginErrorMessageDiv").css("visibility","visible");
+    //         return;
+    //     }
+    //     if(0==vue.user.password.length){
+    //         $("span.errorMessage").html("请输入密码");
+    //         $("div.loginErrorMessageDiv").css("visibility","visible");
+    //         return;
+    //     }
+    //
+    //     axios.post(url,vue.user).then(function(response) {
+    //     	var result = response.data;
+    //     	if(result.code==0){
+    //     		location.href="product?pid="+vue.p.id;
+    //     	}
+    //     	else{
+    //             $("span.errorMessage").html(result.message);
+    //             $("div.loginErrorMessageDiv").css("visibility","visible");
+    //     	}
+    //     });
+    // });
+    //
+    $("img.smallImage").mouseenter(function(){
+        var bigImageURL = $(this).attr("bigImageURL");
+        $("img.bigImg").attr("src",bigImageURL);
+    });
+
+    // $("img.bigImg").load(
+    //     function(){
+    //         $("img.smallImage").each(function(){
+    //             var bigImageURL = $(this).attr("bigImageURL");
+    //             img = new Image();
+    //             img.src = bigImageURL;
+    //
+    //             img.onload = function(){
+    //                 $("div.img4load").append($(img));
+    //             };
+    //         });
+    //     }
+    // );
+}
+ 
+</script>
+	 
+	<div class="imgAndInfo">
+	    <div class="imgInimgAndInfo">
+	        <img :src="'img/venueImage/'+bean.id+'/'+bean.firstVenueImage.id+'.jpg'" class="bigImg">
+	        <div class="smallImageDiv">
+                <img v-for="vi in bean.venueImages" :src="'img/venueImage_small/'+bean.id+'/'+vi.id+'.jpg'"
+					 :bigImageURL="'img/venueImage/'+bean.id+'/'+vi.id+'.jpg'"
+					 class="smallImage">
+	        </div>
+	        <div class="img4load hidden" ></div>
+	    </div>
+	    <div class="infoInimgAndInfo">
+	        <div class="productTitle">
+	            {{bean.name}}
+	        </div>
+	        <div class="productSubTitle">
+	            {{bean.introduction}}
+	        </div>
+	        <div class="productPrice">
+	            <div class="productPriceDiv">
+	                <div class="originalDiv">
+	                    <span class="originalPriceDesc">价格</span>
+	                    <span class="originalPriceYuan">¥</span>
+	                    <span class="originalPrice">
+	                    	{{bean.price|formatMoneyFilter}}
+	                    </span>
+	                </div>
+	            </div>
+	        </div>
+			<div class="originalDiv">
+				<span class="originalPriceDesc">营业时间</span>
+				<span class="originalPrice">
+                      {{bean.startTime}}:00 - {{bean.endTime}}:00
+                    </span>
+			</div>
+			<div class="originalDiv">
+				<span class="originalPriceDesc">联系电话</span>
+				<span class="originalPrice">
+                      {{bean.phoneNumber}}
+                    </span>
+			</div>
+			<div class="originalDiv">
+				<span class="originalPriceDesc">地址</span>
+				<span class="originalPrice">
+                    {{bean.location}}
+                    </span>
+			</div>
+			<div class="originalDiv">
+				<span class="originalPriceDesc">容量</span>
+				<span class="originalPrice">
+                    {{bean.totalSeat}}
+                    </span>
+			</div>
+			<div class="productSaleAndReviewNumber">
+				<div>销量 <span class="redColor boldWord"> {{ bean.saleCount }}</span></div>
+				<div>累计评价 <span class="redColor boldWord"> {{ bean.reviewCount }}</span></div>
+			</div>
+	    </div>
+	     
+	    <div style="clear:both"></div>
+	     
+	</div>
+</div>

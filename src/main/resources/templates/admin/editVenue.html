@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="include/admin/adminHeader::html('编辑场馆')" ></head>
+<body>
+<div th:replace="include/admin/adminNavigator::html" ></div>
+<script>
+    $(function(){
+        var data4Vue = {
+            uri: 'venues',
+            listURL:'admin_venue_list',
+            bean: '',
+            district:''
+        };
+
+        //ViewModel
+        var vue = new Vue({
+            el: '#workingArea',
+            data: data4Vue,
+            mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+                this.get();
+            },
+            methods: {
+                get:function(){
+                    var id = getUrlParms("id");
+                    var url = this.uri+"/"+id;
+                    axios.get(url).then(function(response) {
+                        vue.bean = response.data.data;
+                        vue.district = vue.bean.district;
+                    })
+                },
+                update:function () {
+                    console.log(vue.bean);
+                    if(!checkEmpty(this.bean.name, "停车场名称"))
+                        return;
+                    // if (!checkEmpty(this.bean.introduction, "介绍"))
+                    //     return;
+                    if (!checkNumber(this.bean.price, "租金"))
+                        return;
+                    if (!checkInt(this.bean.totalSeat, "容量"))
+                        return;
+                    if (!checkInt(this.bean.startTime, "营业时间"))
+                        return;
+                    if (!checkInt(this.bean.endTime, "营业时间"))
+                        return;
+
+                    var url = this.uri;
+                    axios.put(url,vue.bean).then(function(response){
+                        location.href=vue.listURL+"?did="+vue.district.id;
+                    });
+                }
+            }
+        });
+    });
+</script>
+
+<div id="workingArea">
+
+    <ol class="breadcrumb">
+        <li><a href="admin_category_list">所有区域</a></li>
+        <li><a :href="'admin_venue_list?did='+district.id">{{district.name}}</a></li>
+        <li class="active">场馆管理</li>
+    </ol>
+
+
+
+    <div class="panel panel-warning editDiv">
+        <div class="panel-heading">编辑场馆</div>
+        <div class="panel-body">
+            <table class="editTable">
+                <tr>
+                    <td>场馆名称</td>
+                    <td><input  @keyup.enter="update" v-model.trim="bean.name" type="text"
+                                class="form-control"  placeholder="请输入场馆名称" required></td>
+                </tr>
+                <tr>
+                    <td>介绍</td>
+                    <td><input  @keyup.enter="update" v-model.trim="bean.introduction" type="text"
+                                class="form-control"  placeholder="请输入场馆介绍"></td>
+                </tr>
+                <tr>
+                    <td>租金</td>
+                    <td><input  @keyup.enter="update" v-model.trim="bean.price"  type="number"
+                                class="form-control"  placeholder="请输入单位租金" required></td>
+                </tr>
+                <tr>
+                    <td>容量</td>
+                    <td><input  @keyup.enter="update" v-model.trim="bean.totalSeat" type="number"
+                                class="form-control"  placeholder="请输入场馆可容纳人数" required /></td>
+                </tr>
+
+                <tr>
+                    <td>营业时间</td>
+                    <td><input @keyup.enter="update" v-model.trim="bean.startTime"
+                               class="form-control" required />:00 --
+                        <input @keyup.enter="update" v-model.trim="bean.endTime"
+                               class="form-control" required />:00
+                        <br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>联系电话</td>
+                    <td><input @keyup.enter="update" v-model.trim="bean.phoneNumber"
+                               class="form-control" placeholder="请输入联系电话" required /><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>地址</td>
+                    <td><input @keyup.enter="update" v-model.trim="bean.location"
+                               class="form-control" placeholder="请输入场馆地址" required /><br>
+                    </td>
+                </tr>
+                <tr class="submitTR">
+                    <td colspan="2" align="center">
+                        <input type="hidden" name="id"   v-model.trim="bean.id" >
+                        <a href="#nowhere" class="btn btn-success" @click="update">提 交</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div th:replace="include/admin/adminFooter::html" ></div>
+</body>
+</html>
+
+
+
+
+

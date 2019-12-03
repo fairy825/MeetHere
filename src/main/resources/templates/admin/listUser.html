@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="include/admin/adminHeader::html('用户管理')" ></head>
+<body>
+<div th:replace="include/admin/adminNavigator::html" ></div>
+<script>
+    $(function(){
+        var sName = getUrlParms("sName");
+        var sNickName = getUrlParms("sNickName");
+        var data4Vue = {
+            uri:'users',
+            beans: [],
+            searchbean:{id:null,name:null,nickname:null},
+            pagination:{},
+            flag:0,
+        };
+
+        //ViewModel
+        var vue = new Vue({
+            el: '#workingArea',
+            data: data4Vue,
+            mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+                // console.log(this);
+                if(this.flag==0) this.list(0);
+            },
+            methods: {
+
+            //     list:function(start){
+            //         var url =  this.uri+ "?start="+start;
+            //     // console.log(vue.searchbean);
+            //
+            //         var _vue;
+            // axios.get(url).then(function(response) {
+            //             vue.pagination = response.data.data;
+            //             vue.beans = response.data.data.content;
+            //             vue.flag=0;
+            //             console.log(vue.beans);
+            //             console.log(vue);
+            //             _vue=vue;
+            //         });
+            //         console.log(_vue.searchbean);
+            //
+            //     },
+
+                list:function(start){
+                    var url =  this.uri+ "?start="+start;
+                    console.log(this);
+                    console.log(this.searchbean);
+                    axios.post(url,this.searchbean).then(function(response) {
+                        console.log(response.data);
+
+                        vue.pagination = response.data.data;
+                        vue.beans = response.data.data.content;
+                        // vue.searchbean = {id:null,name:null,nickname:null};
+                        // vue.flag = 1;
+                        console.log(vue.beans);
+                        console.log(vue);
+
+                    });
+
+                },
+                jump: function(page){
+                    jump(page,vue); //定义在adminHeader.html 中
+                },
+                jumpByNumber: function(start){
+                    jumpByNumber(start,vue);
+                }
+            }
+        });
+    });
+
+</script>
+
+<div id="workingArea" >
+    <h1 class="label label-info" >用户管理</h1>
+    <table>
+        <div class="searchDiv">
+            <input type="text"
+                   @keyup.enter="list(0)" v-model.trim="searchbean.name" placeholder="请输入用户名" />
+            <input type="text"
+                   @keyup.enter="list(0)" v-model.trim="searchbean.nickname" placeholder="请输入昵称" />
+
+            <button @click="list(0)" class="searchButton">搜索</button>
+        </div>
+    </table>
+    <br>
+    <br>
+
+    <div class="listDataTableDiv">
+        <table class="table table-striped table-bordered table-hover  table-condensed">
+            <thead>
+            <tr class="success">
+                <th>ID</th>
+                <th>用户名</th>
+                <th>头像</th>
+                <th>昵称</th>
+                <th>手机号</th>
+                <th>邮箱</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="bean in beans ">
+                <td>{{bean.id}}</td>
+                <td>{{bean.name}}</td>
+                <td>
+                    <img height="50px" :src="'img/faceImage/'+bean.id+'.jpg'">
+                </td>
+                <td>{{bean.nickname}}</td>
+                <td>{{bean.phoneNumber}}</td>
+                <td>{{bean.email}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:replace="include/admin/adminPage::html" ></div>
+
+
+</div>
+
+<div th:replace="include/admin/adminFooter::html" ></div>
+</body>
+</html>

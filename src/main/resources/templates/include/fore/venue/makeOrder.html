@@ -1,0 +1,82 @@
+<!-- 模仿天猫整站springboot 教程 为how2j.cn 版权所有-->
+<!-- 本教程仅用于学习使用，切勿用于非法用途，由此引起一切后果与本站无关-->
+<!-- 供购买者学习，请勿私自传播，否则自行承担相关法律责任-->
+
+<div th:fragment="html">
+	<script>
+		function dateListener(vue) {
+			$("#orderDate").change(function () {
+				console.log(vue.date);
+				vue.getTimeSlot(vue.date);
+			});
+		}
+	</script>
+	<section>
+		<div class="wrap wrap_gray pt20">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-6" style="position: relative;margin-bottom: 5cm;width: 860px;margin-left: 100px;">
+						<div class="block-title">
+							<h2 class="block-title__h2">开始预约</h2>
+
+						</div>
+						<div class="thumbnail thumbnail_big">
+							<div class="row">
+								<div class="col-md-12 col-sm-12 col-xs-12">
+									<div class="panel panel-default text-left no-boder">
+										<div class="panel-heading">
+											可预约列表
+										</div>
+										<div class="dropdown">
+											<select id="orderDate" v-model="date">
+												<option value="">请选择日期</option>
+												<option value="0">今天</option>
+												<option value="1">明天</option>
+												<option value="2">后天</option>
+											</select>
+										</div>
+										<div class="panel-body">
+											<div class="table-responsive">
+												<table class="table table-striped table-bordered table-hover"
+													   id="dataTables-categoris">
+													<thead>
+													<tr>
+<!--														                                                     <th>预约日期</th> -->
+														<th>起始时间</th>
+														<th>结束时间</th>
+														<th>剩余容量</th>
+														<th>操作</th>
+													</tr>
+													</thead>
+													<tbody  id="tbody-categoris">
+													<tr v-for="ts in tss" v-if="ts.beginTime>now">
+															<td>{{ts.beginTime}}:00</td>
+																<td>{{ts.beginTime+1}}:00</td>
+																<td>{{ts.seat}}</td>
+														<td>
+															<a :disabled="ts.seat==0"
+															   @click="buy(ts.id)"
+															   class="btn btn-primary booklink">
+																预约
+															</a>
+														</td>
+															</tr>
+														</c:if>
+													</c:forEach>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</section>
+</div>

@@ -1,0 +1,304 @@
+<!-- 模仿天猫整站springboot 教程 为how2j.cn 版权所有-->
+<!-- 本教程仅用于学习使用，切勿用于非法用途，由此引起一切后果与本站无关-->
+<!-- 供购买者学习，请勿私自传播，否则自行承担相关法律责任-->
+
+<div th:fragment="html"> 
+	<script>
+		$(function(){
+	        var data4Vue = {
+	        		uri:'myBookings',
+	        		beans:[],
+				pagination:'',
+				myreview:{id:'',content:'',stateDesc:'',createDate:''},
+	        };
+	        //ViewModel
+	        var vue = new Vue({
+	            el: '#workingArea',
+	            data: data4Vue,
+	            mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+	            	this.list(0);
+	            },        
+	            methods: {     	
+	            	list:function(start){
+	                    var url =  this.uri+"?start="+start;
+	                    axios.get(url).then(function(response) {
+							console.log(response.data.data);
+							console.log(response.data.data.content);
+	                    	vue.pagination = response.data.data;
+							vue.beans = response.data.data.content;
+							vue.$nextTick(function(){
+	        	            	// linkDefaultActions();
+	        	            	orderPageRegisterListeners(this);
+	                        })
+	                    });
+	            	},
+					showMyReview: function(id){
+						var url =  "myreview?bid="+id;
+						axios.get(url).then(function(response) {
+							console.log(response.data.data);
+							vue.myreview = response.data.data;
+						})
+						$("#myReview"+id).toggle();
+					},
+					deleteMyReview: function(bid,mid){
+						var url =  "messages/"+mid;
+						axios.delete(url).then(function(response) {
+							vue.list(vue.pagination.number);
+						})
+						$("#myReview"+bid).hide();
+					},
+					arrive: function(id){
+						var url =  "arrive?id="+id;
+						axios.get(url).then(function(response) {
+							vue.list(vue.pagination.number);
+						})
+					},
+					jump: function(page){
+						jump(page,vue); //定义在adminHeader.html 中
+					},
+					jumpByNumber: function(start){
+						jumpByNumber(start,vue);
+					}
+	            }
+	        });       			
+		})		
+		var deleteOrder = false;
+		var deleteOrderid = 0;
+		var deleteReviewid = 0;
+		var deleteReview = false;
+		var bid = 0;
+		function orderPageRegisterListeners(vue){
+			$("a.deleteReviewLink").click(function(){
+				deleteReviewid = $(this).attr("mid");
+				deleteReview = false;
+				$("#deleteReviewModal").modal("show");
+			});
+
+			$("button.deleteReviewConfirmButton").click(function(){
+				deleteReview = true;
+				$("#deleteReviewConfirmModal").modal('hide');
+				console.log(deleteReview);
+				console.log(deleteReviewid);
+				if(deleteReview){
+					var url =  "messages/"+deleteReviewid;
+					axios.delete(url).then(function(response) {
+						vue.list(vue.pagination.number);
+					})
+					$("#myReview"+bid).hide();
+					$("#deleteReviewConfirmModal").modal('hide');
+				}
+			});
+
+			// $('#deleteReviewConfirmModal').on('hidden.bs.modal', function (e) {
+			// 	console.log(deleteReview);
+			// 	console.log(deleteReviewid);
+			// 	if(deleteReview){
+			// 		var url =  "messages/"+deleteReviewid;
+			// 		axios.delete(url).then(function(response) {
+			// 			vue.list(vue.pagination.number);
+			// 		})
+			// 		$("#myReview"+bid).hide();
+			// 		$("#deleteReviewConfirmModal").modal('hide');
+			// 	}
+			// });
+
+			$("a.deleteOrderLink").click(function(){
+				deleteOrderid = $(this).attr("mid");
+				bid = $(this).attr("bid");
+				deleteOrder = false;
+				// $("#deleteConfirmModal").modal("show");
+			});
+			
+			$("button.deleteConfirmButton").click(function(){
+				deleteOrder = true;
+				$("#deleteConfirmModal").modal('hide');
+			});	
+			
+			$('#deleteConfirmModal').on('hidden.bs.modal', function (e) {
+				if(deleteOrder){
+					var uri = "deleteBookings/"+deleteOrderid;
+					axios.put(uri).then(function(response){
+						vue.list(0);
+					});
+					$("#deleteConfirmModal").modal('hide');
+				}
+			});
+		}
+	</script>
+
+
+	<style>
+		#register_div{
+			/* 居中*/
+			float: left;
+			/*position: absolute;
+            left: 50%; top: 100%;
+            width: 500px; height: 330px;
+            /* 透明遮罩层 */
+			height: 120%;
+			background:rgba(255,255,255,0.6)
+		}
+
+		#left{
+			line-height:30px;
+
+			height:500px;
+			width:300px;
+			float:left;
+			padding:5px;
+			font-size: 20px;
+		}
+		#section {
+			position: relative;
+			width:600px;
+			float: left;
+			padding:10px;
+			margin-left: 2cm;
+		}
+		#bottom {
+			position: relative;
+
+			float: bottom;
+			padding:10px;
+			margin-left: -11cm;
+			margin-right: 4cm;
+			margin-top: -2cm;
+			margin-bottom: 8cm;
+
+		}
+		#right {
+			/*width:500px;
+            float:right;
+            float: top;
+            padding:0px;*/
+			position: relative;
+			line-height:30px;
+			height:500px;
+			width:300px;
+			float:left;
+			padding:0px;
+			font-size: 5px;
+
+		}
+		#content{
+			width: 800px;
+			/* float: right; */
+			padding: 15px;
+			position: relative;
+			/*margin-bottom: 11cm;*/
+			/* margin-right: 4cm; */
+			margin-left: 250px;
+		}
+		#footer {
+			background-color:cornflowerblue;
+			color:white;
+			clear:both;
+			text-align:center;
+			padding:5px;
+		}
+	</style>
+	<div id="content">
+
+		<div class="row"  style="margin-left: 100px;">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="panel panel-default text-left no-boder">
+					<div class="panel-heading">
+						订单列表
+					</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-striped table-bordered table-hover" id="dataTables-categoris">
+								<thead>
+								<tr>
+									<th>预约场馆</th>
+									<th>预约日期</th>
+									<th>预约起始时间</th>
+									<th>预约终止时间</th>
+									<th>订单创建时间</th>
+									<th>状态</th>
+									<th>操作</th>
+									<th>删除</th>
+
+								</tr>
+								</thead>
+								<tbody id="tbody-categoris" v-for="bean in beans ">
+									<tr>
+										<td>{{bean.venue.name}}</td>
+										<td>{{bean.timeSlot.bookingDate}}</td>
+										<td>{{bean.timeSlot.beginTime}}:00</td>
+										<td>{{bean.timeSlot.beginTime+1}}:00</td>
+										<td>{{bean.createDate}}</td>
+										<td>{{bean.stateDesc}}</td>
+										<td valign="top" class="orderListItemButtonTD orderItemOrderInfoPartTD" width="100px">
+											<div v-if="bean.state=='waitPay'">
+												<a :href="'pay?bid='+bean.id+'&total='+bean.venue.price">
+													<button class="orderListItemConfirm">付款</button>
+												</a>
+											</div>
+											<div v-else-if="bean.state=='waitArrive'">
+												<button class="btn btn-primary orderListItemArrive" @click="arrive(bean.id)">我已到达</button>
+											</div>
+											<div v-else-if="bean.state=='waitReview'">
+												<a :href="'review?vid='+bean.venue.id+'&bid='+bean.id">
+													<button  class=" btn btn-primary orderListItemReview">留言</button>
+												</a>
+											</div>
+											<div v-else-if="bean.state=='finish'">
+													<button  @click="showMyReview(bean.id)" class=" btn btn-primary orderListItemReview">查看我的留言</button>
+											</div>
+										</td>
+										<td class="orderItemDeleteTD">
+											<a  class="deleteOrderLink" :bid="bean.id" type="button" data-toggle="modal" data-target="#deleteConfirmModal">
+												<span  class="orderListItemDelete glyphicon glyphicon-trash"></span></a>
+										</td>
+
+									</tr>
+									<tr class="orderPageOrderItemTR"  :id="'myReview'+bean.id">
+										<td colspan="10" align="center">
+
+											<div  class="orderPageOrderItem">
+												<table width="400px" align="center" class="orderPageOrderItemTable">
+
+													<tr><td  colspan="2">{{myreview.content}}</td></tr>
+													<tr>
+														<td>{{myreview.createDate}}</td>
+														<td>{{myreview.stateDesc}}</td>
+													</tr>
+													<tr><td  colspan="2">
+														<a  class="deleteReviewLink" :mid="myreview.id" :bid="bean.id" type="button" data-toggle="modal" data-target="#deleteReviewConfirmModal">
+															<span  class="orderListItemDelete glyphicon glyphicon-trash"></span></a>
+<!--														<button  @click="deleteMyReview(bean.id, myreview.id)" class=" btn btn-primary orderListItemReview">删除我的留言</button>-->
+													</td></tr>
+
+												</table>
+											</div>
+
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div th:replace="include/admin/adminPage::html" ></div>
+
+	</div>
+	<div class="modal fade" id="deleteReviewConfirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title">确认删除该评论？</h4>
+				</div>
+				<div class="modal-footer">
+					<button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+					<button class="btn btn-primary deleteReviewConfirmButton" id="submit" type="button">确认</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+</div>

@@ -1,0 +1,111 @@
+<!-- 模仿天猫整站springboot 教程 为how2j.cn 版权所有-->
+<!-- 本教程仅用于学习使用，切勿用于非法用途，由此引起一切后果与本站无关-->
+<!-- 供购买者学习，请勿私自传播，否则自行承担相关法律责任-->
+
+<div class th:fragment="html"> 
+	<script>
+		$(function(){
+			// var keyword = getUrlParms("keyword");
+			// // var minPrice = getUrlParms("minPrice");
+			// // var maxPrice = getUrlParms("maxPrice");
+			// var did = getUrlParms("did");
+
+			var minPrice = 5;
+			var maxPrice = 20;
+
+			var data4Vue = {
+				uri:'venues',
+				beans: [],
+				districts:[],
+				did:'',
+				sort:'',
+				bean:{},
+				keyword:'',
+				minPrice:'',
+				maxPrice:'',
+				pagination:{}
+	        };
+	        //ViewModel
+	        var vue = new Vue({
+	            el: '#workingArea',
+	            data: data4Vue,
+	            mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+					this.get();
+					this.list(0);
+	            },        
+	            methods: {
+					get:function(){
+						var url =  "districts/all";
+						axios.get(url).then(function(response) {
+							console.log(response.data);
+							vue.districts = response.data.data;
+							console.log(vue.districts);
+						});
+					},
+	            	list:function(start){
+						// var sort = getUrlParms("sort");
+						// if(sort==null) sort = "nosort";
+						vue.minPrice = getUrlParms("minPrice");
+						vue.maxPrice = getUrlParms("maxPrice");
+						vue.keyword = getUrlParms("keyword");
+						vue.did = getUrlParms("did");
+						var url =  "districts/"+vue.did+"/"+vue.uri+"/"+"nosort"+"/"+vue.keyword+"?start="+start
+								+"&minPrice="+vue.minPrice+"&maxPrice="+vue.maxPrice;
+
+						console.log("minPrice",vue.minPrice);
+						console.log("maxPrice",vue.maxPrice);
+
+						axios.get(url).then(function(response) {
+							console.log(response.data);
+							vue.pagination = response.data.data;
+							vue.beans = response.data.data.content;
+							console.log(vue.beans);
+						});
+					},
+					jump: function(page){
+						jump(page,vue); //定义在adminHeader.html 中
+					},
+					jumpByNumber: function(start){
+						jumpByNumber(start,vue);
+					}
+	            }
+	        });       			
+		})
+	</script>
+	<div id="searchResult">
+		<div class="searchResultDiv">
+			<div class="searchProducts">
+				<div  v-for="bean in beans ">
+					<div class="productUnit">
+						<div class="productUnitFrame" >
+							<a :href="'venue?id='+bean.id">
+								<div class="special">
+									<img :src="'img/venueImage_middle/'+bean.id+'/'+bean.firstVenueImage.id+'.jpg'" height="311" width="311" alt="image">
+									<div class="special__box">
+										<h5 class="special__category yel_line">
+											{{bean.name}}
+										</h5>
+										<a class="special__link">{{bean.introduction}}</a>
+										<a class="special__link">{{bean.district.name}}</a>
+									</div>
+								</div>
+								<span class="productPrice">¥{{bean.price | formatMoneyFilter}}</span>
+
+								<div class="show1 productInfo">
+									<span class="monthDeal ">销量 <span class="productDealNumber">{{bean.saleCount}}笔</span></span>
+									<span class="productReview">评价<span class="productReviewNumber">{{bean.reviewCount}}</span></span>
+								</div>
+
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div th:replace="include/admin/adminPage::html" ></div>
+				<div style="clear:both"></div>
+			</div>
+		</div>
+	</div>
+
+</div>

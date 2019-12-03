@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/admin/adminHeader::html('Venues')" ></head>
+<!--<meta charset="utf-8">-->
+<!--<meta http-equiv="x-ua-compatible" content="ie=edge">-->
+<!--<meta content="" name="description">-->
+<!--<meta content="" name="keywords">-->
+<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--<meta name="HandheldFriendly" content="true">-->
+<!--<meta content="telephone=no" name="format-detection">-->
+<!--&lt;!&ndash; favicon &ndash;&gt;-->
+<!--<link rel="shortcut icon" type="image/png" href="favicon.png" />-->
+<!--&lt;!&ndash;[if (gt IE 9)|!(IE)]>&lt;!&ndash;>-->
+<!--&lt;!&ndash; custom CSS &ndash;&gt;-->
+<!--<link href="static/css/main.css" rel="stylesheet" type="text/css"  th:href="@{~/css/main.css}"/>-->
+<!--&lt;!&ndash; END custom CSS &ndash;&gt;-->
+<!--&lt;!&ndash;<![endif]&ndash;&gt;-->
+<!--&lt;!&ndash; HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries &ndash;&gt;-->
+<!--&lt;!&ndash; WARNING: Respond.js doesn't work if you view the page via file:// &ndash;&gt;-->
+<!--&lt;!&ndash;[if lt IE 9]>-->
+<!--<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>-->
+<!--<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>-->
+<!--<![endif]&ndash;&gt;-->
+<!--<script src="static/js/jquery.min.js" th:src="@{~/js/jquery.min.js}"></script>-->
+<!--<script src="static/js/bootstrap.min.js" th:src="@{~/js/bootstrap.min.js}" ></script>-->
+<!--&lt;!&ndash; Custom JavaScript &ndash;&gt;-->
+<!--<script src="static/js/main.js" th:src="@{~/js/main.js}"></script>-->
+<body>
+
+<div th:replace="include/fore/navigator::html" ></div>
+
+<script>
+    $(function(){
+        var data4Vue = {
+            uri:'venues',
+            beans: [],
+            // bean:{},
+            // searchbean:{id:null,name:null,district:{},price:null,totalSeat:null,startTime:null,endTime:null,reviewCount:null,saleCount:null},
+            keyword:'',
+            did:0,
+            districts:[],
+            minPrice:'',
+            maxPrice:'',
+            sort:'',
+            t:'0',
+            pagination:{}
+        };
+
+        //ViewModel
+        var vue = new Vue({
+            el: '#workingArea',
+            data: data4Vue,
+            mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+                this.get();
+                this.list(0);
+            },
+            methods: {
+                get:function(){
+                    var keyword = getUrlParms("keyword");
+                    if(keyword=="null"||keyword=="") keyword = null;
+                    this.keyword = keyword;
+                    var url =  "districts/all";
+                    axios.get(url).then(function(response) {
+                        console.log(response.data);
+                        vue.districts = response.data.data;
+                        console.log(vue.districts);
+                    });
+                },
+                list:function(start){
+                    var sort = getUrlParms("sort");
+                    this.sort = sort;
+                    var url =  "districts/"+this.did+"/"+this.uri+"/"+sort+"/"+this.keyword+"?start="+start
+                        +"&minPrice="+this.minPrice+"&maxPrice="+this.maxPrice;
+
+                    axios.get(url).then(function(response) {
+                        console.log(response.data);
+                        vue.pagination = response.data.data;
+                        vue.beans = response.data.data.content;
+                        console.log(vue.beans);
+                    });
+                },
+                jump: function(page){
+                    jump(page,vue); //定义在adminHeader.html 中
+                },
+                jumpByNumber: function(start){
+                    jumpByNumber(start,vue);
+                }
+            }
+        });
+        Vue.filter("formatMoneyFilter", function(value){
+            return formatMoney(value);
+        });
+    });
+
+</script>
+
+<div id="workingArea">
+<!--    <div th:replace="include/admin/adminPage::html" ></div>-->
+
+    <div class="searchDiv">
+        <input type="text"
+               @keyup.enter="list(0)" v-model.trim="keyword" placeholder="请输入场馆名" />
+        <table class="categorySortBarTable categorySortTable">
+            <tr>
+                <td :class="{'grayColumn':(sort==null||sort=='all')}"><a :href="'?keyword='+keyword+'&sort=all'">综合<span class="glyphicon glyphicon-arrow-down"></span></a></td>
+                <td :class="{'grayColumn':(sort=='review')}"><a :href="'?keyword='+keyword+'&sort=review'">人气<span class="glyphicon glyphicon-arrow-down"></span></a></td>
+                <td :class="{'grayColumn':(sort=='saleCount')}"><a :href="'?keyword='+keyword+'&sort=saleCount'">销量<span class="glyphicon glyphicon-arrow-down"></span></a></td>
+                <td :class="{'grayColumn':(sort=='price')}"><a :href="'?keyword='+keyword+'&sort=price'">价格<span class="glyphicon glyphicon-resize-vertical"></span></a></td>
+            </tr>
+        </table>
+        <div class="dropdown">
+            区域：
+            <select v-model="did" >
+                <option value="0">全部</option>
+                <option v-for="district in districts" :value="district.id" >
+                    {{district.name}}
+                </option>
+            </select>
+        </div>
+
+        <table class="categorySortBarTable">
+            <tr>
+                <td><input class="sortBarPrice"  v-model.trim="minPrice" type="text" placeholder="请输入"></td>
+                <td class="grayColumn priceMiddleColumn">-</td>
+                <td><input class="sortBarPrice"  v-model.trim="maxPrice" type="text" placeholder="请输入"></td>
+            </tr>
+        </table>
+
+        <button @click="list(0)" class="searchButton">搜索</button>
+    </div>
+    <div th:replace="include/admin/adminPage::html" ></div>
+
+    <div class="wrapper">
+        <div  v-for="bean in beans ">
+        <div class="productUnit">
+            <div class="productUnitFrame" >
+                <a :href="'venue?id='+bean.id">
+                    <div class="special">
+                        <img :src="'img/venueImage_middle/'+bean.id+'/'+bean.firstVenueImage.id+'.jpg'" height="311" width="311" alt="image">
+                        <div class="special__box">
+                            <h5 class="special__category yel_line">
+                                {{bean.name}}
+                            </h5>
+                            <a class="special__link">{{bean.introduction}}</a>
+                            <a class="special__link">{{bean.district.name}}</a>
+                        </div>
+                    </div>
+                    <span class="productPrice">¥{{bean.price | formatMoneyFilter}}</span>
+
+                    <div class="show1 productInfo">
+                        <span class="monthDeal ">销量 <span class="productDealNumber">{{bean.saleCount}}笔</span></span>
+                        <span class="productReview">评价<span class="productReviewNumber">{{bean.reviewCount}}</span></span>
+                    </div>
+
+                </a>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div th:replace="include/admin/adminPage::html" ></div>
+
+
+</div>
+</body>
+</html>

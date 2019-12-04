@@ -16,6 +16,8 @@
                 pagination:{},
                 now:'',
                 booking:'',
+                tid:'',
+                remark:'',
                 // user:{name:'', password:''}
             };
             //ViewModel
@@ -38,6 +40,7 @@
                             vue.$nextTick(function () {
                                 imgAndInfoPageRegisterListeners(vue);
                                 dateListener(vue);
+                                remarkListener(vue);
                             })
                         });
                     },
@@ -60,8 +63,8 @@
                             console.log(vue.tss);
                         });
                     },
-                    buy: function(tid){
-                        var url =  "buy/"+tid;
+                    buy: function(tid,remark){
+                        var url =  "buy/"+tid+"?remark="+remark;
                         axios.get(url).then(function(response) {
                             console.log(response.data);
                             vue.booking = response.data.data;
@@ -69,6 +72,8 @@
                             $("#myModal").modal('show');
                             vue.getTimeSlot(vue.date);
                         });
+                        $("#remarkEnterModal").modal('hide');
+
                     },
                     jump: function(page){
                         jump(page,vue); //定义在adminHeader.html 中

@@ -4,11 +4,19 @@
 
 <div th:fragment="html">
 	<script>
+		function remarkListener(vue) {
+			$(document.body).on("click",".booklink", function(){
+				vue.tid = $(this).attr("tid");
+				console.log("tid="+vue.tid);
+				$("#remarkEnterModal").modal('show');
+			});
+		}
 		function dateListener(vue) {
 			$("#orderDate").change(function () {
 				console.log(vue.date);
 				vue.getTimeSlot(vue.date);
 			});
+
 		}
 	</script>
 	<section>
@@ -29,7 +37,7 @@
 										</div>
 										<div class="dropdown">
 											<select id="orderDate" v-model="date">
-												<option value="">请选择日期</option>
+												<option value="" disabled>请选择日期</option>
 												<option value="0">今天</option>
 												<option value="1">明天</option>
 												<option value="2">后天</option>
@@ -49,16 +57,19 @@
 													</tr>
 													</thead>
 													<tbody  id="tbody-categoris">
-													<tr v-for="ts in tss" v-if="ts.beginTime>now">
+													<tr v-for="ts in tss" v-if="date!=0||ts.beginTime>now">
 															<td>{{ts.beginTime}}:00</td>
 																<td>{{ts.beginTime+1}}:00</td>
 																<td>{{ts.seat}}</td>
 														<td>
-															<a :disabled="ts.seat==0"
-															   @click="buy(ts.id)"
-															   class="btn btn-primary booklink">
+															<!-- @click="buy(ts.id)"-->
+															<button :disabled="ts.seat==0"
+																	:tid="ts.id"
+															   class="btn-primary booklink">
+<!--															   data-toggle="modal" data-target="#remarkEnterModal"-->
+
 																预约
-															</a>
+															</button>
 														</td>
 															</tr>
 														</c:if>
@@ -78,5 +89,21 @@
 
 			</div>
 		</div>
+		<div class="modal fade" id="remarkEnterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+						<p>备注</p>
+						<textarea class="form-control" v-model.trim="remark" placeholder="告诉管理员你的需求吧！"></textarea>
+					</div>
+					<div class="modal-footer">
+						<button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+						<button class="btn btn-primary" @click="buy(tid,remark)" type="button">提交</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div>
+
+		<div style="height:200px"></div>
 	</section>
 </div>

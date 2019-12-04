@@ -30,32 +30,6 @@ public class BookingController extends BasicController{
     BookingService bookingService;
     @Autowired
     TimeSlotService timeSlotService;
-//    @GetMapping("/bookings")
-//    public IMoocJSONResult list(String search, HttpServletRequest request,
-//                                @RequestParam(value = "start", defaultValue = "0") Integer start,
-//                                Integer size)
-//            throws Exception {
-//    	start = start<0?0:start;
-//    	if(size == null) size = PAGE_SIZE;
-//        Page4Navigator<Booking> page=null;
-//        List<Booking> bs = new ArrayList<>();
-//        if(null!=search&& !StringUtils.isBlank(search)) {
-//            if (search.equals("username")) {
-//                String keyword = request.getParameter("keyword");
-//                page = bookingService.searchByUser(keyword, 0, 20, 5);
-//            } else if (search.equals("venuename")) {
-//                String keyword = request.getParameter("keyword");
-//                page = bookingService.searchByVenue(keyword, 0, 20, 5);
-//            }
-////            else if (search.equals("state")) {
-////                page = bookingService.searchByState(state, 0, 20, 5);
-////                //System.out.println(id);
-////            }
-//        }else
-//    	page = bookingService.list(start,size,5);
-//        return IMoocJSONResult.ok(page);
-//    }
-
     @GetMapping("/bookings")
     public IMoocJSONResult list(
                                 @RequestParam(value = "start", defaultValue = "0") Integer start,
@@ -66,24 +40,31 @@ public class BookingController extends BasicController{
         Page4Navigator<Booking> page = bookingService.list(start,size,5);
         return IMoocJSONResult.ok(page);
     }
-    @GetMapping("/arrive")
+    @PutMapping("/arrive")
     public IMoocJSONResult arrive(int id){
         Booking booking = bookingService.get(id);
         booking.setState(waitFinish);
         bookingService.update(booking);
         return IMoocJSONResult.ok();
     }
-    @GetMapping("/myBookings")
-    public IMoocJSONResult listMyBookings(
+    @PostMapping("/myBookings")
+    public IMoocJSONResult listMyBookings(@RequestBody Booking booking,
             @RequestParam(value = "start", defaultValue = "0") Integer start,
             Integer size,HttpSession session)
             throws Exception {
-        User user = (User)session.getAttribute("user");
 
+
+        User user = (User)session.getAttribute("user");
+        booking.setUser(user);
         start = start<0?0:start;
         if(size == null) size = PAGE_SIZE;
-        Page4Navigator<Booking> page = bookingService.listBookingsByUser(user,start,size,5);
+        Page4Navigator<Booking> page = bookingService.search(booking,start,size,5);
         return IMoocJSONResult.ok(page);
+    }
+    @PutMapping("/bookings")
+    public IMoocJSONResult update(@RequestBody Booking booking) throws Exception {
+        bookingService.update(booking);
+        return IMoocJSONResult.ok(booking);
     }
     @PutMapping("/deleteBookings/{id}")
     public IMoocJSONResult delete(@PathVariable("id") int id) throws Exception {
@@ -93,12 +74,13 @@ public class BookingController extends BasicController{
         return IMoocJSONResult.ok(booking);
     }
     @GetMapping("/buy/{tid}")
-    public IMoocJSONResult add( @PathVariable("tid")Integer tid, HttpSession session) throws Exception {
+    public IMoocJSONResult add( @PathVariable("tid")Integer tid, String remark , HttpSession session) throws Exception {
         User user = (User)session.getAttribute("user");
         TimeSlot timeSlot = timeSlotService.get(tid);
         timeSlotService.reduceSeat(timeSlot);
         Venue venue = timeSlot.getVenue();
         Booking booking = new Booking();
+        booking.setRemark(remark);
         booking.setCreateDate(new Date());
         booking.setState(BookingService.waitApprove);
         booking.setUser(user);
@@ -139,6 +121,14 @@ public class BookingController extends BasicController{
         }
         Page4Navigator<Booking> page = bookingService.search(booking,start,size,5);
         return IMoocJSONResult.ok(page);
+    }
+    @PutMapping("/cancel/{id}")
+    public IMoocJSONResult cancel(@PathVariable("id") int id) throws Exception {
+
+        Booking booking = bookingService.get(id);
+        booking.setState(cancelled);
+        bookingService.update(booking);
+        return IMoocJSONResult.ok(booking);
     }
     @PutMapping("/approve/{id}")
     public IMoocJSONResult approve(@PathVariable("id") int id) throws Exception {

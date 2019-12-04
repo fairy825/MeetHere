@@ -34,11 +34,16 @@ public class Booking {
 	@JoinColumn(name="tid")
 	private TimeSlot timeSlot;
 	private String state;
+	private String remark;
+
 	public String getStateDesc(){
         String desc ="未知";
         switch(state){
 			case BookingService.waitApprove:
 				desc="待审核";
+				break;
+			case BookingService.cancelled:
+				desc="已取消";
 				break;
 			case BookingService.refused:
 				desc="驳回";
@@ -75,6 +80,13 @@ public class Booking {
 
 	public void setTimeSlot(TimeSlot timeSlot) {
 		this.timeSlot = timeSlot;
+	}
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 	public Date getPayDate() {
 		return payDate;

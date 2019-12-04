@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface BookingService {
     public static final String waitApprove = "waitApprove";
+    public static final String cancelled = "cancelled";
     public static final String refused = "refused";
     public static final String waitPay = "waitPay";
     public static final String waitTime = "waitTime";

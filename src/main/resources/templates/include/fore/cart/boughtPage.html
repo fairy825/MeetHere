@@ -8,8 +8,12 @@
 	        var data4Vue = {
 	        		uri:'myBookings',
 	        		beans:[],
+				bean:{},
+				searchbean:{id:null,state:'',timeSlot:{'id':0,bookingDate:''},
+					user:{'id':0,name:""},venue:{'id':0,name:""}},
 				pagination:'',
 				myreview:{id:'',content:'',stateDesc:'',createDate:''},
+				msg:''
 	        };
 	        //ViewModel
 	        var vue = new Vue({
@@ -20,17 +24,18 @@
 	            },        
 	            methods: {     	
 	            	list:function(start){
-	                    var url =  this.uri+"?start="+start;
-	                    axios.get(url).then(function(response) {
+						var url =  this.uri+"?start="+start;
+						console.log(this.searchbean);
+						axios.post(url,this.searchbean).then(function(response) {
 							console.log(response.data.data);
 							console.log(response.data.data.content);
-	                    	vue.pagination = response.data.data;
+							vue.pagination = response.data.data;
 							vue.beans = response.data.data.content;
 							vue.$nextTick(function(){
-	        	            	// linkDefaultActions();
-	        	            	orderPageRegisterListeners(this);
-	                        })
-	                    });
+								// linkDefaultActions();
+								orderPageRegisterListeners(this);
+							})
+						});
 	            	},
 					showMyReview: function(id){
 						var url =  "myreview?bid="+id;
@@ -47,9 +52,22 @@
 						})
 						$("#myReview"+bid).hide();
 					},
+					changeRemark:function(bid){
+						$("#remarkTR"+bid).toggle();
+					},
+					update:function(bean){
+						console.log(bean);
+						var url =  "bookings";
+						var id = bean.id;
+						$("#rmid"+id).css("border","2px solid yellow");
+						axios.put(url,bean).then(function(response) {
+							$("#rmid"+id).css("border","2px solid green");
+							$("#myModal").modal('show');
+						});
+					},
 					arrive: function(id){
 						var url =  "arrive?id="+id;
-						axios.get(url).then(function(response) {
+						axios.put(url).then(function(response) {
 							vue.list(vue.pagination.number);
 						})
 					},
@@ -61,33 +79,57 @@
 					}
 	            }
 	        });       			
-		})		
+		});
 		var deleteOrder = false;
 		var deleteOrderid = 0;
 		var deleteReviewid = 0;
 		var deleteReview = false;
 		var bid = 0;
+		var cancelid = 0;
+		var cancelOrder = false;
+
 		function orderPageRegisterListeners(vue){
+			$("a.cancelLink").click(function(){
+				bid = $(this).attr("bid");
+				cancelOrder = false;
+				vue.msg="确认取消该订单？";
+				// $("#deleteReviewModal").modal("show");
+			});
+
+			$("button.deleteReviewConfirmButton").click(function(){
+				cancelOrder = true;
+				$("#deleteReviewConfirmModal").modal('hide');
+				console.log(cancelOrder);
+				console.log(bid);
+				if(cancelOrder){
+					var url =  "cancel/"+bid;
+					axios.put(url).then(function(response) {
+						vue.list(vue.pagination.number);
+					})
+					$("#myModal").modal('show');
+				}
+			});
+
 			$("a.deleteReviewLink").click(function(){
 				deleteReviewid = $(this).attr("mid");
 				deleteReview = false;
 				$("#deleteReviewModal").modal("show");
 			});
 
-			$("button.deleteReviewConfirmButton").click(function(){
-				deleteReview = true;
-				$("#deleteReviewConfirmModal").modal('hide');
-				console.log(deleteReview);
-				console.log(deleteReviewid);
-				if(deleteReview){
-					var url =  "messages/"+deleteReviewid;
-					axios.delete(url).then(function(response) {
-						vue.list(vue.pagination.number);
-					})
-					$("#myReview"+bid).hide();
-					$("#deleteReviewConfirmModal").modal('hide');
-				}
-			});
+			// $("button.deleteReviewConfirmButton").click(function(){
+			// 	deleteReview = true;
+			// 	$("#deleteReviewConfirmModal").modal('hide');
+			// 	// console.log(deleteReview);
+			// 	// console.log(deleteReviewid);
+			// 	if(deleteReview){
+			// 		var url =  "messages/"+deleteReviewid;
+			// 		axios.delete(url).then(function(response) {
+			// 			vue.list(vue.pagination.number);
+			// 		})
+			// 		$("#myReview"+bid).hide();
+			// 		$("#deleteReviewConfirmModal").modal('hide');
+			// 	}
+			// });
 
 			// $('#deleteReviewConfirmModal').on('hidden.bs.modal', function (e) {
 			// 	console.log(deleteReview);
@@ -197,6 +239,30 @@
 			padding:5px;
 		}
 	</style>
+
+	<table>
+		<div class="searchDiv">
+			<input type="text"
+				   @keyup.enter="list(0)" v-model.trim="searchbean.venue.name" placeholder="请输入场馆名" />
+			<div class="dropdown">
+				<select v-model="searchbean.state">
+					<option value="">请选择状态</option>
+					<option value="waitApprove">待审核</option>
+					<option value="refused">驳回</option>
+					<option value="waitPay">待付款</option>
+					<option value="waitTime">未到预约时间</option>
+					<option value="waitArrive">待到达</option>
+					<option value="waitFinish">进行中</option>
+					<option value="waitReview">可留言</option>
+					<option value="finish">已结束</option>
+				</select>
+			</div>
+			<button @click="list(0)" class="searchButton">搜索</button>
+		</div>
+	</table>
+	<br>
+	<br>
+
 	<div id="content">
 
 		<div class="row"  style="margin-left: 100px;">
@@ -217,19 +283,23 @@
 									<th>订单创建时间</th>
 									<th>状态</th>
 									<th>操作</th>
-									<th>删除</th>
 
 								</tr>
 								</thead>
 								<tbody id="tbody-categoris" v-for="bean in beans ">
 									<tr>
-										<td>{{bean.venue.name}}</td>
+										<td>
+											<a :href="'venue?id='+bean.venue.id">
+											{{bean.venue.name}}
+											</a>
+										</td>
 										<td>{{bean.timeSlot.bookingDate}}</td>
 										<td>{{bean.timeSlot.beginTime}}:00</td>
 										<td>{{bean.timeSlot.beginTime+1}}:00</td>
 										<td>{{bean.createDate}}</td>
 										<td>{{bean.stateDesc}}</td>
 										<td valign="top" class="orderListItemButtonTD orderItemOrderInfoPartTD" width="100px">
+
 											<div v-if="bean.state=='waitPay'">
 												<a :href="'pay?bid='+bean.id+'&total='+bean.venue.price">
 													<button class="orderListItemConfirm">付款</button>
@@ -246,12 +316,36 @@
 											<div v-else-if="bean.state=='finish'">
 													<button  @click="showMyReview(bean.id)" class=" btn btn-primary orderListItemReview">查看我的留言</button>
 											</div>
-										</td>
-										<td class="orderItemDeleteTD">
-											<a  class="deleteOrderLink" :bid="bean.id" type="button" data-toggle="modal" data-target="#deleteConfirmModal">
-												<span  class="orderListItemDelete glyphicon glyphicon-trash"></span></a>
-										</td>
+											<div v-if="bean.state=='waitApprove'||bean.state=='waitPay'">
+												<a  class="cancelLink" :bid="bean.id" type="button" data-toggle="modal" data-target="#deleteReviewConfirmModal">
+													<button class="btn btn-warning">取消预订</button>
+												</a>
+											</div>
+											<div v-if="bean.state=='waitApprove'||bean.state=='waitPay'||bean.state=='waitTime'">
+													<button @click="changeRemark(bean.id)" class="btn btn-primary">修改</button>
+											</div>
+											<div v-if="bean.state=='finish'">
+												<a  class="deleteOrderLink" :bid="bean.id" type="button" data-toggle="modal" data-target="#deleteConfirmModal">
+													<span  class="orderListItemDelete glyphicon glyphicon-trash"></span></a>
+											</div>
 
+										</td>
+									</tr>
+									<tr class="orderPageOrderItemTR"  :id="'remarkTR'+bean.id">
+										<td colspan="10" align="center">
+
+											<div  class="orderPageOrderItem">
+												<table width="400px" align="center" class="orderPageOrderItemTable">
+
+													<tr>
+														<input @keyup.enter="update(bean)" :id="'rmid'+bean.id"
+															   v-model="bean.remark" placeholder="告诉管理员你的需求吧！" type="text">
+														<span>（按enter键保存）</span>
+													</tr>
+												</table>
+											</div>
+
+										</td>
 									</tr>
 									<tr class="orderPageOrderItemTR"  :id="'myReview'+bean.id">
 										<td colspan="10" align="center">
@@ -292,7 +386,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-					<h4 class="modal-title">确认删除该评论？</h4>
+					<h4 class="modal-title">{{msg}}</h4>
 				</div>
 				<div class="modal-footer">
 					<button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>

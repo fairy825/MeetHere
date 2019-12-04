@@ -82,13 +82,15 @@ public class BookingServiceImpl implements BookingService {
         if(StringUtils.isBlank(booking.getState())) booking.setState(null);
         b.setState(booking.getState());
         b.setUser(userService.findByName(booking.getUser().getName()));
-        b.setVenue(venueService.findByName(booking.getVenue().getName()));
+        if(booking.getVenue()!=null)
+            b.setVenue(venueService.findByName(booking.getVenue().getName()));
+        else b.setVenue(null);
         Example<Booking> example = Example.of(b);
         List<Booking> list = bookingDAO.findAll(example,sort);
         List<Booking> res = new ArrayList<>();
         int count = 0;
         int i = 0;
-        if(booking.getTimeSlot().getBookingDate()==null) {
+        if(booking.getTimeSlot()==null||booking.getTimeSlot().getBookingDate()==null) {
             for(i=start*size;i<(start+1)*size&&i<list.size();i++)//start=0 size=2
                 res.add(list.get(i));
             count = list.size();

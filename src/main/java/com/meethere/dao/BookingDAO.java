@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.awt.print.Book;
 import java.util.List;
 
 public interface BookingDAO extends JpaRepository<Booking,Integer>, JpaSpecificationExecutor<Booking> {
@@ -18,5 +19,6 @@ public interface BookingDAO extends JpaRepository<Booking,Integer>, JpaSpecifica
     Page<Booking> findByVenue(Venue venue, Pageable pageable);
     Page<Booking> findByVenueLikeAndUserLikeAndState(Venue venue, User user, String state, Pageable pageable);
     Integer countByVenueAndStateNot(Venue venue,String state);
+    Booking findByUserAndTimeSlot(User user,TimeSlot timeSlot);
 
 }

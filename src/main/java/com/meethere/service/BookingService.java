@@ -27,5 +27,6 @@ public interface BookingService {
     public Integer total(Venue venue);
     public void saveBooking(Booking booking);
     public Page4Navigator<Booking> listBookingsByUser(User user, int start, int size, int navigatePages);
+    public Booking searchByUserAndTimeslot(Booking booking);
 
 }

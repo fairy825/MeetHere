@@ -40,6 +40,17 @@ public class BookingController extends BasicController{
         Page4Navigator<Booking> page = bookingService.list(start,size,5);
         return IMoocJSONResult.ok(page);
     }
+    @GetMapping("/booked/{tid}")
+    public IMoocJSONResult booked(@PathVariable("tid")Integer tid, HttpSession session){
+        User user = (User)session.getAttribute("user");
+        Booking booking = new Booking();
+        booking.setUser(user);
+        booking.setTimeSlot(timeSlotService.get(tid));
+        Booking b = bookingService.searchByUserAndTimeslot(booking);
+        if(b==null)
+            return IMoocJSONResult.ok();
+        return IMoocJSONResult.errorMsg("已预订过该时段！请前往订单中心查看！");
+    }
     @PutMapping("/arrive")
     public IMoocJSONResult arrive(int id){
         Booking booking = bookingService.get(id);

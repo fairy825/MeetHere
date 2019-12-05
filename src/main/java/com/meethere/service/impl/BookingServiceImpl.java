@@ -73,6 +73,14 @@ public class BookingServiceImpl implements BookingService {
 
     @Transactional(propagation= Propagation.SUPPORTS)
     @Override
+    public Booking searchByUserAndTimeslot(Booking booking){
+        Example<Booking> example = Example.of(booking);
+        Booking booking1 = bookingDAO.findOne(example);
+        return booking1.getState().equalsIgnoreCase(cancelled) ? null : booking1;
+    }
+
+    @Transactional(propagation= Propagation.SUPPORTS)
+    @Override
     public Page4Navigator<Booking> search(Booking booking, int start, int size, int navigatePages){
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         Pageable pageable = new PageRequest(start, size,sort);

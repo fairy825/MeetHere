@@ -6,9 +6,26 @@
 	<script>
 		function remarkListener(vue) {
 			$(document.body).on("click",".booklink", function(){
-				vue.tid = $(this).attr("tid");
+				var tid = $(this).attr("tid");
+				vue.tid = tid;
 				console.log("tid="+vue.tid);
-				$("#remarkEnterModal").modal('show');
+				var res = 0;
+				var url =  "booked/"+tid;
+				axios.get(url).then(function(response) {
+					console.log(response.data);
+					res = response.data.status;
+
+				if(res!=200){
+					vue.msg = response.data.msg;
+					$("#myModal").modal('show');
+					setTimeout(function () {
+						location.href = "bought";
+					}, 2000);				}
+				else {
+					$("#remarkEnterModal").modal('show');
+					vue.msg = "预约成功！请耐心等待管理员审核！"
+				}
+				});
 			});
 		}
 		function dateListener(vue) {

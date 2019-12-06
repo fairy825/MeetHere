@@ -1,9 +1,6 @@
 package com.meethere.controller;
 
-import com.meethere.pojo.Booking;
-import com.meethere.pojo.Message;
-import com.meethere.pojo.News;
-import com.meethere.pojo.User;
+import com.meethere.pojo.*;
 import com.meethere.service.*;
 import com.meethere.util.IMoocJSONResult;
 import com.meethere.util.Page4Navigator;
@@ -46,13 +43,13 @@ public class MessageController extends BasicController{
         return IMoocJSONResult.ok(page);
     }
 
-    @GetMapping("/myreview")
+    @GetMapping("/messages/mine")
     public IMoocJSONResult myreview(@RequestParam(value = "bid") Integer bid , HttpSession session)
             throws Exception {
         User user = (User)session.getAttribute("user");
         Booking booking = bookingService.get(bid);
-        if(booking.getUser().getId()!=user.getId())
-            return IMoocJSONResult.errorMsg("请重新登录");
+        if(user==null||booking.getUser().getId()!=user.getId())
+            return IMoocJSONResult.build(501,"未登录",null);
         return IMoocJSONResult.ok(messageService.queryByBooking(booking));
     }
 
@@ -70,20 +67,27 @@ public class MessageController extends BasicController{
     public IMoocJSONResult add(@RequestBody Message message, @PathVariable("vid")int vid,
                                @RequestParam(value = "bid") int bid, HttpSession session) throws Exception {
         Booking booking = bookingService.get(bid);
-        booking.setState(bookingService.finish);
-        bookingService.update(booking);
+        if(!booking.getState().equalsIgnoreCase(bookingService.waitReview))
+            return IMoocJSONResult.errorMsg("评论已超期");
         User user = (User)session.getAttribute("user");
+        if(user==null||booking.getUser().getId()!=user.getId())
+            return IMoocJSONResult.build(501,"未登录",null);
+
         message.setUser(user);
         message.setVenue(venueService.get(vid));
         message.setState(messageService.waitApprove);
         message.setCreateDate(new Date());
         message.setBooking(booking);
         messageService.saveMessage(message);
+        booking.setState(bookingService.finish);
+        bookingService.update(booking);
         return IMoocJSONResult.ok(message);
     }
 
     @DeleteMapping("/messages/{id}")
-    public IMoocJSONResult suspend(@PathVariable("id") int id)  throws Exception {
+    public IMoocJSONResult suspend(@PathVariable("id") int id, HttpSession session)  throws Exception {
+        if((User)session.getAttribute("user")==null&&(Admin)session.getAttribute("admin")==null)
+            return IMoocJSONResult.build(501,"未登录",null);
         Booking booking = messageService.get(id).getBooking();
         booking.setState(bookingService.waitReview);
         messageService.delete(id);
@@ -91,7 +95,7 @@ public class MessageController extends BasicController{
         bookingService.update(booking);
         return IMoocJSONResult.ok();
     }
-    @PutMapping("/agreeMessage/{id}")
+    @PutMapping("/messages/agree/{id}")
     public IMoocJSONResult agree(@PathVariable("id") int id) throws Exception {
 
         Message message = messageService.get(id);
@@ -99,7 +103,7 @@ public class MessageController extends BasicController{
         messageService.update(message);
         return IMoocJSONResult.ok(message);
     }
-    @PutMapping("/refuseMessage/{id}")
+    @PutMapping("/messages/refuse/{id}")
     public IMoocJSONResult refuse(@PathVariable("id") int id) throws Exception {
 
         Message message = messageService.get(id);

@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@RequestMapping("/news")
 public class NewsController extends BasicController{
 
     @Autowired
     NewsService newsService;
 
-    @GetMapping("/news")
+    @GetMapping("")
     public IMoocJSONResult list(String keyword,
             @RequestParam(value = "start", defaultValue = "0") Integer start,
                                 Integer size)
@@ -30,18 +31,18 @@ public class NewsController extends BasicController{
         return IMoocJSONResult.ok(page);
     }
 
-    @PostMapping("/news")
+    @PostMapping("")
     public IMoocJSONResult add(@RequestBody News news) throws Exception {
         newsService.saveNews(news);
         return IMoocJSONResult.ok(news);
     }
-    @DeleteMapping("/news/{id}")
+    @DeleteMapping("/{id}")
     public IMoocJSONResult delete(@PathVariable("id") int id)  throws Exception {
         newsService.delete(id);
         return IMoocJSONResult.ok();
     }
 
-    @GetMapping("/news/{id}")
+    @GetMapping("/{id}")
     public IMoocJSONResult get(@PathVariable("id") int id) throws Exception {
         News news=newsService.get(id);
         return IMoocJSONResult.ok(news);

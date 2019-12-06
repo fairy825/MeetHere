@@ -42,22 +42,7 @@ public class VenueController extends BasicController{
         venueImageService.setFirstVenueImages(page.getContent());
         return IMoocJSONResult.ok(page);
     }
-//    @PostMapping("/districts/{did}/venues/{sort}")
-//    public IMoocJSONResult search(@RequestBody Venue venue,
-//                                  @PathVariable("did") int did,
-//                                  @PathVariable("sort") String sort,
-//                                  @RequestParam(value = "minPrice", defaultValue = "0") Integer minPrice,
-//                                  @RequestParam(value = "maxPrice",required = false) Integer maxPrice,
-//                                  @RequestParam(value = "start", defaultValue = "0") Integer start,
-//                                  Integer size)
-//            throws Exception {
-//        start = start<0?0:start;
-//        if(size == null) size = PAGE_SIZE;
-//        Page4Navigator<Venue> page = venueService.search(did,sort,venue,minPrice,maxPrice,start,size,5);
-//        venueImageService.setFirstVenueImages(page.getContent());
-//
-//        return IMoocJSONResult.ok(page);
-//    }
+    //用户的搜索
     @GetMapping("/districts/{did}/venues/{sort}/{keyword}")
     public IMoocJSONResult search2(
                                   @PathVariable("did") int did,
@@ -75,6 +60,7 @@ public class VenueController extends BasicController{
 
         return IMoocJSONResult.ok(page);
     }
+    //listVenue.html中管理员的搜索
     @GetMapping("/districts/{did}/venues/{keyword}")
     public IMoocJSONResult search3(
             @PathVariable("did") int did,
@@ -110,7 +96,7 @@ public class VenueController extends BasicController{
         venueImageService.setFirstVenueImage(venue);
         return IMoocJSONResult.ok(venue);
     }
-    @GetMapping("/showVenue/{id}")
+    @GetMapping("/venues/{id}/show")
     public IMoocJSONResult getDetail(@PathVariable("id") int id) throws Exception {
         Venue venue=venueService.get(id);
         venueService.setSaleAndReviewNumber(venue);
@@ -118,7 +104,7 @@ public class VenueController extends BasicController{
         return IMoocJSONResult.ok(venue);
     }
     @PutMapping("/venues")
-    public IMoocJSONResult update(@RequestBody Venue venue, HttpServletRequest request) throws Exception {
+    public IMoocJSONResult update(@RequestBody Venue venue) throws Exception {
         venueService.update(venue);
         return IMoocJSONResult.ok(venue);
     }

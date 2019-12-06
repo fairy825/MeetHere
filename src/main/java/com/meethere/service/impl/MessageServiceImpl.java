@@ -6,6 +6,7 @@ import com.meethere.pojo.Booking;
 import com.meethere.pojo.Message;
 import com.meethere.pojo.News;
 import com.meethere.pojo.Venue;
+import com.meethere.service.BookingService;
 import com.meethere.service.MessageService;
 import com.meethere.service.NewsService;
 import com.meethere.service.VenueService;
@@ -29,6 +30,8 @@ public class MessageServiceImpl implements MessageService {
     MessageDAO messageDAO;
     @Autowired
     VenueService venueService;
+    @Autowired
+    BookingService bookingService;
     @Transactional(propagation= Propagation.SUPPORTS)
     @Override
     public Page4Navigator<Message> listByVenue(int vid,int status, int start, int size, int navigatePages){
@@ -81,7 +84,12 @@ public class MessageServiceImpl implements MessageService {
     @Transactional(propagation= Propagation.SUPPORTS)
     @Override
     public Message queryByBooking(Booking booking){
-        return messageDAO.findByBooking(booking);
+        Message message = messageDAO.findByBooking(booking);
+        if(message!=null){
+            booking.setState(bookingService.finish);
+            bookingService.update(booking);
+        }
+        return message;
     }
 
 }

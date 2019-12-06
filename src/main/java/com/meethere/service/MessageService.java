@@ -18,4 +18,5 @@ public interface MessageService {
     public Message get(int id);
     public Integer total(Venue venue);
     public Message queryByBooking(Booking booking);
+
 }

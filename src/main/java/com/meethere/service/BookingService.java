@@ -20,6 +20,7 @@ public interface BookingService {
 
     public Page4Navigator<Booking> list(int start, int size, int navigatePages);
     public Page4Navigator<Booking> search(Booking booking, int start, int size, int navigatePages);
+    public Page4Navigator<Booking> searchWithoutDelete(Booking booking, int start, int size, int navigatePages);
     public Booking get(int id);
     public void update(Booking booking);
     public Page4Navigator<Booking> searchByUser(String keyword, int start, int size, int navigatePages);
@@ -28,5 +29,6 @@ public interface BookingService {
     public void saveBooking(Booking booking);
     public Page4Navigator<Booking> listBookingsByUser(User user, int start, int size, int navigatePages);
     public Booking searchByUserAndTimeslot(Booking booking);
+    public List<Booking> findAll();
 
 }

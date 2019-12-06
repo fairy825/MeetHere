@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:include="include/admin/adminHeader::html('订单管理')" ></head>
 <body>
@@ -63,13 +62,13 @@
                     jumpByNumber(start,vue);
                 },
                 approve:function(id,e){
-                    var url =  "approve/"+id;
+                    var url =  "bookings/approve/"+id;
                     axios.put(url).then(function(response) {
                         vue.list(0);
                     });
                 },
                 refuse:function(id,e){
-                    var url =  "refuse/"+id;
+                    var url =  "bookings/refuse/"+id;
                     axios.put(url).then(function(response) {
                         vue.list(0);
                     });

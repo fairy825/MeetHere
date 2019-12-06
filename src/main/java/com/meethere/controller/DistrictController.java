@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@RequestMapping("/districts")
 public class DistrictController extends BasicController{
 	@Autowired
     DistrictService districtService;
 
-    @GetMapping("/districts")
+    @GetMapping("")
     public IMoocJSONResult list(String keyword,
                                 @RequestParam(value = "start", defaultValue = "0") Integer start,
                                      Integer size)
@@ -25,35 +26,34 @@ public class DistrictController extends BasicController{
     	Page4Navigator<District> page = districtService.list(keyword,start,size,5);
         return IMoocJSONResult.ok(page);
     }
-    @GetMapping("/districts/all")
+    @GetMapping("/all")
     public IMoocJSONResult listAll()
             throws Exception {
         return IMoocJSONResult.ok(districtService.findAll());
     }
 
-    @PostMapping("/districts")
+    @PostMapping("")
     public IMoocJSONResult add(@RequestBody District district) throws Exception {
         districtService.saveDistrict(district);
         return IMoocJSONResult.ok(district);
     }
 
 
-    @DeleteMapping("/districts/{id}")
+    @DeleteMapping("/{id}")
     public IMoocJSONResult delete(@PathVariable("id") int id)  throws Exception {
         districtService.delete(id);
         return IMoocJSONResult.ok();
     }
 
-    @GetMapping("/districts/{id}")
+    @GetMapping("/{id}")
     public IMoocJSONResult get(@PathVariable("id") int id) throws Exception {
         District district=districtService.get(id);
         return IMoocJSONResult.ok(district);
     }
 
-    @PutMapping("/districts")
+    @PutMapping("")
     public IMoocJSONResult update(@RequestBody District district, HttpServletRequest request) throws Exception {
         districtService.update(district);
-
         return IMoocJSONResult.ok(district);
     }
 

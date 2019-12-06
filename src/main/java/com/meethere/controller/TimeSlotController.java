@@ -39,8 +39,8 @@ public class TimeSlotController extends BasicController{
         return IMoocJSONResult.ok(timeSlot);
     }
 
-//    @Scheduled(cron = "0 0 0 */1 * ?")
-//    @Scheduled(cron = "0 * * * * ? ")
+//    @Scheduled(cron = "0 0 0 */1 * ?")//每天
+    @Scheduled(cron = "0 * * * * ? ")
     public void addNewTimeSlot() throws ParseException {
         Date today = new Date();
         Calendar cal = Calendar.getInstance();

@@ -19,11 +19,12 @@ import java.io.File;
 import java.io.IOException;
 
 @RestController
+@RequestMapping("/users")
 public class UserController extends BasicController{
 	@Autowired
     UserService userService;
 
-    @GetMapping("/users")
+    @GetMapping("")
     public IMoocJSONResult list(@RequestParam(value = "start", defaultValue = "0") Integer start,
                                      Integer size)
             throws Exception {
@@ -32,12 +33,12 @@ public class UserController extends BasicController{
     	Page4Navigator<User> page = userService.list(start,size,5); 
         return IMoocJSONResult.ok(page);
     }
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public IMoocJSONResult get(@PathVariable("id") int id) throws Exception {
         User user = userService.get(id);
         return IMoocJSONResult.ok(user);
     }
-    @PostMapping("/users")
+    @PostMapping("")
     public IMoocJSONResult search(@RequestBody User user,@RequestParam(value = "start", defaultValue = "0") Integer start,
                                 Integer size)
             throws Exception {
@@ -46,12 +47,16 @@ public class UserController extends BasicController{
         Page4Navigator<User> page = userService.search(user,start,size,5);
         return IMoocJSONResult.ok(page);
     }
-    @PutMapping("/users")
-    public IMoocJSONResult update(@RequestBody User user) throws Exception {
+    @PutMapping("")
+    public IMoocJSONResult update(@RequestBody User user,HttpSession session) throws Exception {
+        User user1 = (User)session.getAttribute("user");
+
+        if(user1 == null)
+            return IMoocJSONResult.build(501,"未登录",null);
         userService.update(user);
         return IMoocJSONResult.ok(user);
     }
-    @PutMapping("/users/password")
+    @PutMapping("/password")
     public IMoocJSONResult changePassword(@RequestBody User user,@RequestParam(value = "newPassword")String newPassword) throws Exception {
         String password = user.getPassword();
         User user1 = userService.get(user.getId());
@@ -70,7 +75,7 @@ public class UserController extends BasicController{
 
         }
     }
-    @PostMapping("/users/upload")
+    @PostMapping("/upload")
     public IMoocJSONResult upload(@RequestParam("image") MultipartFile image, HttpSession session) throws Exception {
         User user = (User)session.getAttribute("user");
         String folder = FILE_SPACE + "/faceImage";
@@ -82,7 +87,7 @@ public class UserController extends BasicController{
         User userDB = new User();
         BeanUtils.copyProperties(user,userDB);
         userDB.setFaceImage(pathDB);
-        update(userDB);
+        userService.update(user);
         System.out.println(path);
         System.out.println(pathDB);
         File file = new File(path);
@@ -90,14 +95,12 @@ public class UserController extends BasicController{
         if(!file.getParentFile().exists())
             file.getParentFile().mkdirs();
         try {
-
             image.transferTo(file);
             BufferedImage img = ImageUtil.change2jpg(file);
             ImageIO.write(img, "jpg", file);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         String imageFolder_small= FILE_SPACE+"/faceImage_small";
         File f_small = new File(imageFolder_small, fileName);
         f_small.getParentFile().mkdirs();

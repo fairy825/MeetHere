@@ -76,7 +76,57 @@ public class BookingServiceImpl implements BookingService {
     public Booking searchByUserAndTimeslot(Booking booking){
         Example<Booking> example = Example.of(booking);
         Booking booking1 = bookingDAO.findOne(example);
-        return booking1.getState().equalsIgnoreCase(cancelled) ? null : booking1;
+        return (booking1==null)||(booking1.getState().equalsIgnoreCase(cancelled)) ? null : booking1;
+    }
+    @Transactional(propagation= Propagation.SUPPORTS)
+    @Override
+    public Page4Navigator<Booking> searchWithoutDelete(Booking booking, int start, int size, int navigatePages){
+        Sort sort = new Sort(Sort.Direction.DESC, "id");
+        Pageable pageable = new PageRequest(start, size,sort);
+        Page pageFromJPA =null;
+        Booking b = new Booking();
+        b.setId(null);
+        if(StringUtils.isBlank(booking.getState())) booking.setState(null);
+        b.setState(booking.getState());
+        b.setUser(userService.findByName(booking.getUser().getName()));
+        if(booking.getVenue()!=null)
+            b.setVenue(venueService.findByName(booking.getVenue().getName()));
+        else b.setVenue(null);
+        Example<Booking> example = Example.of(b);
+        List<Booking> list = new ArrayList<>();
+        List<Booking> list1 = bookingDAO.findAll(example,sort);
+        for(Booking booking1:list1){
+            if(!booking1.getState().equalsIgnoreCase(delete)){
+                list.add(booking1);
+            }
+        }
+        List<Booking> res = new ArrayList<>();
+        int count = 0;
+        int i = 0;
+        if(booking.getTimeSlot()==null||booking.getTimeSlot().getBookingDate()==null) {
+            for(i=start*size;i<(start+1)*size&&i<list.size();i++) {//start=0 size=2
+                Booking booking1 =  list.get(i);
+                res.add(booking1);
+            }
+            count = list.size();
+        }
+        else {
+            List<TimeSlot> tsList = timeSlotService.findByBookingDate(booking.getTimeSlot().getBookingDate());
+            for (Booking booking1 : list) {
+                TimeSlot timeSlot = booking1.getTimeSlot();
+                for (TimeSlot ts : tsList) {
+                    if (timeSlot.getId() == ts.getId()) {
+                        if(count>=start*size&&count<(start+1)*size){
+                            res.add(booking1);
+                        }
+                        count++;
+                        break;
+                    }
+                }
+            }
+        }
+        pageFromJPA = new PageImpl<Booking>(res,pageable,count);
+        return new Page4Navigator<>(pageFromJPA,navigatePages);
     }
 
     @Transactional(propagation= Propagation.SUPPORTS)
@@ -142,6 +192,12 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void saveBooking(Booking booking){
         bookingDAO.save(booking);
+    }
+
+    @Transactional(propagation= Propagation.REQUIRED)
+    @Override
+    public List<Booking> findAll(){
+        return bookingDAO.findAll();
     }
 
 }

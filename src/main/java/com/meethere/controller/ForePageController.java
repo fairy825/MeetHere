@@ -8,10 +8,6 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class ForePageController extends BasicController{
-//	@GetMapping(value="/")
-//	public String index(){
-//		return "redirect:home";
-//	}
 	@GetMapping(value="/home")
 	public String home(){
 		return "fore/home";
@@ -52,40 +48,20 @@ public class ForePageController extends BasicController{
 	public String bought(){
 		return "fore/bought";
 	}
-	@GetMapping(value="/confirmPay")
-	public String confirmPay(){
-		return "fore/confirmPay";
-	}
 	@GetMapping(value="/login")
 	public String login(){
 		return "fore/login";
-	}
-	@GetMapping(value="/orderConfirmed")
-	public String orderConfirmed(){
-		return "fore/orderConfirmed";
-	}
-//	@GetMapping(value="/payed")
-//	public String payed(){
-//		return "fore/payed";
-//	}
-	@GetMapping(value="/product")
-	public String product(){
-		return "venue";
 	}
 	@GetMapping(value="/review")
 	public String review(){
 		return "fore/review";
 	}
-//	@GetMapping(value="/search")
-//	public String searchResult(){
-//		return "fore/venues";
-//	}
 	@GetMapping("/forelogout")
 	public String logout(HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		redis.del(USER_REDIS_SESSION + ":" + user.getId());
 		session.removeAttribute("user");
-		return "redirect:home";
+		return "redirect:first";
 	}
 
 }

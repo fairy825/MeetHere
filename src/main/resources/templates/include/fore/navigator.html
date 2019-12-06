@@ -156,7 +156,7 @@
 
                             <li class="active">
                                 <span class="wsmenu-click"></span>
-                                <a href="forehome">首页</a>
+                                <a href="home">首页</a>
                             </li>
                             <li>
                                 <span class="wsmenu-click"></span>
@@ -167,16 +167,15 @@
                                 <span class="wsmenu-click"></span>
                                 <a href="forenews">新闻</a>
                             </li>
-                            <li>
+                            <li th:if="${null!=session.user}">
                                 <span class="wsmenu-click"></span>
                                 <a href="#">个人中心
                                     <span class="arrow"></span>
                                 </a>
 
-                                <ul class="wsmenu-submenu" th:if="${null!=session.user}">
+                                <ul class="wsmenu-submenu">
                                     <li>
                                         <a href="bought">订单查看</a>
-
                                     </li>
                                     <li>
                                         <a th:href="'profile?id='+${session.user.id}">修改信息</a>
@@ -184,13 +183,17 @@
                                     <li>
                                         <a th:href="'password?id='+${session.user.id}">修改密码</a>
                                     </li>
+                                    <li>
+                                         <span >
+                                             <a th:text="${session.user.name}" th:href="'profile?id='+${session.user.id}"></a>
+                                             <a href="forelogout">退出</a>
+                                         </span>
+                                    </li>
                                 </ul>
                             </li>
-                            <li >
-                                  <span th:if="${null!=session.user}">
-		<a th:text="${session.user.name}"></a>
-		<a href="forelogout" >退出</a>
-    </span>
+                            <li th:if="${null==session.user}">
+                                <span ><a href="login">登录</a></span>
+                                <span ><a href="register">注册</a></span>
                             </li>
 
 

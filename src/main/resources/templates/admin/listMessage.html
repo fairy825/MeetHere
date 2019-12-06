@@ -62,13 +62,13 @@
                     jumpByNumber(start,vue);
                 },
                 agree:function(id,e){
-                    var url =  "agreeMessage/"+id;
+                    var url =  "messages/agree/"+id;
                     axios.put(url).then(function(response) {
                         vue.list(0);
                     });
                 },
                 refuse:function(id,e){
-                    var url =  "refuseMessage/"+id;
+                    var url =  "messages/refuse/"+id;
                     axios.put(url).then(function(response) {
                         vue.list(0);
                     });

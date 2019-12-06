@@ -6,15 +6,18 @@
 	<script>
 		$(function(){
 	        var data4Vue = {
-	        		uri:'myBookings',
+	        		uri:'bookings/mine',
 	        		beans:[],
 				bean:{},
 				searchbean:{id:null,state:'',timeSlot:{'id':0,bookingDate:''},
 					user:{'id':0,name:""},venue:{'id':0,name:""}},
 				pagination:'',
 				myreview:{id:'',content:'',stateDesc:'',createDate:''},
-				msg:''
-	        };
+				msg:'',
+				msgFromMyModal:'操作成功！',
+				user:{name:'', password:''}
+
+			};
 	        //ViewModel
 	        var vue = new Vue({
 	            el: '#workingArea',
@@ -38,19 +41,31 @@
 						});
 	            	},
 					showMyReview: function(id){
-						var url =  "myreview?bid="+id;
+	            		vue.myreview="";
+						var url =  "messages/mine?bid="+id;
 						axios.get(url).then(function(response) {
-							console.log(response.data.data);
-							vue.myreview = response.data.data;
+							var status = response.data.status;
+							if(status==200) {
+								console.log(response.data.data);
+								vue.myreview = response.data.data;
+								$("#myReview"+id).toggle();
+							}else if(status==501){
+								$("#loginModal").modal('show');
+							}
 						})
-						$("#myReview"+id).toggle();
 					},
 					deleteMyReview: function(bid,mid){
 						var url =  "messages/"+mid;
 						axios.delete(url).then(function(response) {
-							vue.list(vue.pagination.number);
+							var status = response.data.status;
+							if(status==200) {
+								vue.list(vue.pagination.number);
+								$("#myReview"+bid).hide();
+								vue.list(vue.pagination.number);
+							}else if(status==501){
+								$("#loginModal").modal('show');
+							}
 						})
-						$("#myReview"+bid).hide();
 					},
 					changeRemark:function(bid){
 						$("#remarkTR"+bid).toggle();
@@ -61,15 +76,84 @@
 						var id = bean.id;
 						$("#rmid"+id).css("border","2px solid yellow");
 						axios.put(url,bean).then(function(response) {
-							$("#rmid"+id).css("border","2px solid green");
-							$("#myModal").modal('show');
+							var status = response.data.status;
+							if(status==200) {
+								$("#rmid"+id).css("border","2px solid green");
+								vue.msgFromMyModal = "修改成功！";
+								$("#myModal").modal('show');
+							}else if(status==501){
+								$("#loginModal").modal('show');
+							}
 						});
 					},
 					arrive: function(id){
-						var url =  "arrive?id="+id;
+						var url =  "bookings/arrive?id="+id;
 						axios.put(url).then(function(response) {
-							vue.list(vue.pagination.number);
+							var status = response.data.status;
+							if(status==200) {
+								vue.list(vue.pagination.number);
+							}else if(status==501){
+								$("#loginModal").modal('show');
+							}
 						})
+					},
+					pay:function(bid,total){
+						var url = "checkLogin";
+						axios.get(url).then(function(response) {
+							var status = response.data.status;
+							if(status==200) {
+								location.href = "pay?bid="+bid+"&total="+total;
+							}
+							else{
+								$("#loginModal").modal('show');
+							}
+						});
+					},
+					review:function(vid,bid){
+						var url =  "messages/mine?bid="+bid;
+						axios.get(url).then(function(response) {
+							console.log(response.data.data);
+							res = response.data.data;
+							var status = response.data.status;
+							if(status==200) {
+								if(res==null)
+									location.href="review?vid="+vid+"&bid="+bid;
+								else {
+									vue.msgFromMyModal = "您已评价过该订单！";
+									$("#myModal").modal('show');
+									setTimeout(function () {
+										location.href = "bought";
+									}, 2000);
+								}
+							}else if(status==501){
+								$("#loginModal").modal('show');
+							}
+
+						})
+					},
+					login:function(){
+						var url =  "login";
+						if(0==this.user.name.length){
+							$("span.errorMessage").html("请输入用户名");
+							$("div.loginErrorMessageDiv").css("visibility","visible");
+							return;
+						}
+						if(0==this.user.password.length){
+							$("span.errorMessage").html("请输入密码");
+							$("div.loginErrorMessageDiv").css("visibility","visible");
+							return;
+						}
+
+						axios.post(url,this.user).then(function(response) {
+							var result = response.data;
+							if(result.status==200){
+								location.href="bought";
+							}
+							else{
+								$("span.errorMessage").html(result.msg);
+								$("div.loginErrorMessageDiv").css("visibility","visible");
+							}
+						});
 					},
 					jump: function(page){
 						jump(page,vue); //定义在adminHeader.html 中
@@ -80,89 +164,85 @@
 	            }
 	        });       			
 		});
-		var deleteOrder = false;
-		var deleteOrderid = 0;
-		var deleteReviewid = 0;
-		var deleteReview = false;
 		var bid = 0;
-		var cancelid = 0;
-		var cancelOrder = false;
-
+		var mid = 0;
+		var flag = false;
+		var current = 0;
+		//1 取消订单
+		//2 删除订单
+		//3 删除评论
 		function orderPageRegisterListeners(vue){
 			$("a.cancelLink").click(function(){
 				bid = $(this).attr("bid");
-				cancelOrder = false;
+				flag = false;
+				current = 1;
 				vue.msg="确认取消该订单？";
-				// $("#deleteReviewModal").modal("show");
+				$("#deleteConfirmModal").modal("show");
 			});
 
-			$("button.deleteReviewConfirmButton").click(function(){
-				cancelOrder = true;
-				$("#deleteReviewConfirmModal").modal('hide');
-				console.log(cancelOrder);
-				console.log(bid);
-				if(cancelOrder){
-					var url =  "cancel/"+bid;
-					axios.put(url).then(function(response) {
-						vue.list(vue.pagination.number);
-					})
-					$("#myModal").modal('show');
-				}
+			$("a.deleteOrderLink").click(function(){
+				bid = $(this).attr("bid");
+				flag = false;
+				current = 2;
+				vue.msg="确认删除该订单？删除后将无法恢复！";
+				$("#deleteConfirmModal").modal("show");
 			});
 
 			$("a.deleteReviewLink").click(function(){
-				deleteReviewid = $(this).attr("mid");
-				deleteReview = false;
-				$("#deleteReviewModal").modal("show");
-			});
-
-			// $("button.deleteReviewConfirmButton").click(function(){
-			// 	deleteReview = true;
-			// 	$("#deleteReviewConfirmModal").modal('hide');
-			// 	// console.log(deleteReview);
-			// 	// console.log(deleteReviewid);
-			// 	if(deleteReview){
-			// 		var url =  "messages/"+deleteReviewid;
-			// 		axios.delete(url).then(function(response) {
-			// 			vue.list(vue.pagination.number);
-			// 		})
-			// 		$("#myReview"+bid).hide();
-			// 		$("#deleteReviewConfirmModal").modal('hide');
-			// 	}
-			// });
-
-			// $('#deleteReviewConfirmModal').on('hidden.bs.modal', function (e) {
-			// 	console.log(deleteReview);
-			// 	console.log(deleteReviewid);
-			// 	if(deleteReview){
-			// 		var url =  "messages/"+deleteReviewid;
-			// 		axios.delete(url).then(function(response) {
-			// 			vue.list(vue.pagination.number);
-			// 		})
-			// 		$("#myReview"+bid).hide();
-			// 		$("#deleteReviewConfirmModal").modal('hide');
-			// 	}
-			// });
-
-			$("a.deleteOrderLink").click(function(){
-				deleteOrderid = $(this).attr("mid");
 				bid = $(this).attr("bid");
-				deleteOrder = false;
-				// $("#deleteConfirmModal").modal("show");
+				mid = $(this).attr("mid");
+				flag = false;
+				current = 3;
+				vue.msg="确认删除该评论？";
+				$("#deleteConfirmModal").modal("show");
 			});
-			
+
 			$("button.deleteConfirmButton").click(function(){
-				deleteOrder = true;
+				flag = true;
 				$("#deleteConfirmModal").modal('hide');
-			});	
-			
-			$('#deleteConfirmModal').on('hidden.bs.modal', function (e) {
-				if(deleteOrder){
-					var uri = "deleteBookings/"+deleteOrderid;
-					axios.put(uri).then(function(response){
-						vue.list(0);
-					});
-					$("#deleteConfirmModal").modal('hide');
+				if(flag){
+					if(current == 1) {
+						var url = "bookings/cancel/" + bid;
+						axios.put(url).then(function (response) {
+							var res = response.data.status;
+							if(res==200) {
+								vue.list(vue.pagination.number);
+								vue.msgFromMyModal = "成功取消订单！";
+								$("#myModal").modal('show');
+							} else if(res==501) {
+								$("#loginModal").modal('show');
+							}
+						})
+					}else if(current == 2){
+						url = "bookings/delete/"+bid;
+						axios.put(url).then(function(response){
+							var res = response.data.status;
+							if(res==200) {
+								vue.list(0);
+								vue.msgFromMyModal = "成功删除订单！";
+								$("#myModal").modal('show');
+								$("#deleteConfirmModal").modal('hide');
+							} else if(res==501) {
+								$("#loginModal").modal('show');
+							}
+						});
+
+					}else if(current == 3){
+						url =  "messages/"+mid;
+						axios.delete(url).then(function(response) {
+							var res = response.data.status;
+							if(res==200) {
+								vue.list(vue.pagination.number);
+								$("#myReview"+bid).hide();
+								vue.msgFromMyModal = "成功删除评论！";
+								$("#myModal").modal('show');
+								$("#deleteConfirmModal").modal('hide');
+							} else if(res==501) {
+								$("#loginModal").modal('show');
+							}
+
+						})
+					}
 				}
 			});
 		}
@@ -255,6 +335,8 @@
 					<option value="waitFinish">进行中</option>
 					<option value="waitReview">可留言</option>
 					<option value="finish">已结束</option>
+					<option value="cancelled">已取消</option>
+
 				</select>
 			</div>
 			<button @click="list(0)" class="searchButton">搜索</button>
@@ -301,31 +383,27 @@
 										<td valign="top" class="orderListItemButtonTD orderItemOrderInfoPartTD" width="100px">
 
 											<div v-if="bean.state=='waitPay'">
-												<a :href="'pay?bid='+bean.id+'&total='+bean.venue.price">
-													<button class="orderListItemConfirm">付款</button>
-												</a>
+													<button  @click="pay(bean.id,bean.venue.price)" class="orderListItemConfirm">付款</button>
 											</div>
 											<div v-else-if="bean.state=='waitArrive'">
 												<button class="btn btn-primary orderListItemArrive" @click="arrive(bean.id)">我已到达</button>
 											</div>
 											<div v-else-if="bean.state=='waitReview'">
-												<a :href="'review?vid='+bean.venue.id+'&bid='+bean.id">
-													<button  class=" btn btn-primary orderListItemReview">留言</button>
-												</a>
+													<button  @click="review(bean.venue.id,bean.id)" class=" btn btn-primary orderListItemReview">留言</button>
 											</div>
 											<div v-else-if="bean.state=='finish'">
 													<button  @click="showMyReview(bean.id)" class=" btn btn-primary orderListItemReview">查看我的留言</button>
 											</div>
 											<div v-if="bean.state=='waitApprove'||bean.state=='waitPay'">
-												<a  class="cancelLink" :bid="bean.id" type="button" data-toggle="modal" data-target="#deleteReviewConfirmModal">
+												<a  class="cancelLink" :bid="bean.id" type="button">
 													<button class="btn btn-warning">取消预订</button>
 												</a>
 											</div>
 											<div v-if="bean.state=='waitApprove'||bean.state=='waitPay'||bean.state=='waitTime'">
 													<button @click="changeRemark(bean.id)" class="btn btn-primary">修改</button>
 											</div>
-											<div v-if="bean.state=='finish'">
-												<a  class="deleteOrderLink" :bid="bean.id" type="button" data-toggle="modal" data-target="#deleteConfirmModal">
+											<div>
+												<a  class="deleteOrderLink" :bid="bean.id" type="button">
 													<span  class="orderListItemDelete glyphicon glyphicon-trash"></span></a>
 											</div>
 
@@ -359,7 +437,7 @@
 														<td>{{myreview.stateDesc}}</td>
 													</tr>
 													<tr><td  colspan="2">
-														<a  class="deleteReviewLink" :mid="myreview.id" :bid="bean.id" type="button" data-toggle="modal" data-target="#deleteReviewConfirmModal">
+														<a  class="deleteReviewLink" :mid="myreview.id" :bid="bean.id" type="button">
 															<span  class="orderListItemDelete glyphicon glyphicon-trash"></span></a>
 <!--														<button  @click="deleteMyReview(bean.id, myreview.id)" class=" btn btn-primary orderListItemReview">删除我的留言</button>-->
 													</td></tr>
@@ -380,19 +458,5 @@
 		</div>
 		<div th:replace="include/admin/adminPage::html" ></div>
 
-	</div>
-	<div class="modal fade" id="deleteReviewConfirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-					<h4 class="modal-title">{{msg}}</h4>
-				</div>
-				<div class="modal-footer">
-					<button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
-					<button class="btn btn-primary deleteReviewConfirmButton" id="submit" type="button">确认</button>
-				</div>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
 	</div>
 </div>

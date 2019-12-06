@@ -79,12 +79,12 @@ public class RegistLoginController extends BasicController{
 		}
 	}
 
-	@PostMapping("/logout")
-	public IMoocJSONResult logout(String userId) throws Exception {
+	@GetMapping("/logout")
+	public IMoocJSONResult logout(String userId,HttpSession session) throws Exception {
 		redis.del(USER_REDIS_SESSION + ":" + userId);
+		session.removeAttribute("user");
 		return IMoocJSONResult.ok();
 	}
-
 	public Admin setAdminRedisSessionToken(Admin admin) {
 		String uniqueToken = UUID.randomUUID().toString();
 		redis.set(ADMIN_REDIS_SESSION + ":" + admin.getId(), uniqueToken, 1000 * 60 * 30);
@@ -127,4 +127,12 @@ public class RegistLoginController extends BasicController{
 		session.removeAttribute("admin");
 		return IMoocJSONResult.ok();
 	}
+
+    @GetMapping("checkLogin")
+    public Object checkLogin( HttpSession session) {
+        User user =(User)  session.getAttribute("user");
+        if(null!=user)
+			return IMoocJSONResult.ok();
+        return IMoocJSONResult.build(501,"未登录",null);
+    }
 }

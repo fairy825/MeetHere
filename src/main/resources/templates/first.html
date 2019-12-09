@@ -40,7 +40,8 @@
             <p>HERE YOU CAN BOOK THE VENUE YOU LIKE</p>
             <p>General View As Follows</p>
             <div class="scroll-icon">
-                <a class="scrollTo" href="#portfolio"><img src="img/scroll-icon.png" alt=""></a>
+                <!--<a class="scrollTo" data-scrollTo="portfolio" href="#"><img src="img/scroll-icon.png" alt="" ></a>-->
+                <a class="scrollTo" href="#portfolio"><img src="img/scroll-icon.png" alt="" ></a>
             </div>
         </div>
     </div>
@@ -50,7 +51,7 @@
 </div>
 
 
-<div class="full-screen-portfolio" id="portfolio">
+<div class="full-screen-portfolio" id="portfolio" name="portfolio">
     <div class="container-fluid">
         <div class="col-md-4 col-sm-6">
             <div class="portfolio-item">
@@ -126,6 +127,11 @@
         </div>
     </div>
 </section>
+
+<!--<script type="text/javascript">-->
+    <!--$('#scroll-item').click(function () { $('html,body').animate({ scrollTop: document.getElementsByTagName('BODY')[0].scrollHeight}, 2000); return false; });-->
+<!--</script>-->
+
 
 <script src="https://cdn.bootcss.com/jquery/1.11.2/jquery.min.js" ></script>
 <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js" ><\/script>')</script>

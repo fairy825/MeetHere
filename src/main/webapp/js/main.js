@@ -34,8 +34,7 @@ jQuery(document).ready(function($) {
           
           // data-scrollTo = section scrolling to name
           var scrollTo = $(this).attr('data-scrollTo');
-          
-          
+
           // toggle active class on and off. added 1/24/17
           $( "a.scrollTo" ).each(function() {
             if(scrollTo == $(this).attr('data-scrollTo')){
@@ -46,14 +45,13 @@ jQuery(document).ready(function($) {
           });
           
           
-          // animate and scroll to the sectin 
+          // animate and scroll to the section
           $('body, html').animate({
             
             // the magic - scroll to section
             "scrollTop": $('#'+scrollTo).offset().top
           }, 1000 );
           return false;
-          
         })
  
 

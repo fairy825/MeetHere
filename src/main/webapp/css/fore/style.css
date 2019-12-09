@@ -448,18 +448,22 @@ div.loginDivInProductPage {
 }
 
 div.loginSmallDiv {
-	background-color: white;
+	/*background-color:rgba(255,255,255,0.6);*/
+	/*align:center;*/
+	/*right: 300px;*/
 	position: absolute;
-	right: 180px;
-	top: 180px;
+	top: 200px;
+	left: 35%;
 	width: 350px;
 	height: 400px;
 	padding: 60px 25px 80px 25px;
+	border-radius: 6px;
+	/*margin: auto;*/
 }
 
 div.loginErrorMessageDiv {
 	width: 300px;
-	position: absolute;
+	/*position: absolute;*/
 	top: 20px;
 	visibility: hidden;
 }
@@ -475,18 +479,22 @@ div.login_acount_text {
 }
 
 div.loginInput {
+	height: 40px;
+	width: 300px;
 	border: 1px solid #CBCBCB;
 	margin: 20px 0px;
+	border-radius: 6px;
 }
 
 div.loginInput input {
 	display: inline-block;
 	border: 0px solid transparent;
-	width: 244px;
-	height: 30px;
+	width: 259px;
+	height: 37px;
 	position: relative;
-	left: 6px;
-	top: 6px;
+	right: -38px;
+	top: -38px;
+	border-radius: 6px;
 }
 
 div.loginInput span, div.loginInput input {
@@ -494,10 +502,15 @@ div.loginInput span, div.loginInput input {
 }
 
 div.loginInput span.loginInputIcon {
-	margin: 0px;
+	/*margin: 0px;*/
 	background-color: #CBCBCB;
-	width: 40px;
-	height: 40px;
+	width: 38px;
+	height: 38px;
+	top: 0cm;
+	bottom: 0px;
+	left: -3px;
+	right: 2px;
+	border-radius: 4px;
 }
 
 span.loginInputIcon span.glyphicon {
@@ -511,6 +524,13 @@ span.loginInputIcon span.glyphicon {
 button.redButton {
 	color: white;
 	background-color: #C40000;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+button.blueButton {
+	color: white;
+	/*background-color:#2e6da4;*/
 	font-size: 14px;
 	font-weight: bold;
 }

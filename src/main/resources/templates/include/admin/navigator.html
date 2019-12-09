@@ -2,18 +2,15 @@
 <div th:fragment="html">
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <!--<link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">-->
-
+    <link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
     <script src="js/vue/2.5.16/vue.min.js"></script>
     <script src="js/axios/0.17.1/axios.min.js"></script>
     <script src="js/moment/2.22.2/moment.js"></script>
+    <link href="css/fore/style.css" rel="stylesheet">
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <script src="js/main.js"></script>
-    <link href="css/fore/style.css" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet" type="text/css"/>
 
-    <link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script>
         function getUrlParms(para){
             var search=location.search; //页面URL的查询部分字符串
@@ -100,38 +97,33 @@
 
 
     <!-- Header -->
-    <header id="header" class="header" style="z-index: 1">
+    <header id="header" class="header">
         <div class="header__top">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-3">
-                        <div class="wrap-logo">
-                            <a class="tab-pane__title" style="width: 20cm;margin-top: 20px">Welcome to Park Booking</a>
-                        </div>
-                    </div>
                     <div class="col-sm-offset-2 col-md-offset-5 col-sm-6 col-md-4 hidden-xs">
                         <div class="col-xs-4 col-sm-5">
                             <div class="weather">
-                                <div class="weather__temperature">
 
-                                    <em class="active"></em>
-                                    <em></em>
-                                    <em></em>
-                                </div>
-                                <div class="weather__city">
-                                    <em>Swimming Pool</em>
-                                    <div class="weather__city__list">
-                                        <ul>
-                                            <li class="active">
-                                                <a href="#">Indoor Climbing</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Yoga</a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                <div class="weather__city__list">
+                                    <ul>
+                                        <li class="active">
+                                            <a href="#">Swimming Pool</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Climbing</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Yoga</a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-7">
+                        <div class="exchange" style="text-align: left">
+                            <a class="tab-pane__title"  style="overflow: hidden">Welcome To the Park Booking</a>
                         </div>
                     </div>
                 </div>
@@ -162,83 +154,49 @@
 
                             <li class="active">
                                 <span class="wsmenu-click"></span>
-                                <a href="http://localhost:8080/user/signIn?name=fbo&password=fb701701">首页</a>
+                                <a href="home">首页</a>
                             </li>
                             <li>
                                 <span class="wsmenu-click"></span>
-                                <a href="">场馆
+                                <a href="forevenues">场馆
+                                </a>
+                            </li>
+                            <li>
+                                <span class="wsmenu-click"></span>
+                                <a href="forenews">新闻</a>
+                            </li>
+                            <li th:if="${null!=session.user}">
+                                <span class="wsmenu-click"></span>
+                                <a href="#">个人中心
                                     <span class="arrow"></span>
                                 </a>
+
                                 <ul class="wsmenu-submenu">
                                     <li>
-                                        <a href="404.html">场馆介绍</a>
+                                        <a href="bought">订单查看</a>
                                     </li>
                                     <li>
-                                        <a href="category.html">场馆预约</a>
+                                        <a th:href="'profile?id='+${session.user.id}">修改信息</a>
+                                    </li>
+                                    <li>
+                                        <a th:href="'password?id='+${session.user.id}">修改密码</a>
+                                    </li>
+                                    <li>
+                                         <span >
+                                             <a th:text="${session.user.name}" th:href="'profile?id='+${session.user.id}"></a>
+                                             <a href="forelogout">退出</a>
+                                         </span>
                                     </li>
                                 </ul>
                             </li>
-                            <li>
-                                <span class="wsmenu-click"></span>
-                                <a href="http://localhost:8080/news">新闻</a>
+                            <li th:if="${null==session.user}">
+                                <span ><a href="login">登录</a></span>
+                                <span ><a href="register">注册</a></span>
                             </li>
-                            <li>
-                                <span class="wsmenu-click"></span>
-                                <a href="category.html">留言</a>
-                            </li>
-                            <li>
-                                <span class="wsmenu-click"></span>
-                                <a href="">个人中心
-                                    <span class="arrow"></span>
-                                </a>
-                                <ul class="wsmenu-submenu">
-                                    <li>
-                                        <a href="404.html">订单查看</a>
-                                    </li>
-                                    <li>
-                                        <a href="category.html">修改信息</a>
-                                    </li>
 
-                                </ul>
-                            </li>
-                            <li class="navbar-right hidden-xs">
-                                <form class="navbar-form " role="search" style="margin-top: 5px;margin-bottom: 5px">
-                                    <div class="form-group" style="height: 1cm;">
-                                        <input type="text" class="form-control" style="height: 1cm" placeholder="Search">
-                                    </div>
-                                    <button type="submit" class="btn btn-search" style="height: 1cm">
-                                        <i class="icon-search"></i>Search
-                                    </button>
-                                </form>
-                            </li>
-                            <li>
-                                <div class="visible-xs col-sm-offset-5 col-sm-4">
-                                    <div class="col-sm-5">
-                                        <div class="weather">
-                                            <div class="weather__temperature">
-
-                                                <em></em>
-                                            </div>
-                                            <div class="weather__city">
-                                                <em>Swimming Pool</em>
-                                                <div class="weather__city__list">
-                                                    <ul>
-                                                        <li class="active">
-                                                            <a href="#">Indoor Climbing</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">Yoga</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </li>
                         </ul>
                     </nav>
+                    <!--Menu HTML Code-->
                 </div>
             </div>
         </div>

@@ -17,6 +17,39 @@ public class Admin {
 	@Transient
 	private String adminToken;
 
+	public Admin() {
+	}
+
+	public Admin(int id, String name, String password) {
+		this.id = id;
+		this.name = name;
+		this.password = password;
+	}
+
+	public static class AdminBuilder{
+		private int id;
+		private String name;
+		private String password;
+
+		public AdminBuilder id(int id){
+			this.id = id;
+			return this;
+		}
+
+		public AdminBuilder name(String name){
+			this.name = name;
+			return this;
+		}
+
+		public AdminBuilder password(String password){
+			this.password = password;
+			return this;
+		}
+
+		public Admin build(){
+			return new Admin(id,name,password);
+		}
+	}
 
 	public String getAdminToken() {
 		return adminToken;

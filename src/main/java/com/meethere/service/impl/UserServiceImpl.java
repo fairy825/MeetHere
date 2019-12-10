@@ -79,9 +79,9 @@ public class UserServiceImpl implements UserService {
     public User findByName(String name){
         return userDAO.findByName(name);
     }
-    @Transactional(propagation= Propagation.SUPPORTS)
-    @Override
-    public List<User> findByNameLike(String name){
-        return userDAO.findByNameLike(name);
-    }
+//    @Transactional(propagation= Propagation.SUPPORTS)
+//    @Override
+//    public List<User> findByNameLike(String name){
+//        return userDAO.findByNameLike(name);
+//    }
 }

@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Table(name = "user")
 @JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
 public class User {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -26,6 +25,63 @@ public class User {
 	@Transient
 	private String anonymousName;
 
+	public User() {
+	}
+
+	public User(Integer id, String name, String password, String nickname, String phoneNumber, String email,String faceImage) {
+		this.id = id;
+		this.name = name;
+		this.password = password;
+		this.nickname = nickname;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.faceImage = faceImage;
+	}
+
+	public static class UserBuilder{
+		private Integer id;
+		private String name;
+		private String password;
+		private String nickname;
+		private String phoneNumber;
+		private String email;
+		private String faceImage;
+
+		public UserBuilder id(int id){
+			this.id = id;
+			return this;
+		}
+
+		public UserBuilder name(String name){
+			this.name = name;
+			return this;
+		}
+
+		public UserBuilder password(String password){
+			this.password = password;
+			return this;
+		}
+		public UserBuilder phoneNumber(String phoneNumber){
+			this.phoneNumber = phoneNumber;
+			return this;
+		}
+		public UserBuilder email(String email){
+			this.email = email;
+			return this;
+		}
+		public UserBuilder faceImage(String faceImage){
+			this.faceImage = faceImage;
+			return this;
+		}
+		public UserBuilder nickname(String nickname){
+			this.nickname = nickname;
+			return this;
+		}
+
+		public User build(){
+			return new User(id,name,password,nickname,phoneNumber,email,faceImage);
+		}
+	}
 	public String getFaceImage() {
 		return faceImage;
 	}

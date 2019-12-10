@@ -28,6 +28,5 @@ public interface UserService {
     public User queryUserForLogin(String username, String password);
     public boolean queryUsernameIsExist(String username);
     public User findByName(String name);
-    public List<User> findByNameLike(String name);
-
+//    public List<User> findByNameLike(String name);
 }

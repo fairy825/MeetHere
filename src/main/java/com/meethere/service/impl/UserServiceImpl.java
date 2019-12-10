@@ -28,7 +28,9 @@ public class UserServiceImpl implements UserService {
     }
     @Transactional(propagation= Propagation.SUPPORTS)
     @Override
-    public Page4Navigator<User> search(User user, int start, int size, int navigatePages){
+    public Page4Navigator<User> search(User user, int start, int size, int navigatePages) throws Exception {
+        if (user==null)
+            throw new Exception("user should be null");
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         Pageable pageable = new PageRequest(start, size,sort);
         user.setId(null);

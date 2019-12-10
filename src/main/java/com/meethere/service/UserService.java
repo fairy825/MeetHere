@@ -21,7 +21,7 @@ import java.util.List;
 
 public interface UserService {
     public Page4Navigator<User> list(int start, int size, int navigatePages);
-    public Page4Navigator<User> search(User user, int start, int size, int navigatePages);
+    public Page4Navigator<User> search(User user, int start, int size, int navigatePages) throws Exception;
     public void saveUser(User user);
     public User get(int id);
     public void update(User user);

@@ -17,6 +17,27 @@ public class News {
 	private Date createDate;
 	private String title;
 	private String content;
+
+	public News() {
+	}
+
+	public News(Integer id) {
+		this.id=id;
+	}
+
+	public static class NewsBuilder{
+		private Integer id;
+
+		public News.NewsBuilder id(Integer id){
+			this.id = id;
+			return this;
+		}
+
+		public News build(){
+			return new News(id);
+		}
+	}
+
 	public int getId() {
 		return id;
 	}

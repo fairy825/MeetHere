@@ -32,6 +32,33 @@ public class Venue {
 	@Transient
 	private List<VenueImage> venueImages;
 
+	public Venue() {
+	}
+
+	public Venue(Integer id, String name) {
+		this.id=id;
+		this.name = name;
+	}
+
+	public static class VenueBuilder{
+		private Integer id;
+		private String name;
+
+		public VenueBuilder id(Integer id){
+			this.id = id;
+			return this;
+		}
+
+		public VenueBuilder name(String name){
+			this.name = name;
+			return this;
+		}
+
+		public Venue build(){
+			return new Venue(id,name);
+		}
+	}
+
 	public List<VenueImage> getVenueImages() {
 		return venueImages;
 	}

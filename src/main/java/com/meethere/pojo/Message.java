@@ -28,6 +28,27 @@ public class Message {
 	@JoinColumn(name="bid")
 	private Booking booking;
 	private String state;
+
+	public Message() {
+	}
+
+	public Message(Integer id) {
+		this.id=id;
+	}
+
+	public static class MessageBuilder{
+		private Integer id;
+
+		public Message.MessageBuilder id(Integer id){
+			this.id = id;
+			return this;
+		}
+
+		public Message build(){
+			return new Message(id);
+		}
+	}
+
 	public String getStateDesc(){
 		String desc ="未知";
 		switch(state){
@@ -81,7 +102,7 @@ public class Message {
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
-	
+
 	public User getUser() {
 		return user;
 	}

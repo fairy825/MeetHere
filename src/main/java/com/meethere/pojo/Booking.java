@@ -36,6 +36,26 @@ public class Booking {
 	private String state;
 	private String remark;
 
+	public Booking() {
+	}
+
+	public Booking(Integer id) {
+		this.id=id;
+	}
+
+	public static class BookingBuilder{
+		private Integer id;
+
+		public Booking.BookingBuilder id(Integer id){
+			this.id = id;
+			return this;
+		}
+
+		public Booking build(){
+			return new Booking(id);
+		}
+	}
+
 	public String getStateDesc(){
         String desc ="未知";
         switch(state){
@@ -112,7 +132,7 @@ public class Booking {
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}

@@ -25,7 +25,7 @@ public class AdminServiceImplTest {
     @Autowired
     private AdminService adminService;
     private Admin admin;
-    @Before
+    @Before//对应jnuit5的beforeEach 4的@beforeClass对应5的beforeAll
     public void setUp() throws Exception {
         admin = new Admin.AdminBuilder().id(1).name("a").password("123456").build();
     }

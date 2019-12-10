@@ -158,7 +158,7 @@ public class UserServiceImplTest {
 
     //queryUserForLogin
     @Test
-    public void should_not_allowed_to_login_when_password_right() {
+    public void should_allowed_to_login_when_password_right() {
         //Stub to return value
         when(userDAO.findByNameAndPassword("mh","12345")).thenReturn(user);
         //Execute
@@ -171,7 +171,7 @@ public class UserServiceImplTest {
         assertEquals("12345678901", user_for_login.getPhoneNumber());
     }
     @Test
-    public void should_allowed_to_login_when_password_wrong() {
+    public void should_not_allowed_to_login_when_password_wrong() {
         //Stub to return value
         when(userDAO.findByNameAndPassword("mh","11111")).thenReturn(null);
         //Execute
@@ -193,7 +193,7 @@ public class UserServiceImplTest {
         assertTrue(succeed);
     }
     @Test
-    public void should_return_true_when_username_not_exist() {
+    public void should_return_false_when_username_not_exist() {
         //Stub to return value
         when(userDAO.findByName("notexist")).thenReturn(null);
         //Execute

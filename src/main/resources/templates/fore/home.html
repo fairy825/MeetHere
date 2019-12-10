@@ -35,32 +35,38 @@
     <div class="header__top">
         <div class="container">
             <div class="row">
+                <div class="col-sm-3">
+                    <div class="wrap-logo">
+                        <a class="tab-pane__title">Welcome: </a>
+                    </div>
+                </div>
                 <div class="col-sm-offset-2 col-md-offset-5 col-sm-6 col-md-4 hidden-xs">
                     <div class="col-xs-4 col-sm-5">
                         <div class="weather">
+                            <div class="weather__temperature">
 
-
-                            <div class="weather__city__list">
-                                <ul>
-                                    <li class="active">
-                                        <a href="#">Swimming Pool</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Climbing</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Yoga</a>
-                                    </li>
-                                </ul>
+                                <em class="active"></em>
+                                <em></em>
+                                <em></em>
+                            </div>
+                            <div class="weather__city">
+                                <em>Swimming Pool</em>
+                                <div class="weather__city__list">
+                                    <ul>
+                                        <li class="active">
+                                            <a href="#">Indoor Climbing</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Yoga</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-6 col-sm-7">
-                    <div class="exchange" style="text-align: left">
-                        <a class="tab-pane__title"  style="overflow: hidden">Welcome To Venue Management:</a>
-                        <a class="tab-pane__title" href="./" th:each="u:${user}" th:text="${u.name}" ></a>
-                    </div>
+                <div style="text-align: right;">
+                    <a style="color: mintcream;font-family: 'Arial Black';size: A3">注销</a>
                 </div>
             </div>
         </div>
@@ -132,14 +138,6 @@
 
                             </ul>
                         </li>
-                        <li >
-                            <div align="right" style="position: relative;margin-left: 19cm;margin-right: -9cm">
-                                <span class="wsmenu-click"></span>
-                                <a href="#" ><label>注销</label></a>
-                                <!--style="color: #0d6aad;font-family: 'Courier New', Courier, monospace;font-size: medium"-->
-                            </div>
-                        </li>
-
                     </ul>
                 </nav>
                 <!--Menu HTML Code-->
@@ -253,9 +251,8 @@
 </footer>
 <!-- END Footer -->
 <!-- All JavaScript libraries -->
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<!-- Custom JavaScript -->
+<script src="js/jquery/2.0.0/jquery.min.js"></script>
+<script src="js/bootstrap/3.3.6/bootstrap.min.js" ></script>
 <script src="js/main.js"></script>
 </body>
 </html>

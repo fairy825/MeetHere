@@ -1,16 +1,261 @@
 
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head th:include="include/fore/navigator::html" ></head>-->
+<!--<body>-->
+<!--<div class="navitagorDiv" th:fragment="html" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<div id="workingArea">-->
+
+<!--</div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="include/fore/navigator::html" ></head>
-<body>
-<div class="navitagorDiv" th:fragment="html" xmlns:th="http://www.w3.org/1999/xhtml">
-<div id="workingArea">
 
-<!--    <div th:replace="include/fore/top::html" ></div>-->
-<!--    <div th:replace="include/fore/search::html" ></div>-->
-<!--    <div th:replace="include/fore/home/homePage::html" ></div>-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="HandheldFriendly" content="true">
+    <meta content="telephone=no" name="format-detection">
+
+    <link href="css/main.css" rel="stylesheet" type="text/css"/>
+
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <title>Home</title>
+</head>
+<body>
+<!-- Header -->
+<header id="header" class="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-offset-2 col-md-offset-5 col-sm-6 col-md-4 hidden-xs">
+                    <div class="col-xs-4 col-sm-5">
+                        <div class="weather">
+
+
+                            <div class="weather__city__list">
+                                <ul>
+                                    <li class="active">
+                                        <a href="#">Swimming Pool</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Climbing</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Yoga</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-7">
+                    <div class="exchange" style="text-align: left">
+                        <a class="tab-pane__title"  style="overflow: hidden">Welcome To Venue Management:</a>
+                        <a class="tab-pane__title" href="./" th:each="u:${user}" th:text="${u.name}" ></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="wsmenucontent overlapblackbg"></div>
+    <div class="wsmenuexpandermain slideRight">
+        <a id="navToggle" class="animated-arrow slideLeft">
+            <span></span>
+        </a>
+    </div>
+    <div class="header_down">
+        <div class="container">
+            <div class="wrapper clearfix bigmegamenu">
+                <!--Main Menu HTML Code-->
+                <nav class="wsmenu slideLeft clearfix">
+                    <ul class="mobile-sub wsmenu-list">
+                        <li class="visible-xs">
+                            <form class="navbar-form mob_search" role="search">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Search">
+                                </div>
+                                <button type="submit" class="btn btn-search">
+                                    <i class="icon-search"></i>
+                                </button>
+                            </form>
+                        </li>
+
+                        <li class="active">
+                            <span class="wsmenu-click"></span>
+                            <a href="index.html">首页</a>
+                        </li>
+                        <li>
+                            <span class="wsmenu-click"></span>
+                            <a href="">场馆
+                                <span class="arrow"></span>
+                            </a>
+                            <ul class="wsmenu-submenu">
+                                <li>
+                                    <a href="http://localhost:63342/venue_management/templates/venueIntroduction.html?_ijt=4evhh60p8p0htck9hjb86bqlsgl">场馆介绍</a>
+                                </li>
+                                <li>
+                                    <a href="http://localhost:8080/venue/venueList">场馆预约</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span class="wsmenu-click"></span>
+                            <a href="http://localhost:8080/news">新闻</a>
+                        </li>
+                        <li>
+                            <span class="wsmenu-click"></span>
+                            <a href="http://localhost:8080/message/messageList">留言</a>
+                        </li>
+                        <li>
+                            <span class="wsmenu-click"></span>
+                            <a  th:each="u: ${user}" th:href="@{/user/look(id=${u.id})}">个人中心
+                                <span class="arrow"></span>
+                            </a>
+
+                            <ul class="wsmenu-submenu">
+                                <li>
+                                    <a  th:each="u: ${user}" th:href="@{/booking/look(id=${u.id})}"  >订单查看</a>
+
+                                </li>
+                                <li>
+                                    <a th:each="u: ${user}" th:href="@{/user/look(id=${u.id})}">修改信息</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li >
+                            <div align="right" style="position: relative;margin-left: 19cm;margin-right: -9cm">
+                                <span class="wsmenu-click"></span>
+                                <a href="#" ><label>注销</label></a>
+                                <!--style="color: #0d6aad;font-family: 'Courier New', Courier, monospace;font-size: medium"-->
+                            </div>
+                        </li>
+
+                    </ul>
+                </nav>
+                <!--Menu HTML Code-->
+            </div>
+        </div>
+    </div>
+</header>
+<!-- END header -->
+<!-- header slider -->
+<div class="slate_gray">
+    <div class="container">
+        <div class="row header_news_panel">
+            <!-- Tab panes -->
+            <div class="col-sm-8 tab-content tab-content_mob-p0">
+                <div role="tabpanel" class="tab-pane fade in active" id="home">
+                    <img src="img/swmming.jpg" alt="main img" class="tab-pane__img">
+                    <div class="header_news_text tab-pane__block">
+                        <p class="tab-pane__category yel_line">Here</p>
+                        <a class="tab-pane__title">The Swimming Pool</a>
+                        <p class="tab-pane__text">It's an awesome place for you to have fun alone or with your family.</p>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="profile">
+                    <img src="img/climbing.jpg" alt="main img" class="tab-pane__img">
+                    <div class="header_news_text tab-pane__block">
+                        <p class="tab-pane__category yel_line">Here</p>
+                        <a class="tab-pane__title">The Indoor Climbing</a>
+                        <p class="tab-pane__text">It's an awesome place for you to have fun alone or with your family.</p>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="messages">
+                    <img src="img/yoga1.jpg" alt="main img" class="tab-pane__img">
+                    <div class="header_news_text tab-pane__block">
+                        <p class="tab-pane__category yel_line">Here</p>
+                        <a class="tab-pane__title">The Yoga Club</a>
+                        <p class="tab-pane__text">It's an awesome place for you to have fun alone or with your family.</p>
+                    </div>
+                </div>
+
+            </div>
+            <!-- END Tab panes -->
+            <!-- Nav tabs -->
+            <div class="col-sm-4 news-tabs">
+                <p class="news-tabs__title h2">最新新闻</p>
+                <ul class="news-tabs__nav nav nav-tabs shadow_text" role="tablist">
+
+                    <li role="presentation" class="active">
+                        <a href="#home" role="tab" data-toggle="tab">
+                            <span class="time">今日, 8:11</span>
+                            所有场馆开放时间：8：00-20：00
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#settings" role="tab" data-toggle="tab">
+                            <span class="time">今日, 10:11</span>
+                            游泳池新增儿童游乐区域和相关游泳课程
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#profile" role="tab" data-toggle="tab">
+                            <span class="time">今日, 11:22</span>
+                            室内攀爬馆将于明日举行室内攀爬竞赛，欢迎广大爱好者踊跃报名
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#messages" role="tab" data-toggle="tab">
+                            <span class="time">今日, 12:33</span>
+                            瑜伽俱乐部的相关课程即将结束，未来会继续由运动爱好者来担任志愿教师
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+            <!-- END Nav tabs -->
+        </div>
+    </div>
 </div>
-</div>
+
+<!-- Footer -->
+<footer class="footer slate_gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+
+                <p class="copyright"> <a href="http://www.cssmoban.com/" target="_blank" ></a>Made By  <a href="http://www.cssmoban.com/"  target="_blank"> </a></p>
+            </div>
+            <div class="col-sm-6">
+                <div class="social navbar-right">
+                    <p class="social__text">Available in social networks</p>
+                    <ul class="social__list">
+                        <li class="social__item">
+                            <a class="facebook" href="#">
+                                <i class="icon-facebook"></i>
+                            </a>
+                        </li>
+                        <li class="social__item">
+                            <a class="twitter" href="#">
+                                <i class="icon-twitter"></i>
+                            </a>
+                        </li>
+                        <li class="social__item">
+                            <a class="gplus" href="#">
+                                <i class="icon-gplus"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- END Footer -->
+<!-- All JavaScript libraries -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- Custom JavaScript -->
+<script src="js/main.js"></script>
 </body>
 </html>

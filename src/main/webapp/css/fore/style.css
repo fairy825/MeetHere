@@ -2151,8 +2151,20 @@ div.makeReviewButtonDiv button {
 }
 
 div.registerDiv {
-	margin: 10px 20px;
-	text-align: center;
+	/*margin: 10px 20px;*/
+	/*text-align: center;*/
+
+	align:center;
+	/*right: 300px;*/
+	background-color:rgba(255,255,255,0.6);
+	position: absolute;
+	top: 200px;
+	left: 35%;
+	width: 350px;
+	height: 500px;
+	padding: 50px 7px 80px 25px;
+	border-radius: 4px;
+	/*margin: auto;*/
 }
 
 table.registerTable {
@@ -2163,7 +2175,7 @@ table.registerTable {
 }
 
 table.registerTable td {
-	/* 	border:1px dotted skyblue !important; */
+	 	/*border:1px dotted skyblue !important;*/
 	padding: 10px 30px;
 }
 
@@ -2201,9 +2213,7 @@ table.registerTable button {
 	border-width: 0px;
 }
 
-table.registerTable {
 
-}
 
 div.registerSuccessDiv {
 	margin: 10px 20px;
@@ -2241,7 +2251,7 @@ div.reviewStasticsDiv {
 }
 
 div.registerErrorMessageDiv {
-	width: 600px;
+	width: 300px;
 	margin: 0px auto;
 	height: 50px;
 	visibility: hidden;

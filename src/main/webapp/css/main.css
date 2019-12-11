@@ -828,7 +828,8 @@ a.special__link:focus {
 
 /* 3.9. News tabs */
 .news-tabs {
-  float: left;
+  float:left;
+    /*margin: 50% auto;*/
 }
 
 .news-tabs__title.h2 {

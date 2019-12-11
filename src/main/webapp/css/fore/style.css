@@ -62,12 +62,13 @@ nav.top div.row div {
 }
 
 div.searchDiv {
-	background-color: #C40000;
+	background-color:  #265a88;
 	width: 400px;
 	margin: 50px auto;
 	padding: 1px;
 	height: 40px;
 	display: block;
+	border-radius: 4px;
 }
 
 div.searchDiv input {
@@ -76,15 +77,18 @@ div.searchDiv input {
 	height: 36px;
 	margin: 1px;
 	outline:none;
+	border-radius: 4px;
 }
 
 div.searchDiv button {
-	width: 110px;
+	width: 125px;
+	height: 39px;
 	border: 1px solid transparent;
-	background-color: #C40000;
+	background-color:  #265a88;
 	color: white;
 	font-size: 20px;
 	font-weight: bold;
+	border-radius: 4px;
 }
 
 div.categoryWithCarousel {
@@ -528,12 +532,20 @@ button.redButton {
 	font-weight: bold;
 }
 
-button.blueButton {
+button.blueButton{
 	color: white;
 	/*background-color:#2e6da4;*/
 	font-size: 14px;
 	font-weight: bold;
+	/*background-color: #265a88;*/
+	/*border-color: #245580;*/
 }
+
+/*button.blueButton.hover,*/
+/*button.blueButton.focus {*/
+	/*background-color: #265a88;*/
+	/*background-position: 0 -15px;*/
+/*}*/
 
 div.categorySortBar {
 	background-color: #FAF9F9;

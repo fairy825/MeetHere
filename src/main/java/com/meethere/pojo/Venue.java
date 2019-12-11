@@ -40,9 +40,25 @@ public class Venue {
 		this.name = name;
 	}
 
+	public Venue(Integer id, String name,Integer startTime,Integer endTime,Integer totalSeat,Float price
+	) {
+		this.id=id;
+		this.name = name;
+		this.startTime=startTime;
+		this.endTime=endTime;
+		this.totalSeat=totalSeat;
+		this.price=price;
+
+	}
+
 	public static class VenueBuilder{
 		private Integer id;
 		private String name;
+		private Integer startTime;
+		private Integer endTime;
+		private Integer totalSeat;
+		private Float price;
+
 
 		public VenueBuilder id(Integer id){
 			this.id = id;
@@ -54,8 +70,27 @@ public class Venue {
 			return this;
 		}
 
+		public VenueBuilder startTime(Integer startTime){
+			this.startTime = startTime;
+			return this;
+		}
+
+		public VenueBuilder endTime(Integer endTime){
+			this.endTime = endTime;
+			return this;
+		}
+
+		public VenueBuilder totalSeat(Integer totalSeat){
+			this.totalSeat = totalSeat;
+			return this;
+		}
+		public VenueBuilder price(Float price){
+			this.price = price;
+			return this;
+		}
+
 		public Venue build(){
-			return new Venue(id,name);
+			return new Venue(id,name,startTime,endTime,totalSeat,price);
 		}
 	}
 

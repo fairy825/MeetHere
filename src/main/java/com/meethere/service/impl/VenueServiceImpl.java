@@ -98,7 +98,7 @@ public class VenueServiceImpl implements VenueService {
         List<Venue> res = new ArrayList<>();
         int count = 0;
         for(Venue venue1: venueList){
-            float price = venue1.getPrice();
+            Float price = venue1.getPrice();
             if((maxPrice==null&&price>=minPrice)||(maxPrice!=null&&price>=minPrice&&price<=maxPrice)){
                 count++;
             }

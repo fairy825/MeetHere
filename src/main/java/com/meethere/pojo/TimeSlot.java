@@ -25,6 +25,54 @@ public class TimeSlot {
 	@JoinColumn(name="vid")
 	private Venue venue;
 
+	public TimeSlot() {
+	}
+
+	public TimeSlot(Integer id, Integer beginTime, Integer endTime, int seat, Venue venue) {
+		this.id=id;
+		this.beginTime=beginTime;
+		this.endTime=endTime;
+		this.seat=seat;
+		this.venue=venue;
+	}
+
+	public static class TimeSlotBuilder{
+		private Integer id;
+		private Integer beginTime;
+		private Integer endTime;
+		private int seat;
+		private Venue venue;
+
+		public TimeSlotBuilder id(Integer id){
+			this.id = id;
+			return this;
+		}
+
+		public TimeSlotBuilder beginTime(Integer beginTime){
+			this.beginTime = beginTime;
+			return this;
+		}
+
+		public TimeSlotBuilder endTime(Integer endTime){
+			this.endTime = endTime;
+			return this;
+		}
+
+		public TimeSlotBuilder seat(Integer seat){
+			this.seat = seat;
+			return this;
+		}
+
+		public TimeSlotBuilder venue(Venue venue){
+			this.venue = venue;
+			return this;
+		}
+
+		public TimeSlot build(){
+			return new TimeSlot(id,beginTime,endTime,seat,venue);
+		}
+	}
+
 	//private User user;
 	//private Booking booking;
 	public Venue getVenue() {

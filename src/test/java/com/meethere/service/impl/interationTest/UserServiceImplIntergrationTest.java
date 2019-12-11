@@ -1,4 +1,4 @@
-package com.meethere.service.impl;
+package com.meethere.service.impl.interationTest;
 
 import com.meethere.Application;
 import com.meethere.dao.UserDAO;

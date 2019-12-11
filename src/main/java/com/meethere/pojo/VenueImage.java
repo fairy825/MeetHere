@@ -27,6 +27,34 @@ public class VenueImage {
     @JsonBackReference
     private Venue venue;
 
+    public VenueImage() {
+    }
+
+    public VenueImage(Integer id,Venue venue) {
+        this.id=id;
+        this.venue=venue;
+    }
+
+    public static class VenueImageBuilder{
+        private Integer id;
+        private Venue venue;
+
+        public VenueImage.VenueImageBuilder id(Integer id){
+            this.id = id;
+            return this;
+        }
+
+
+        public VenueImage.VenueImageBuilder venue(Venue venue){
+            this.venue = venue;
+            return this;
+        }
+
+        public VenueImage build(){
+            return new VenueImage(id,venue);
+        }
+    }
+
     public int getId() {
         return id;
     }

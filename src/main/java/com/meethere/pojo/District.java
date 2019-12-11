@@ -21,6 +21,40 @@ public class District {
 //	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 //	@JoinColumn(name="did",referencedColumnName = "id")
 	List<Venue> venues;
+
+	public District() {
+	}
+
+	public District(Integer id, String name, List<Venue> venues) {
+		this.id=id;
+		this.name = name;
+		this.venues=venues;
+	}
+
+	public static class DistrictBuilder{
+		private Integer id;
+		private String name;
+		private List<Venue> venues;
+
+		public District.DistrictBuilder id(Integer id){
+			this.id = id;
+			return this;
+		}
+
+		public District.DistrictBuilder name(String name){
+			this.name = name;
+			return this;
+		}
+
+		public District.DistrictBuilder venues(List<Venue> venues){
+			this.venues = venues;
+			return this;
+		}
+
+		public District build(){
+			return new District(id,name,venues);
+		}
+	}
 	public int getId() {
 		return id;
 	}

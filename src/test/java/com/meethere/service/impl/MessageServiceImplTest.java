@@ -85,7 +85,7 @@ public class MessageServiceImplTest {
 
 	}
 
-	@Test
+	@Test(expected = NullPointerException.class)//若抛出空指针异常 则测试成功
 	public void should_throw_nullpoint_when_status_is_not_0_and_1(){
 		when(venueService.get(anyInt())).thenReturn(venue);
 		when(messageDAO.findByVenue(eq(venue),any())).thenReturn(pageFromJPA);

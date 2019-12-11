@@ -6,4 +6,5 @@ import com.meethere.util.Page4Navigator;
 
 public interface AdminService {
     public Admin queryUserForLogin(String username, String password);
+    public boolean queryUsernameIsExist(String username);
 }

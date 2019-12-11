@@ -21,17 +21,17 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter{
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(getAdminLoginIntercepter())
-				.addPathPatterns("/**");
-		registry.addInterceptor(getUserLoginInterceptor())
-				.addPathPatterns("/profile")
-				.addPathPatterns("/password")
-				.addPathPatterns("/bought")
-				.addPathPatterns("/pay")
-				.addPathPatterns("/review")
-				.addPathPatterns("/users/upload")
-				.addPathPatterns("/users/password")
-				.addPathPatterns("/bookings/mine");
+//		registry.addInterceptor(getAdminLoginIntercepter())
+//				.addPathPatterns("/**");
+//		registry.addInterceptor(getUserLoginInterceptor())
+//				.addPathPatterns("/profile")
+//				.addPathPatterns("/password")
+//				.addPathPatterns("/bought")
+//				.addPathPatterns("/pay")
+//				.addPathPatterns("/review")
+//				.addPathPatterns("/users/upload")
+//				.addPathPatterns("/users/password")
+//				.addPathPatterns("/bookings/mine");
 
 
 	}

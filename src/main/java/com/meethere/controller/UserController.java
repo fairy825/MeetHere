@@ -45,7 +45,8 @@ public class UserController extends BasicController{
         start = start<0?0:start;
         if(size == null) size = PAGE_SIZE;
         Page4Navigator<User> page = userService.search(user,start,size,5);
-        return IMoocJSONResult.ok(page);
+        IMoocJSONResult result = IMoocJSONResult.ok(page);
+        return  result;
     }
     @PutMapping("")
     public IMoocJSONResult update(@RequestBody User user,HttpSession session) throws Exception {

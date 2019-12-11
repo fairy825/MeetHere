@@ -13,7 +13,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,6 +39,8 @@ public class UserServiceImplIntergrationTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(true)
     public void database_integrity_test() throws Exception{
         User user1 = new User.UserBuilder().name("mh").password("12345").phoneNumber("12345678901")
                 .email("6666@meethere.com").nickname("meethere")
@@ -52,7 +56,6 @@ public class UserServiceImplIntergrationTest {
         userService.saveUser(user3);
 
         //get
-        System.out.println("id="+user1.getId());
         User cur_user = userService.get(user1.getId());
 //        assertEquals(Integer.valueOf(1),cur_user.getId());
         assertEquals("mh",cur_user.getName());
@@ -63,7 +66,6 @@ public class UserServiceImplIntergrationTest {
 
         //queryUserForLogin
         cur_user = userService.queryUserForLogin("mh2","8888");
-        assertEquals(Integer.valueOf(2),cur_user.getId());
         assertEquals("mh2",cur_user.getName());
         assertEquals("meethere2",cur_user.getNickname());
         assertEquals("12345678",cur_user.getPhoneNumber());
@@ -76,7 +78,6 @@ public class UserServiceImplIntergrationTest {
 
         //findByName
         cur_user = userService.findByName("mh2");
-        assertEquals(Integer.valueOf(2),cur_user.getId());
         assertEquals("mh2",cur_user.getName());
         assertEquals("meethere2",cur_user.getNickname());
         assertEquals("12345678",cur_user.getPhoneNumber());
@@ -109,12 +110,10 @@ public class UserServiceImplIntergrationTest {
         entries = userService.list(1,2,5);
 //        assertFalse(entries.isFirst());
         assertEquals(2,entries.getSize());
-        assertEquals(3,entries.getTotalElements());//?
+        assertEquals(3,entries.getTotalElements());
         assertEquals(2,entries.getTotalPages());
-        assertEquals("a",entries.getContent().get(0).getName());
-        assertEquals("mh2",entries.getContent().get(1).getName());
-        assertEquals("mh1",entries.getContent().get(2).getName());
-
+        assertEquals(1,entries.getContent().size());
+        assertEquals("mh1",entries.getContent().get(0).getName());
     }
 
 }

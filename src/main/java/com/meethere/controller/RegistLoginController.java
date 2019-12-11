@@ -103,7 +103,7 @@ public class RegistLoginController extends BasicController{
 		if(StringUtils.isBlank(username) || StringUtils.isBlank(password)) {
 			return IMoocJSONResult.errorMsg("登录名或密码不能为空");
 		}
-		Boolean flag = userService.queryUsernameIsExist(username);
+		Boolean flag = adminService.queryUsernameIsExist(username);
 		if (flag) {
 			Admin admin1 = adminService.queryUserForLogin(username, admin.getPassword());
 			if (admin1 != null) {

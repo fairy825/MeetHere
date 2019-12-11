@@ -27,5 +27,10 @@ public class AdminServiceImpl implements AdminService {
     public Admin queryUserForLogin(String username, String password){
         return adminDAO.findByNameAndPassword(username, password);
     }
-
+    @Transactional(propagation= Propagation.SUPPORTS)
+    @Override
+    public boolean queryUsernameIsExist(String username){
+        Admin admin = adminDAO.findByName(username);
+        return admin!=null;
+    }
 }

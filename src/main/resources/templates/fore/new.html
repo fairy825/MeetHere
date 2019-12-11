@@ -15,12 +15,46 @@
 
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="js/vue/2.5.16/vue.min.js"></script>
+    <script src="js/axios/0.17.1/axios.min.js"></script>
+    <script src="js/moment/2.22.2/moment.js"></script> <!-- vue.js 格式化日期用的 -->
     <title>News Detail</title>
 </head>
 
 <script>
-    $(function(){
+    //获取地址栏参数的函数
+    function getUrlParms(para){
+        var search=location.search; //页面URL的查询部分字符串
+        var arrPara=new Array(); //参数数组。数组单项为包含参数名和参数值的字符串，如“para=value”
+        var arrVal=new Array(); //参数值数组。用于存储查找到的参数值
 
+        if(search!=""){
+            var index=0;
+            search=search.substr(1); //去除开头的“?”
+            arrPara=search.split("&");
+
+            for(i in arrPara){
+                var paraPre=para+"="; //参数前缀。即参数名+“=”，如“para=”
+                if(arrPara[i].indexOf(paraPre)==0&& paraPre.length<arrPara[i].length){
+                    arrVal[index]=decodeURI(arrPara[i].substr(paraPre.length)); //顺带URI解码避免出现乱码
+                    index++;
+                }
+            }
+        }
+
+        if(arrVal.length==1){
+            return arrVal[0];
+        }else if(arrVal.length==0){
+            return null;
+        }else{
+            return arrVal;
+        }
+    }
+
+    $(function(){
         var data4Vue = {
             uri:'news',
             bean:{},
@@ -38,6 +72,7 @@
             methods: {
                 get:function(){
                     var id = getUrlParms("id");
+                    console.log("id="+id);
                     var url =  this.uri+"/"+id;
                     axios.get(url).then(function(response) {
                         console.log(response.data);
@@ -220,8 +255,8 @@
                         <ul class="news-tabs__nav nav nav-tabs shadow_text" role="tablist">
                             <li role="presentation">
                                 <a href="#settings" role="tab" data-toggle="tab">
-                                    上海国际游泳展即将召开
-                                    <span class="time">2018-12-27 14:41:18.000000</span>
+                                    {{bean.title}}
+                                    <span class="time">{{bean.createDate | formatDateFilter}}</span>
                                 </a>
                             </li>
                             <li role="presentation" class="active">
@@ -256,8 +291,8 @@
                 </div>
                 <div class="col-sm-12 col-md-9 article_text">
                     <div class="current">
-                        <h1 class="text-center yel_line current__title">上海国际游泳展即将召开</h1>
-                        <p class="current__text">2014年10月20日，国务院下发了《关于加快发展体育产业促进体育消费的若干意见》。2016年8月，习近平主席在全国卫生与健康大会再次强调，没有全民健康，就没有全民小康，进一步指出了体育与国民生活的密切关系。游泳健身作为一项社会性很强的体育项目，是大健康的重要组成部分之一，趣味性更强、技巧性更高，老少咸宜，且对身体的锻炼效果也非常不错。在这样的潮流下，游泳运动也得到了更快的发展。随着市场和经济的变化，广大民众对居住和运动场馆的要求也逐渐升高，CSE上海国际游泳展就在这样的大环境下应运而生。立足上海，依托强大的行业协会、俱乐部、酒店、体育场馆、房地产、学校等资源，搭建集游泳设备、泳池配套及其上下游配套产品于一身的全产业链平台，为来自世界各地的该领域行业厂商、采购商、经销商等提供最佳的展示、交流和采购平台，共谋合作发展大计。中国体育报业总社是国家体育总局直属事业单位，担负着全面准确宣传体育工作方针，宣传"全民健身计划"和"奥运争光计划"，普及体育健身知识，传播体育信息，坚持正确的舆论导向的任务。中国体育报业总社拥有25种具有权威性、专业性、趣味性的报、刊、书、音像以及网络、影视等媒体，长期以来与各方合作开展了各种类型的具有体育特色的活动，得到了社会的公认和赞誉。下属各媒体曾组织过许多在中国体育史上具有重大意义的赛事、活动、展会，此外，还经常组织由众多领导与文体明星共同参与的网球、桥牌、钓鱼邀请赛等具有国内外广泛影响的活动。</p>
+                        <h1 class="text-center yel_line current__title">{{bean.title}}</h1>
+                        <p class="current__text">{{bean.content}}</p>
                         <img src="img/swmming.jpg" alt="img" class="current__img">
                         <!--<h1 class="text-center yel_line current__title">攀岩好处多</h1>-->
                         <!--<p class="current__text">攀岩运动是一项对人的身体、意志要求都比较严格的运动。做攀岩运动，我们需要强健的身体，坚韧不拔的意志，以及一些必须的攀岩技巧。通过这项运动，我们可以收获快乐，也可以使我们的身体更加强壮，意志更加坚强。攀岩运动比较耗体能，所以注定我们的体魄会通过攀岩运动得到锻炼。身体方面好处比较明显的有，手的抓力，手臂伸缩的力量，以及腿的蹬力和腰腹的力量。具体对体能好处体现在以下几个方面：一，通过攀岩运动，增加身体柔软度与协调感，这是攀岩的关键能力，其重要性更胜于体力；国外已有医疗领域，将攀岩用来矫治。孩童肌肉发展及手、眼、身体之协调训练上。二，增强体力。攀岩运动要的是手脚均衡的力与美，并且足以负荷自己的体重、对抗地心引力，这件事，女孩可是一点儿也不输男孩的。三，集中力。脚下全神灌注地踏着岩块，留意身体在岩块上位移的每个细节，可以培养一个人对事物的专注程度。四，进取心。当自己靠着攀登绳承受体重、挂在高高的岩壁或岩塔上时，是放弃、还是继续坚持？已经不只是勇气可形容，还有意志力、荣誉感，及自我超越的决心。五，自信心面对比自己身高还高至少3、4倍的岩场，仍毅然中的困难，心性自然要比常人自重与自信。 六,平衡感。被称为在岩壁上行走的「蜘蛛人」，行走的基本姿势是三点不动一点动，靠的就是平衡感！而在意志方面的好处更是不少。总之攀岩运动是一项深受青年人喜欢的运动，对我们的身心健康大有好处。 </p>-->

@@ -10,13 +10,10 @@
     function jump(page,vue){
         if('first'== page && !vue.pagination.first)
             vue.list(0);
-
         else if('pre'== page &&	vue.pagination.hasPrevious )
             vue.list(vue.pagination.number-1);
-
         else if('next'== page && vue.pagination.hasNext)
             vue.list(vue.pagination.number+1);
-
         else if('last'== page && !vue.pagination.last)
             vue.list(vue.pagination.totalPages-1);
     }
@@ -74,7 +71,8 @@
         <div style="position: absolute;z-index: 1">
             <img src="img/3.jpg" style="height: 100%;width: 100%">
         </div>
-        <div style="position: absolute;z-index:2;width: 100%;height: 100%">
+        <div style="position: absolute;z-index: 2;background-color:rgba(255,255,255,0.6);width: 1265px;height:790px">    </div>
+        <div style="position: absolute;z-index:3;width: 100%;height: 100%">
             <div align="center">
                 <div class="searchDiv" style="position: relative">
                     <div style="position: absolute;z-index: 1">
@@ -94,7 +92,7 @@
                         <div v-for="bean in beans " style="margin-top: 10px">
                             <li role="presentation">
                                 <div>
-                                    <span class="time" style="width: 200px">{{bean.createDate | formatDateFilter}}</span>
+                                    <span class="time" style="width: 200px;color">{{bean.createDate | formatDateFilter}}</span>
                                 </div>
                                 <a :href="'new?id='+bean.id" role="tab"  style="margin-top: -8px;	color: #3C3C3C;font-size: 16px;font-weight: bold;">
                                     &nbsp;&nbsp;&nbsp;{{bean.title}}

@@ -555,9 +555,10 @@ div.categorySortBar {
 
 
 table.categorySortBarTable td {
-	border: 1px solid #CCCCCC;
+	border: 2px solid #CCCCCC;
 	padding: 3px;
-	height: 23px;
+	height: 40px;
+	/*border-radius: 4px;*/
 }
 
 table.categorySortBarTable {
@@ -567,11 +568,11 @@ table.categorySortBarTable {
 
 table.categorySortBarTable td a {
 	color: #806F66;
-	font-size:12px;
+	font-size:15px;
 }
 
 table.categorySortBarTable td a:hover {
-	color: #C40000;
+	color: #265a88;
 }
 
 table.categorySortBarTable td.grayColumn {
@@ -615,7 +616,7 @@ div.productUnit {
 
 div.productUnit:hover {
 	width: 225px;
-	border: 3px solid #C40000;
+	border: 3px solid #CCCCCC;
 	padding: 0px;
 }
 
@@ -631,7 +632,7 @@ div.productUnitFrame{
 	border:1px solid #eee;
 }
 div.productUnitFrame:hover{
-	border:1px solid #C40000;
+	border:1px solid #CCCCCC;
 }
 
 div.productUnit span.productPrice {

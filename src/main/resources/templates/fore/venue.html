@@ -1,15 +1,43 @@
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="include/admin/adminHeader::html('Venue')" ></head>
+<!--<head th:include="include/admin/adminHeader::html('Venue')" ></head>-->
+
+
 <body>
 <div id="workingArea">
     <div th:replace="include/fore/navigator::html('Venue')" ></div>
-    <div th:replace="include/fore/search::html" ></div>
 
-    <div th:replace="include/fore/venue/venuePage::html" ></div>
-    <div th:replace="include/fore/modal::html" ></div>
-    <div th:replace="include/fore/modal4login::html" ></div>
+    <div style="position: relative">
+        <div style="position: absolute;z-index: 1">
+            <img src="img/3.jpg" style="height: 100%;width: 100%">
+        </div>
+        <div style="position: absolute;z-index: 2;background-color:rgba(255,255,255,0.6);width: 1265px;height:790px">    </div>
+        <div style="position: absolute;z-index:3;width: 100%;height: 100%">
+            <div align="center">
+                <form action="forevenues" method="get" >
+                    <div class="searchDiv" style="position: relative">
+                        <div style="position: absolute;z-index: 1">
+                            <input type="text" name="keyword" placeholder="请输入场馆名" />
+                        </div>
+                        <div style="position: absolute;z-index:2;right: 0px">
+                            <button  type="submit" class="searchButton btn-primary">搜索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div th:replace="include/fore/venue/venuePage::html" ></div>
+            <div th:replace="include/fore/modal::html" ></div>
+            <div th:replace="include/fore/modal4login::html" ></div>
+
+
+        </div>
+    </div>
+    <!--<div th:replace="include/fore/search::html" ></div>-->
+    <!--<div th:replace="include/fore/venue/venuePage::html" ></div>-->
+    <!--<div th:replace="include/fore/modal::html" ></div>-->
+    <!--<div th:replace="include/fore/modal4login::html" ></div>-->
 </div>
 </body>
 </html>

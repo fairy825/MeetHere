@@ -1,10 +1,11 @@
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head th:include="include/fore/navigator::html('Reviews')" ></head>
 <head th:include="include/admin/adminHeader::html('Reviews')" ></head>
 	<body>
 		<div id="workingArea">
-			<div th:replace="include/fore/navigator::html('Reviews')" ></div>
+			<!--<div th:replace="include/fore/navigator::html('Reviews')" ></div>-->
 			<div th:replace="include/fore/cart/reviewPage::html" ></div>
 			<div th:replace="include/fore/modal::html" ></div>
 			<div th:replace="include/fore/modal4login::html" ></div>

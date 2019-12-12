@@ -1396,9 +1396,9 @@ div.aliPayPageLogo {
 
 div.aliPayPageDiv {
 	text-align: center;
-	padding-bottom: 40px;
-	max-width: 1013px;
-	margin: 10px auto;
+	/*padding-bottom: 40px;*/
+	/*max-width: 1013px;*/
+	/*margin: 0px auto;*/
 }
 
 span.confirmMoneyText {
@@ -1421,7 +1421,7 @@ img.aliPayImg {
 
 button.confirmPay {
 	background-color: #00AAEE;
-	border: 1px solid #00AAEE;
+	border: 2px solid #00AAEE;
 	text-align: center;
 	line-height: 31px;
 	font-size: 14px;
@@ -1429,6 +1429,12 @@ button.confirmPay {
 	color: white;
 	width: 107px;
 	margin-top: 20px;
+	border-radius: 4px;
+}
+
+button.confirmPay:hover{
+	background-color: #2b669a;
+	border: 2px solid #265a88;
 }
 
 div.payedDiv {

@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,13 +53,14 @@ public class VenueServiceImplTest {
 	private Page pageFromJPA;
 	private District district;
 	private Venue venue;
-	private List<Venue> venueList=new ArrayList<>();
+	private List<Venue> venueList;
 
 
 	@Before
 	public void setUp() {
 		pageFromJPA = mock(Page.class);
 		venue=new Venue.VenueBuilder().id(1).price(2f).name("vn").startTime(1).endTime(9).totalSeat(100).build();
+		venueList=new ArrayList<>();
 		venueList.add(venue);
 		venueList.add(venue);
 		district=new District.DistrictBuilder().id(1).name("dis1").venues(venueList).build();
@@ -122,6 +124,18 @@ public class VenueServiceImplTest {
 		ArgumentCaptor<Example> exampleArgumentCaptor=ArgumentCaptor.forClass(Example.class);
 		verify(venueDAO).findAll(exampleArgumentCaptor.capture(),(Sort)any());
 		assertEquals(((Venue)(exampleArgumentCaptor.getValue().getProbe())).getDistrict(),district);
+	}
+
+	@Test
+	public void should_create_3_times_when_save_venue() throws ParseException {
+		when(venueDAO.save(venue)).thenReturn(venue);
+
+		venueService.search(1,null,venue,0,100,1,5,8);
+
+		verify(timeSlotService).createByVenue(venue,0);
+		verify(timeSlotService).createByVenue(venue,1);
+		verify(timeSlotService).createByVenue(venue,2);
+
 	}
 
 

@@ -4,6 +4,7 @@ import com.meethere.pojo.News;
 import com.meethere.pojo.TimeSlot;
 import com.meethere.service.NewsService;
 import com.meethere.service.TimeSlotService;
+import com.meethere.util.DateUtils;
 import com.meethere.util.IMoocJSONResult;
 import com.meethere.util.Page4Navigator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,15 +43,10 @@ public class TimeSlotController extends BasicController{
 //    @Scheduled(cron = "0 0 0 */1 * ?")//每天
     @Scheduled(cron = "0 * * * * ? ")
     public void addNewTimeSlot() throws ParseException {
-        Date today = new Date();
-        Calendar cal = Calendar.getInstance();
+//        Date today = new Date();
+//        Calendar cal = Calendar.getInstance();
         for(int i = 0;i<=2;i++) {
-            cal.setTime(today);//设置起时间
-            cal.add(Calendar.DATE, i);//增加一天  
-            Date d = cal.getTime();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            String dateString = formatter.format(d);
-            Date dd = formatter.parse(dateString);
+            Date dd = DateUtils.formatDate(i);
             if (timeSlotService.findByBookingDate(dd).size() == 0) {
                 System.out.println("add");
                 System.out.println(dd);

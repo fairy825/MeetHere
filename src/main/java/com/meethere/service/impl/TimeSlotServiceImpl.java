@@ -8,6 +8,7 @@ import com.meethere.pojo.Venue;
 import com.meethere.service.NewsService;
 import com.meethere.service.TimeSlotService;
 import com.meethere.service.VenueService;
+import com.meethere.util.DateUtils;
 import com.meethere.util.Page4Navigator;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,15 +39,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         Pageable pageable = new PageRequest(start, size,sort);
         Venue venue = venueService.get(vid);
-        Date bookingDate = new Date();
-//        bookingDate+=date*
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(bookingDate);//设置起时间
-        cal.add(Calendar.DATE, date);//增加一天  
-        Date d = cal.getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = formatter.format(d);
-        Date dd = formatter.parse(dateString);
+        Date dd = DateUtils.formatDate(date);
         Page pageFromJPA = timeSlotDAO.findByVenueAndBookingDate(venue,dd,pageable);
 
         return new Page4Navigator<>(pageFromJPA,navigatePages);
@@ -63,14 +56,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
         int seat = venue.getTotalSeat();
         int startTime = venue.getStartTime();
         int endTime = venue.getEndTime();
-        Date bookingDate = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(bookingDate);//设置起时间
-        cal.add(Calendar.DATE, date);//增加一天  
-        Date d = cal.getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = formatter.format(d);
-        Date dd = formatter.parse(dateString);
+        Date dd = DateUtils.formatDate(date);
         for(int i = startTime;i<endTime;i++) {
             TimeSlot timeSlot = new TimeSlot();
             timeSlot.setSeat(seat);
@@ -91,14 +77,7 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     @Override
     public List<TimeSlot> list(int vid, int date) throws ParseException{
         Venue venue = venueService.get(vid);
-        Date bookingDate = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(bookingDate);//设置起时间
-        cal.add(Calendar.DATE, date);//增加一天  
-        Date d = cal.getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = formatter.format(d);
-        Date dd = formatter.parse(dateString);
+        Date dd = DateUtils.formatDate(date);
         return timeSlotDAO.findByVenueAndBookingDate(venue,dd);
     }
     @Transactional(propagation= Propagation.REQUIRED)
@@ -125,5 +104,6 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     public void reduceSeat(TimeSlot timeSlot){
         timeSlot.setSeat(timeSlot.getSeat()-1);
     }
+
 
 }

@@ -47,9 +47,10 @@ public class VenueImageServiceImplTest {
 
 	private Venue venue;
 	private VenueImage venueImage;
-	private List<Venue> venueList=new ArrayList<>();
-	private List<VenueImage> venueImageList1=new ArrayList<>();
-	private List<VenueImage> venueImageList2=new ArrayList<>();
+	private List<Venue> venueList;
+	private List<VenueImage> venueImageList1;
+	private List<VenueImage> venueImageList2;
+
 	private Page pageFromJPA;
 	private TimeSlot timeSlot;
 
@@ -59,8 +60,12 @@ public class VenueImageServiceImplTest {
 		venue=new Venue.VenueBuilder().id(1).name("vn").startTime(1).endTime(9).totalSeat(100).build();
 		venueImage=new VenueImage.VenueImageBuilder().id(1).venue(venue).build();
 		timeSlot=new TimeSlot.TimeSlotBuilder().id(1).beginTime(1).endTime(9).seat(100).venue(venue).build();
+		venueImageList1=new ArrayList<>();
 		venueImageList1.add(venueImage);
-//		venueImageList2.add(venueImage);
+
+		venueImageList2=new ArrayList<>();
+
+		venueList=new ArrayList<>();
 
 		venueList.add(venue);
 		venueList.add(venue);

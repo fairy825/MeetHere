@@ -21,20 +21,27 @@ public class News {
 	public News() {
 	}
 
-	public News(Integer id) {
+	public News(Integer id,String title) {
 		this.id=id;
+		this.title=title;
 	}
 
 	public static class NewsBuilder{
 		private Integer id;
+		private String title;
 
 		public News.NewsBuilder id(Integer id){
 			this.id = id;
 			return this;
 		}
 
+		public News.NewsBuilder title(String title){
+			this.title = title;
+			return this;
+		}
+
 		public News build(){
-			return new News(id);
+			return new News(id,title);
 		}
 	}
 

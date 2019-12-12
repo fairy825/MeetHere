@@ -5,6 +5,7 @@ import com.meethere.pojo.*;
 import com.meethere.service.BookingService;
 import com.meethere.service.NewsService;
 import com.meethere.service.TimeSlotService;
+import com.meethere.util.DateUtils;
 import com.meethere.util.IMoocJSONResult;
 import com.meethere.util.Page4Navigator;
 import org.apache.commons.lang3.StringUtils;
@@ -142,14 +143,7 @@ public class BookingController extends BasicController{
         start = start<0?0:start;
         if(size == null) size = PAGE_SIZE;
         if(date!=null) {
-            Date bookingDate = new Date();
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(bookingDate);//设置起时间
-            cal.add(Calendar.DATE, date);//增加一天  
-            Date d = cal.getTime();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            String dateString = formatter.format(d);
-            Date dd = formatter.parse(dateString);
+            Date dd = DateUtils.formatDate(date);
             booking.getTimeSlot().setBookingDate(dd);
         }
         Page4Navigator<Booking> page = bookingService.search(booking,start,size,5);

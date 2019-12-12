@@ -38,7 +38,6 @@ public class NewsServiceImplTest {
 	@Autowired
 	private NewsService newsService;
 
-
 	private Page pageFromJPA;
 	private News news;
 

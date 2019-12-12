@@ -35,17 +35,33 @@ public class Message {
 	public Message(Integer id) {
 		this.id=id;
 	}
-
+	public Message(Integer id,Venue venue,String state) {
+		this.id=id;
+		this.venue=venue;
+		this.state=state;
+	}
 	public static class MessageBuilder{
 		private Integer id;
+		private Venue venue;
+		private String state;
 
 		public Message.MessageBuilder id(Integer id){
 			this.id = id;
 			return this;
 		}
 
+		public Message.MessageBuilder venue(Venue venue){
+			this.venue = venue;
+			return this;
+		}
+
+		public Message.MessageBuilder state(String state){
+			this.state = state;
+			return this;
+		}
+
 		public Message build(){
-			return new Message(id);
+			return new Message(id,venue,state);
 		}
 	}
 

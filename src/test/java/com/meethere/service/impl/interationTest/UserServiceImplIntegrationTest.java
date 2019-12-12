@@ -24,7 +24,7 @@ import static org.mockito.Mockito.mock;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-public class UserServiceImplIntergrationTest {
+public class UserServiceImplIntegrationTest {
     @Autowired
     private UserService userService;
     private User user;

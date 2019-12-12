@@ -39,20 +39,41 @@ public class Booking {
 	public Booking() {
 	}
 
-	public Booking(Integer id) {
+	public Booking(Integer id,User user,Venue venue,String state) {
 		this.id=id;
+		this.user=user;
+		this.venue=venue;
+		this.state=state;
 	}
 
 	public static class BookingBuilder{
 		private Integer id;
+		private User user;
+		private Venue venue;
+		private String state;
 
 		public Booking.BookingBuilder id(Integer id){
 			this.id = id;
 			return this;
 		}
 
+		public Booking.BookingBuilder user(User user){
+			this.user = user;
+			return this;
+		}
+
+		public Booking.BookingBuilder venue(Venue venue){
+			this.venue = venue;
+			return this;
+		}
+
+		public Booking.BookingBuilder state(String state){
+			this.state = state;
+			return this;
+		}
+
 		public Booking build(){
-			return new Booking(id);
+			return new Booking(id,user,venue,state);
 		}
 	}
 

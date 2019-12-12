@@ -1,11 +1,14 @@
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-	<head th:include="include/admin/adminHeader::html('Bookings')" ></head>
+<head th:include="include/fore/navigator::html('Bookings')" ></head>
+<head th:include="include/admin/adminHeader::html('Bookings')" ></head>
+	<!--<head th:include="include/admin/adminHeader::html('Bookings')" ></head>-->
 
+	<title>Bookings</title>
 	<body>
 		<div id="workingArea">
-			<div th:replace="include/fore/navigator::html('Bookings')" ></div>
+			<!--<div th:replace="include/fore/navigator::html('Bookings')" ></div>-->
 			<div th:replace="include/fore/cart/boughtPage::html" ></div>
 			<div th:replace="include/fore/modal4deleteConfirm::html" ></div>
 			<div th:replace="include/fore/modal::html" ></div>

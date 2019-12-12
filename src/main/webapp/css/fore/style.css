@@ -974,7 +974,7 @@ div.productReviewDiv {
 }
 
 div.productReviewContentPart {
-	padding-top: 50px;
+	padding-top: 25px;
 }
 
 div.productDetailTopPart {
@@ -1077,8 +1077,8 @@ div.productReviewItem div.productReviewItemDesc {
 	width: 80%;
 	display: inline-block;
 	color: #333333;
-	height: 94px;
-	margin: 5px 20px;
+	/*height: 94px;*/
+	margin: 5px 15px;
 	float: left;
 }
 
@@ -1095,7 +1095,7 @@ div.productReviewItemContent {
 }
 
 div.productReviewItemDate {
-	margin: 15px 0px 0px 0px;
+	/*margin: 15px 0px 0px 0px;*/
 	color: #CCCCCC;
 }
 

@@ -5,7 +5,7 @@
 			<a  href="#nowhere" class="selected">累计评价 <span class="productReviewTopReviewLinkNumber">{{bean.reviewCount}}</span> </a>
 		</div>
 		
-		<div class="productReviewContentPart">
+		<div class="productReviewContentPart" style="margin-left: 170px;width: 840px">
 			<div class="productReviewItem" v-for="message in messages">
 				<div class="productReviewItemDesc">
 					<div class="productReviewItemContent">
@@ -18,8 +18,7 @@
 				<div class="productReviewItemUserInfo">
 					{{message.user.anonymousName}}<span class="userInfoGrayPart">（匿名）</span>
 				</div>
-			
-				<div style="clear:both"></div>			
+				<!--<div style="clear:both;margin-top: -10px" ></div>-->
 			</div>
 		</div>
 		<div style="margin-left: 500px">

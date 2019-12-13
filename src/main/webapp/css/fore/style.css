@@ -2003,12 +2003,12 @@ div.reviewDiv {
 
 div.reviewProductInfoRightDiv {
 	overflow: hidden;
-	border-top: 1px solid #E7E7E7;
+	border-top: 2px solid #E7E7E7;
 	padding: 30px 20px;
 }
 
 div.reviewProductInfoImg {
-	border: 1px solid #E7E7E7;
+	border: 2px solid #E7E7E7;
 	width: 464px;
 	text-align: center;
 	float: left;
@@ -2120,9 +2120,11 @@ div.reviewStasticsFoot {
 }
 
 div.makeReviewDiv {
-	border: 1px solid #D1CCC8;
+	/*border: 2px solid rgba(255,255,255,0.6);*/
+	border-radius: 4px;
 	margin: 20px 0px;
-	background-color: #EFEFEF;
+	/*width: 500px;*/
+	/*background-color: rgba(255,255,255,0.6);*/
 }
 
 div.makeReviewText {
@@ -2133,19 +2135,24 @@ div.makeReviewText {
 }
 
 table.makeReviewTable {
-	margin: 20px 40px;
+	/*margin: 20px 40px;*/
+    margin: 20px 0px;
+    border: 2px solid #D1CCC8;
+    border-radius: 4px;
+
 }
 
 table.makeReviewTable td {
-	border: 1px solid #E7E7E7;
+	border: 2px solid #E7E7E7;
 	padding: 10px;
 	background-color: white;
+	border-radius: 4px;
 }
 
 table.makeReviewTable textarea {
 	border-width: 0px;
 	resize: none;
-	width: 420px;
+	width: 950px;
 	height: 120px;
 }
 

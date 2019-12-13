@@ -445,11 +445,13 @@
 															<td>{{myreview.createDate}}</td>
 															<td>{{myreview.stateDesc}}</td>
 														</tr>
-														<tr><td  colspan="2">
-															<a  class="deleteReviewLink" :mid="myreview.id" :bid="bean.id" type="button">
-																<span  class="orderListItemDelete glyphicon glyphicon-trash"></span></a>
-	<!--														<button  @click="deleteMyReview(bean.id, myreview.id)" class=" btn btn-primary orderListItemReview">删除我的留言</button>-->
-														</td></tr>
+														<tr>
+															<td  colspan="2">
+																<a  class="deleteReviewLink" :mid="myreview.id" :bid="bean.id" type="button" >
+																	<span  class="orderListItemDelete glyphicon glyphicon-trash" style="margin-left: 180px"></span>
+																</a>	<!--<button  @click="deleteMyReview(bean.id, myreview.id)" class=" btn btn-primary orderListItemReview">删除我的留言</button>-->
+															</td>
+														</tr>
 
 													</table>
 												</div>

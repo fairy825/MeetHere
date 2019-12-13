@@ -59,6 +59,8 @@
                     });
                 },
                 getImage: function (event) {
+                    $('#_file_path').val(event.target.files[0].name);
+
                     this.image = event.target.files[0];
                 }
             }
@@ -66,66 +68,96 @@
         });
     });
 
+    function Browser()
+    {
+        $('#singlePic').click();
+    }
+
 </script>
 
-<div id="workingArea" >
-    <ol class="breadcrumb">
-        <li><a href="admin_district_list">所有区域</a></li>
-        <li><a :href="'admin_venue_list?did='+district.id">{{district.name}}</a></li>
-        <li class="active">{{venue.name}}</li>
-        <li class="active">场馆图片管理</li>
-    </ol>
+<div id="workingArea" style="margin:0px auto;margin-top: 0px">
+    <div style="position: relative">
+        <div style="position: absolute;z-index: 1">
+            <img src="img/3.jpg" style="height: 100%;width: 100%">
+        </div>
+        <div style="position: absolute;z-index: 2;background-color:rgba(255,255,255,0.6);width: 1265px;height:790px;">    </div>
+        <div style="position: absolute;z-index:3;width: 100%;height: 100%">
+            <div style="margin-top: 10px">
+                <ol class="breadcrumb">
+                    <li><a href="admin_district_list">所有区域</a></li>
+                    <li><a :href="'admin_venue_list?did='+district.id">{{district.name}}</a></li>
+                    <li class="active">{{venue.name}}</li>
+                    <li class="active">场馆图片管理</li>
+                </ol>
+            </div>
 
-    <table class="addPictureTable" align="center">
-        <tr>
-            <td class="addPictureTableTD">
-                <div>
-                    <div class="panel panel-warning addPictureDiv">
-                        <div class="panel-heading">新增场馆图片</div>
-                        <div class="panel-body">
-                            <table class="addTable">
-                                <tr>
-                                    <td>请选择本地图片 尺寸400X400 为佳</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input id="singlePic" type="file" @change="getImage($event)" name="image" />
-                                    </td>
-                                </tr>
-                                <tr class="submitTR">
-                                    <td align="center">
-                                        <button type="submit" @click="add" class="btn btn-success">提 交</button>
-                                    </td>
-                                </tr>
+    <!--<ol class="breadcrumb">-->
+        <!--<li><a href="admin_district_list">所有区域</a></li>-->
+        <!--<li><a :href="'admin_venue_list?did='+district.id">{{district.name}}</a></li>-->
+        <!--<li class="active">{{venue.name}}</li>-->
+        <!--<li class="active">场馆图片管理</li>-->
+    <!--</ol>-->
+
+            <table class="addPictureTable" align="center">
+                <tr>
+                    <td class="addPictureTableTD">
+                        <div>
+                            <div class="panel panel-warning addPictureDiv">
+                                <div class="panel-heading">新增场馆图片</div>
+                                <div class="panel-body">
+                                    <table class="addTable">
+                                        <tr>
+                                            <td>请选择本地图片 尺寸400X400 为佳</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div style="margin-bottom:10px;margin-left: 30px" class="row row_space">
+                                                    <div style="padding-left:0px">
+                                                        <div class="col-xs-8" >
+                                                            <input style="display:none" type="file" @change="getImage($event)"  id="singlePic"  name="image"  class="filter_input form-control"/>
+                                                            <input readonly="readonly" type="text" id="_file_path" class="filter_input form-control" style="background-color: white"/>
+                                                        </div>
+                                                        <div class="col-xs-1">
+                                                            <button id="batch_btn_compile" @click="Browser" class="btn btn-primary" style="color: white;font-size: 14px;font-weight: bold;">浏览</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--<input id="singlePic" type="file" @change="getImage($event)" name="image" />-->
+                                            </td>
+                                        </tr>
+                                        <tr class="submitTR">
+                                            <td align="center">
+                                                <button type="submit" @click="add" class="btn btn-success">提 交</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <table class="table table-striped table-bordered table-hover  table-condensed">
+                                <thead>
+                                    <tr class="success">
+                                        <th>ID</th>
+                                        <th>图片缩略图</th>
+                                        <th>删除</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="vi in venueImages">
+                                        <td>{{vi.id}}</td>
+                                        <td>
+                                            <a title="点击查看原图" :href="'img/venueImage/'+venue.id+'/'+vi.id+'.jpg'"><img height="50px" :src="'img/venueImage/'+venue.id+'/'+vi.id+'.jpg'"></a>
+                                        </td>
+                                        <td><a href="#nowhere" @click="deleteBean(vi.id)"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
-                    </div>
-                    <table class="table table-striped table-bordered table-hover  table-condensed">
-                        <thead>
-                        <tr class="success">
-                            <th>ID</th>
-                            <th>图片缩略图</th>
-                            <th>删除</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="vi in venueImages">
-                            <td>{{vi.id}}</td>
-                            <td>
-                                <a title="点击查看原图" :href="'img/venueImage/'+venue.id+'/'+vi.id+'.jpg'"><img height="50px" :src="'img/venueImage/'+venue.id+'/'+vi.id+'.jpg'"></a>
-                            </td>
-                            <td><a href="#nowhere" @click="deleteBean(vi.id)"><span class="glyphicon glyphicon-trash"></span></a></td>
-
-                        </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-            </td>
-
-        </tr>
-    </table>
-
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </div>
 
 

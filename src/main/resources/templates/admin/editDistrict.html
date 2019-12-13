@@ -40,29 +40,41 @@
     });
 </script>
 
-<div id="workingArea">
+<div id="workingArea" style="margin:0px auto;margin-top: 0px">
+    <div style="position: relative">
+        <div style="position: absolute;z-index: 1">
+            <img src="img/3.jpg" style="height: 100%;width: 100%">
+        </div>
+        <div style="position: absolute;z-index: 2;background-color:rgba(255,255,255,0.6);width: 1265px;height:790px;">    </div>
+        <div style="position: absolute;z-index:3;width: 100%;height: 100%">
+            <div style="margin-top: 10px">
+                <ol class="breadcrumb">
+                    <li><a href="admin_category_list">所有区域</a></li>
+                    <li class="active">编辑区域</li>
+                </ol>
+            </div>
 
-    <ol class="breadcrumb">
-        <li><a href="admin_category_list">所有区域</a></li>
-        <li class="active">编辑区域</li>
-    </ol>
-
-    <div class="panel panel-warning editDiv">
-        <div class="panel-heading">编辑区域</div>
-        <div class="panel-body">
-            <table class="editTable">
-                <tr>
-                    <td>区域名称</td>
-                    <td><input  @keyup.enter="update" v-model.trim="bean.name" type="text" class="form-control"></td>
-                </tr>
-
-                <tr class="submitTR">
-                    <td colspan="2" align="center">
-                        <input type="hidden" name="id"   v-model.trim="bean.id" >
-                        <a href="#nowhere" class="btn btn-success" @click="update">提 交</a>
-                    </td>
-                </tr>
-            </table>
+    <!--<ol class="breadcrumb">-->
+        <!--<li><a href="admin_category_list">所有区域</a></li>-->
+        <!--<li class="active">编辑区域</li>-->
+    <!--</ol>-->
+            <div class="panel panel-warning editDiv" style="margin-top: 100px">
+                <div class="panel-heading">编辑区域</div>
+                <div class="panel-body">
+                    <table class="editTable">
+                        <tr>
+                            <td>区域名称</td>
+                            <td><input  @keyup.enter="update" v-model.trim="bean.name" type="text" class="form-control"></td>
+                        </tr>
+                        <tr class="submitTR">
+                            <td colspan="2" align="center">
+                                <input type="hidden" name="id"   v-model.trim="bean.id" >
+                                <a href="#nowhere" class="btn btn-success" @click="update">提 交</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

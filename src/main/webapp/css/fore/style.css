@@ -2153,6 +2153,7 @@ table.makeReviewTable textarea {
 	border-width: 0px;
 	resize: none;
 	width: 950px;
+	/*height: 120px;*/
 	height: 120px;
 }
 

@@ -21,25 +21,23 @@
                         if(0==this.bean.name.length){
                             $("span.errorMessage").html("请输入用户名");
                             $("div.loginErrorMessageDiv").css("visibility","visible");
-                            return;
                         }
-                        if(0==this.bean.password.length){
+                        else if(0==this.bean.password.length){
                             $("span.errorMessage").html("请输入密码");
                             $("div.loginErrorMessageDiv").css("visibility","visible");
-                            return;
                         }
-
-                        axios.post(url,this.bean).then(function(response) {
-                            console.log(response.data);
-                            var result = response.data;
-                            if(result.status==200){
-                                location.href="admin";
-                            }
-                            else{
-                                $("span.errorMessage").html(result.msg);
-                                $("div.loginErrorMessageDiv").css("visibility","visible");
-                            }
-                        });
+                        else {
+                            axios.post(url, this.bean).then(function (response) {
+                                console.log(response.data);
+                                var result = response.data;
+                                if (result.status == 200) {
+                                    location.href = "admin";
+                                } else {
+                                    $("span.errorMessage").html(result.msg);
+                                    $("div.loginErrorMessageDiv").css("visibility", "visible");
+                                }
+                            });
+                        }
                     }
                 }
             });

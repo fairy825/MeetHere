@@ -2,6 +2,7 @@ package com.meethere.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.meethere.util.TimeAgoUtils;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -17,6 +18,8 @@ public class News {
 	private Date createDate;
 	private String title;
 	private String content;
+	@Transient
+	private String timeDesc;
 
 	public News() {
 	}
@@ -69,4 +72,9 @@ public class News {
 	public void setContent(String content) {
 		this.content = content;
 	}
+
+	public String getTimeDesc() {
+		return TimeAgoUtils.format(createDate);
+	}
+
 }

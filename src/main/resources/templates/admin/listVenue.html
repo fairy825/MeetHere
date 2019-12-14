@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="include/admin/adminHeader::html('产品管理')" ></head>
+<head th:include="include/admin/adminHeader::html('场馆管理')" ></head>
 <body>
 <div th:replace="include/admin/adminNavigator::html" ></div>
 <script>
@@ -145,9 +145,9 @@
                 <div align="left" style="position: absolute;top: 0px;left: 400px;z-index: 2">
                     <table class="categorySortBarTable categorySortTable" style="size: A3;background-color: white">
                         <tr  style="border-radius: 4px">
-                            <td><input class="sortBarPrice"  v-model.trim="minPrice" type="text" placeholder="请输入"></td>
+                            <td><input class="sortBarPrice"  v-model.trim="minPrice" type="text" placeholder="最低价格"></td>
                             <td class="grayColumn priceMiddleColumn">-</td>
-                            <td><input class="sortBarPrice"  v-model.trim="maxPrice" type="text" placeholder="请输入"></td>
+                            <td><input class="sortBarPrice"  v-model.trim="maxPrice" type="text" placeholder="最高价格"></td>
                         </tr>
                     </table>
                 </div>
@@ -286,11 +286,13 @@
 
                         <tr>
                             <td>营业时间</td>
-                            <td><input @keyup.enter="add" v-model.trim="bean.startTime"
-                                       class="form-control" required />:00 --
-                                <input @keyup.enter="add" v-model.trim="bean.endTime"
-                                       class="form-control" required />:00
-                                <br>
+                            <td>
+                                <div>
+                                    <input @keyup.enter="add" v-model.trim="bean.startTime" class="form-control"
+                                           style="width: 110px;display: inline;" required /> : 00 -
+                                    <input @keyup.enter="add" v-model.trim="bean.endTime" class="form-control"
+                                           style="width: 110px;display:inline;" required /> : 00
+                                </div>
                             </td>
                         </tr>
                         <tr>

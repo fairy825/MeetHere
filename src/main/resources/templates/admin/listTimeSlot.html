@@ -136,12 +136,22 @@
                     <tbody v-for="bean in beans ">
                     <tr>
                         <td>
-                            <input  v-model.trim="bean.beginTime" type="number"
-                                    class="form-control"  disabled>:00
+                            <div style="position: relative">
+                                <div style="position: absolute;width: 100px;">
+                                    <input  class="form-control" v-model.trim="bean.beginTime" type="number" disabled>
+                                </div>
+                                <div class="grayColumn priceMiddleColumn" style="position: absolute;left: 110px;top: 7px;">: 00
+                                </div>
+                            </div>
                         </td>
                         <td>
-                            <input  v-model.trim="bean.endTime" type="number"
-                                    class="form-control"  disabled>:00
+                            <div style="position: relative">
+                                <div style="position: absolute;width: 100px;">
+                                    <input  class="form-control"  v-model.trim="bean.endTime" type="number" disabled>
+                                </div>
+                                <div class="grayColumn priceMiddleColumn" style="position: absolute;left: 110px;top: 7px;">: 00
+                                </div>
+                            </div>
                         </td>
                         <td>
                             <input  :id="'tsid'+bean.id" @keyup.enter="update(bean)" v-model.trim="bean.seat" type="number"

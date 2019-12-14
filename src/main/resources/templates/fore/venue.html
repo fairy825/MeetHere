@@ -1,76 +1,30 @@
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<!--<head th:include="include/admin/adminHeader::html('Venue')" ></head>-->
+<div th:replace="include/fore/navigator::html('场馆预约')" ></div>
+<!--<head th:include="include/admin/adminHeader::html('场馆预约')" ></head>-->
 
+<title>场馆预约</title>
 
 <body>
 <div id="workingArea">
-    <div th:replace="include/fore/navigator::html('Venue')" ></div>
-
-    <div style="position: relative">
-        <div style="position: absolute;z-index: 1">
-            <img src="img/3.jpg" style="height: 100%;width: 100%">
-        </div>
-        <div style="position: absolute;z-index: 2;background-color:rgba(255,255,255,0.6);width: 1265px;height:790px">    </div>
-        <div style="position: absolute;z-index:3;width: 100%;height: 100%">
-            <div align="center">
-                <form action="forevenues" method="get" >
-                    <div class="searchDiv" style="position: relative">
-                        <div style="position: absolute;z-index: 1">
-                            <input type="text" name="keyword" placeholder="请输入场馆名" />
-                        </div>
-                        <div style="position: absolute;z-index:2;right: 0px">
-                            <button  type="submit" class="searchButton btn-primary">搜索</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <div th:replace="include/fore/venue/venuePage::html" ></div>
-            <div th:replace="include/fore/modal::html" ></div>
-            <div th:replace="include/fore/modal4login::html" ></div>
-
-            <div>
-                <footer class="footer slate_gray">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <p class="copyright"><a href="http://www.cssmoban.com/" target="_blank" title="模板之家">Made By </a><a href="http://www.cssmoban.com/" title="网页模板" target="_blank"></a></p>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="social navbar-right">
-                                    <p class="social__text">Available in social networks</p>
-                                    <ul class="social__list">
-                                        <li class="social__item">
-                                            <a class="facebook" href="#">
-                                                <i class="icon-facebook"></i>
-                                            </a>
-                                        </li>
-                                        <li class="social__item">
-                                            <a class="twitter" href="#">
-                                                <i class="icon-twitter"></i>
-                                            </a>
-                                        </li>
-                                        <li class="social__item">
-                                            <a class="gplus" href="#">
-                                                <i class="icon-gplus"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            </div>
-
-        </div>
+    <div th:replace="include/fore/venue/venuePage::html" ></div>
+    <div th:replace="include/fore/modal::html" ></div>
+    <div th:replace="include/fore/modal4login::html" ></div>
+    <div class="modal" id="remarkEnterModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>备注</p>
+                    <input v-model.trim="remark" placeholder="告诉管理员你的需求吧！"/>
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+                    <button class="btn btn-primary" @click="buy(tid,remark)" type="button">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
     </div>
-    <!--<div th:replace="include/fore/search::html" ></div>-->
-    <!--<div th:replace="include/fore/venue/venuePage::html" ></div>-->
-    <!--<div th:replace="include/fore/modal::html" ></div>-->
-    <!--<div th:replace="include/fore/modal4login::html" ></div>-->
 </div>
 </body>
 </html>

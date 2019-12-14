@@ -53,9 +53,9 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     @Transactional(propagation= Propagation.REQUIRED)
     @Override
     public void createByVenue(Venue venue,Integer date) throws ParseException {
-        int seat = venue.getTotalSeat();
-        int startTime = venue.getStartTime();
-        int endTime = venue.getEndTime();
+        Integer seat = venue.getTotalSeat();
+        Integer startTime = venue.getStartTime();
+        Integer endTime = venue.getEndTime();
         Date dd = DateUtils.formatDate(date);
         for(int i = startTime;i<endTime;i++) {
             TimeSlot timeSlot = new TimeSlot();

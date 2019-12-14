@@ -64,24 +64,24 @@ public class VenueImageServiceImplIntegrationTest {
 	@Transactional
 	@Rollback
 	public void database_integrity_test()  {
-		venueDAO.save(venue);
-		venueDAO.save(venue1);
+		venue=venueDAO.save(venue);
+		venue1=venueDAO.save(venue1);
 
 
 		VenueImage venueImage1=new VenueImage.VenueImageBuilder().id(1).venue(venue).build();
 		VenueImage venueImage2=new VenueImage.VenueImageBuilder().id(2).venue(venue).build();
 		VenueImage venueImage3=new VenueImage.VenueImageBuilder().id(3).venue(venue1).build();
 
-		venueImageDAO.save(venueImage1);
-		venueImageDAO.save(venueImage2);
-		venueImageDAO.save(venueImage3);
+		venueImage1=venueImageDAO.save(venueImage1);
+		venueImage2=venueImageDAO.save(venueImage2);
+		venueImage3=venueImageDAO.save(venueImage3);
 
 		//listByVenue
-		List<VenueImage> entries= venueImageService.listByVenue(1);
+		List<VenueImage> entries= venueImageService.listByVenue(venue.getId());
 		assertEquals(2,entries.size());
-		assertEquals(1,entries.get(0).getId());
+		assertEquals(venue,entries.get(0).getVenue());
 
-		entries= venueImageService.listByVenue(3);
+		entries= venueImageService.listByVenue(100);
 		assertEquals(0,entries.size());
 
 		//setFirstVenueImage

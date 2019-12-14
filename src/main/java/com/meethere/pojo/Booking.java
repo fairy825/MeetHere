@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.meethere.service.BookingService;
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.util.Date;
 
 @Entity
@@ -39,11 +40,12 @@ public class Booking {
 	public Booking() {
 	}
 
-	public Booking(Integer id,User user,Venue venue,String state) {
+	public Booking(Integer id, User user, Venue venue, String state, TimeSlot timeSlot) {
 		this.id=id;
 		this.user=user;
 		this.venue=venue;
 		this.state=state;
+		this.timeSlot=timeSlot;
 	}
 
 	public static class BookingBuilder{
@@ -51,6 +53,7 @@ public class Booking {
 		private User user;
 		private Venue venue;
 		private String state;
+		private TimeSlot timeSlot;
 
 		public Booking.BookingBuilder id(Integer id){
 			this.id = id;
@@ -72,8 +75,13 @@ public class Booking {
 			return this;
 		}
 
+		public Booking.BookingBuilder timeSlot(TimeSlot timeSlot){
+			this.timeSlot = timeSlot;
+			return this;
+		}
+
 		public Booking build(){
-			return new Booking(id,user,venue,state);
+			return new Booking(id,user,venue,state,timeSlot);
 		}
 	}
 

@@ -28,12 +28,13 @@ public class TimeSlot {
 	public TimeSlot() {
 	}
 
-	public TimeSlot(Integer id, Integer beginTime, Integer endTime, int seat, Venue venue) {
+	public TimeSlot(Integer id, Integer beginTime, Integer endTime, int seat, Venue venue,Date bookingDate) {
 		this.id=id;
 		this.beginTime=beginTime;
 		this.endTime=endTime;
 		this.seat=seat;
 		this.venue=venue;
+		this.bookingDate=bookingDate;
 	}
 
 	public static class TimeSlotBuilder{
@@ -42,6 +43,7 @@ public class TimeSlot {
 		private Integer endTime;
 		private int seat;
 		private Venue venue;
+		private Date bookingDate;
 
 		public TimeSlotBuilder id(Integer id){
 			this.id = id;
@@ -68,8 +70,13 @@ public class TimeSlot {
 			return this;
 		}
 
+		public TimeSlotBuilder bookingDate(Date date){
+			this.bookingDate = date;
+			return this;
+		}
+
 		public TimeSlot build(){
-			return new TimeSlot(id,beginTime,endTime,seat,venue);
+			return new TimeSlot(id,beginTime,endTime,seat,venue,bookingDate);
 		}
 	}
 

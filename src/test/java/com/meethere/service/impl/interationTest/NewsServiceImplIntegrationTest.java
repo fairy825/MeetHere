@@ -46,9 +46,9 @@ public class NewsServiceImplIntegrationTest {
 		News news2=new News.NewsBuilder().id(2).title("t2").build();
 		News news3=new News.NewsBuilder().id(3).title("t3").build();
 
-		newsDAO.save(news1);
-		newsDAO.save(news2);
-		newsDAO.save(news3);
+		news1=newsDAO.save(news1);
+		news2=newsDAO.save(news2);
+		news3=newsDAO.save(news3);
 
 		//list
 		Page4Navigator<News> entries= newsService.list(null,0,8,5);
@@ -56,14 +56,14 @@ public class NewsServiceImplIntegrationTest {
 		assertEquals(3,entries.getTotalElements());
 		assertEquals(1,entries.getTotalPages());
 		assertEquals(3,entries.getContent().size());
-		assertEquals(news1.getId(),entries.getContent().get(0).getId());
+		assertEquals("t3",entries.getContent().get(0).getTitle());
 
 		entries= newsService.list("",0,8,5);
 		assertEquals(8,entries.getSize());
 		assertEquals(3,entries.getTotalElements());
 		assertEquals(1,entries.getTotalPages());
 		assertEquals(3,entries.getContent().size());
-		assertEquals(news1.getId(),entries.getContent().get(0).getId());
+		assertEquals("t3",entries.getContent().get(0).getTitle());
 
 		entries= newsService.list("t1",0,8,5);
 		assertEquals(8,entries.getSize());

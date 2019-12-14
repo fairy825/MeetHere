@@ -2,10 +2,8 @@ package com.meethere.service.impl.interationTest;
 
 import com.meethere.Application;
 import com.meethere.dao.MessageDAO;
-import com.meethere.pojo.Booking;
-import com.meethere.pojo.District;
-import com.meethere.pojo.Message;
-import com.meethere.pojo.Venue;
+import com.meethere.dao.VenueDAO;
+import com.meethere.pojo.*;
 import com.meethere.service.BookingService;
 import com.meethere.service.MessageService;
 import com.meethere.service.VenueService;
@@ -38,6 +36,8 @@ public class MessageServiceImplIntegrationTest {
 	private MessageDAO messageDAO;
 	@Autowired
 	private MessageService messageService;
+	@Autowired
+	private VenueDAO venueDAO;
 
 	private Venue venue;
 	private Venue venue1;
@@ -59,28 +59,32 @@ public class MessageServiceImplIntegrationTest {
 	@Transactional
 	@Rollback
 	public void database_integrity_test() {
+
+		venue=new Venue.VenueBuilder().id(1).name("vn").startTime(1).endTime(9).totalSeat(100).build();
+		venue1=new Venue.VenueBuilder().id(2).name("vn2").build();
+
+		venue=venueDAO.save(venue);
+		venue1=venueDAO.save(venue1);
 		Message message1=new Message.MessageBuilder().id(1).state(MessageService.refused).venue(venue).build();
 		Message message2=new Message.MessageBuilder().id(2).state(MessageService.pass).venue(venue1).build();
 		Message message3=new Message.MessageBuilder().id(3).state(MessageService.pass).venue(venue).build();
 
-		messageDAO.save(message1);
-		messageDAO.save(message2);
-		messageDAO.save(message3);
+		message1=messageDAO.save(message1);
+		message2=messageDAO.save(message2);
+		message3=messageDAO.save(message3);
 
 		//listByVenue
-		Page4Navigator<Message> entries= messageService.listByVenue(1,0,0,8,5);
+		Page4Navigator<Message> entries= messageService.listByVenue(venue.getId(),0,0,8,5);
 		assertEquals(8,entries.getSize());
 		assertEquals(2,entries.getTotalElements());
 		assertEquals(1,entries.getTotalPages());
 		assertEquals(2,entries.getContent().size());
-		assertEquals(message1.getId(),entries.getContent().get(0).getId());
 
-		entries= messageService.listByVenue(1,1,0,8,5);
+		entries= messageService.listByVenue(venue1.getId(),1,0,8,5);
 		assertEquals(8,entries.getSize());
 		assertEquals(1,entries.getTotalElements());
 		assertEquals(1,entries.getTotalPages());
 		assertEquals(1,entries.getContent().size());
-		assertEquals(message3.getId(),entries.getContent().get(0).getId());
 
 		//list
 		entries=messageService.list(0,8,5);
@@ -88,7 +92,6 @@ public class MessageServiceImplIntegrationTest {
 		assertEquals(3,entries.getTotalElements());
 		assertEquals(1,entries.getTotalPages());
 		assertEquals(3,entries.getContent().size());
-		assertEquals(message2.getId(),entries.getContent().get(0).getId());
 
 
 	}

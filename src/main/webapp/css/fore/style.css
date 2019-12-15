@@ -2362,9 +2362,9 @@ input{
 	position:relative;
 	display: inline-grid;
 	margin-top: 80px;
-	margin-left: 10%;
-	height: 300px;
-	width: 400px;
+	margin-left: 6%;
+	height: 200px;
+	width: 300px;
 	border-radius: 7px 7px 7px 7px;
 	/* VIA CSS MATIC https://goo.gl/cIbnS */
 	-webkit-box-shadow: 0px 14px 32px 0px rgba(0, 0, 0, 0.15);
@@ -2375,8 +2375,8 @@ input{
 
 .product-img {
 	float: left;
-	height: 300px;
-	width: 300px;
+	height: 200px;
+	width: 200px;
 }
 
 .product-img img {
@@ -2385,7 +2385,7 @@ input{
 
 .product-info {
 	float: left;
-	height: 300px;
+	height: 200px;
 	width: 100px;
 	border-radius: 0 7px 10px 7px;
 	background-color: #ffffff;
@@ -2398,7 +2398,7 @@ input{
 
 .product-text h1 {
 	margin: 0 0 0 20px;
-	padding-top: 52px;
+	padding-top: 12px;
 	font-size: 34px;
 	color: #474747;
 }
@@ -2409,7 +2409,7 @@ input{
 }
 
 .product-text h2 {
-	margin: 0 0 47px 20px;
+	margin: 0 0 30px 20px;
 	font-size: 13px;
 	font-family: 'Raleway', sans-serif;
 	font-weight: 300;
@@ -2439,7 +2439,7 @@ input{
 .product-price-btn p {
 	display: inline-block;
 	position: absolute;
-	top: -100px;
+	top: -170px;
 	height: 50px;
 	font-family: 'Trocchi', serif;
 	margin: 0 0 0 10px;
@@ -2458,7 +2458,7 @@ product-span {
 .product-price-btn button {
 	float: left;
 	display: inline-block;
-	top: -50px;
+	top: -170px;
 	height: 20px;
 	width: 100px;
 	box-sizing: border-box;

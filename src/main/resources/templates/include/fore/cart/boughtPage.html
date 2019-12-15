@@ -1,5 +1,5 @@
 
-<div th:fragment="html"> 
+<div th:fragment="html">
 	<script>
 		$(function(){
 	        var data4Vue = {
@@ -21,8 +21,8 @@
 	            data: data4Vue,
 	            mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
 	            	this.list(0);
-	            },        
-	            methods: {     	
+	            },
+	            methods: {
 	            	list:function(start){
 						var url =  this.uri+"?start="+start;
 						console.log(this.searchbean);
@@ -159,7 +159,7 @@
 						jumpByNumber(start,vue);
 					}
 	            }
-	        });       			
+	        });
 		});
 		var bid = 0;
 		var mid = 0;
@@ -324,10 +324,8 @@
 
 		<div align="center" style="position: relative">
 
-
-			<div align="center" style="background-color:yellow;position: relative;">
 				<div class="dropdown"
-					 style="background-color:black;	margin: 50px auto;width:30%;z-index: 2;position: relative;display:inline-block">
+					 style="margin: 50px auto;width:30%;z-index: 2;position: relative;display:inline-block">
 					<select v-model="searchbean.state" style="height: 40px;font-size:medium;border-radius: 4px;">
 						<option value="">请选择状态</option>
 						<option value="waitApprove">待审核</option>
@@ -342,7 +340,8 @@
 					</select>
 				</div>
 
-				<div class="searchDiv" style="background-color:red;width:70%;position: relative; width: 400px;display:inline-block">
+
+				<div class="searchDiv" style="width:70%;position: relative; width: 400px;display:inline-block;top: 66px;">
 					<div style="position: absolute;z-index: 2">
 						<input type="text" @keyup.enter="list(0)" v-model.trim="searchbean.venue.name" placeholder="请输入场馆名" />
 					</div>
@@ -350,8 +349,10 @@
 						<button @click="list(0)" class="searchButton btn-primary">搜索</button>
 					</div>
 				</div>
-			</div>
+
 		</div>
+
+
 		<br>
 		<br>
 

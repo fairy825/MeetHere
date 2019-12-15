@@ -149,7 +149,7 @@ public class VenueServiceImpl implements VenueService {
         if(keyword!=null&& !keyword.equalsIgnoreCase("undefined")&&!keyword.equalsIgnoreCase("null")&&!StringUtils.isBlank(keyword)) {
             venueList = venueDAO.findByNameLike("%"+keyword+"%");
         }else
-            venueList =venueDAO.findAll();
+            venueList =venueDAO.findAll(sort1);
         setSaleAndReviewNumber(venueList);
         if(null!=sort){
             switch(sort){

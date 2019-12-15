@@ -16,6 +16,6 @@ public class BasicController {
 	public static final String FILE_SPACE = "D:/workspace/meethere/src/main/webapp/img";
 		
 		// 每页分页的记录数
-		public static final Integer PAGE_SIZE = 3;
+		public static final Integer PAGE_SIZE = 9;
 	
 }

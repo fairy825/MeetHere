@@ -146,7 +146,7 @@ public class BookingController extends BasicController{
             Date dd = DateUtils.formatDate(date);
             booking.getTimeSlot().setBookingDate(dd);
         }
-        Page4Navigator<Booking> page = bookingService.search(booking,start,size,5);
+        Page4Navigator<Booking> page = bookingService.search(booking, start, size, 5);
         return IMoocJSONResult.ok(page);
     }
     @PutMapping("/cancel/{id}")

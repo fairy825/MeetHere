@@ -132,7 +132,7 @@
                             <td>{{bean.id}}</td>
                             <td>{{bean.name}}</td>
                             <td>
-                                <img height="50px" :src="'img/faceImage/'+bean.id+'.jpg'">
+                                <img v-if="bean.faceImage!=null" height="50px" :src="'img/faceImage/'+bean.id+'.jpg'">
                             </td>
                             <td>{{bean.nickname}}</td>
                             <td>{{bean.phoneNumber}}</td>

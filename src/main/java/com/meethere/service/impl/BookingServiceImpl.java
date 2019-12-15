@@ -35,168 +35,217 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     TimeSlotService timeSlotService;
 
-    @Transactional(propagation= Propagation.SUPPORTS)
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
-    public Page4Navigator<Booking> listBookingsByUser(User user, int start, int size, int navigatePages){
+    public Page4Navigator<Booking> listBookingsByUser(User user, int start, int size, int navigatePages) {
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         Pageable pageable = new PageRequest(start, size, sort);
-        Page pageFromJPA =bookingDAO.findByUserAndStateNotOrderByIdDesc(user,BookingService.delete,pageable);
-        return new Page4Navigator<>(pageFromJPA,navigatePages);
+        Page pageFromJPA = bookingDAO.findByUserAndStateNotOrderByIdDesc(user, BookingService.delete, pageable);
+        return new Page4Navigator<>(pageFromJPA, navigatePages);
     }
 
-    @Transactional(propagation= Propagation.SUPPORTS)
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public Page4Navigator<Booking> searchByUser(String keyword, int start, int size, int navigatePages) {
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         Pageable pageable = new PageRequest(start, size, sort);
         User user = userService.findByName(keyword);
-        Page pageFromJPA =bookingDAO.findByUser(user,pageable);
-        return new Page4Navigator<>(pageFromJPA,navigatePages);
+        Page pageFromJPA = bookingDAO.findByUser(user, pageable);
+        return new Page4Navigator<>(pageFromJPA, navigatePages);
     }
-    @Transactional(propagation= Propagation.SUPPORTS)
+
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public Page4Navigator<Booking> searchByVenue(String keyword, int start, int size, int navigatePages) {
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         Pageable pageable = new PageRequest(start, size, sort);
         Venue venue = venueService.findByName(keyword);
-        Page pageFromJPA =bookingDAO.findByVenue(venue,pageable);
-        return new Page4Navigator<>(pageFromJPA,navigatePages);
+        Page pageFromJPA = bookingDAO.findByVenue(venue, pageable);
+        return new Page4Navigator<>(pageFromJPA, navigatePages);
     }
-    @Transactional(propagation= Propagation.SUPPORTS)
+
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public Page4Navigator<Booking> list(int start, int size, int navigatePages) {
         Sort sort = new Sort(Sort.Direction.DESC, "id");
-        Pageable pageable = new PageRequest(start, size,sort);
+        Pageable pageable = new PageRequest(start, size, sort);
         Page pageFromJPA = bookingDAO.findAll(pageable);
-        return new Page4Navigator<>(pageFromJPA,navigatePages);
+        return new Page4Navigator<>(pageFromJPA, navigatePages);
     }
 
-    @Transactional(propagation= Propagation.SUPPORTS)
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
-    public Booking searchByUserAndTimeslot(Booking booking){
+    public Booking searchByUserAndTimeslot(Booking booking) {
         Example<Booking> example = Example.of(booking);
         Booking booking1 = bookingDAO.findOne(example);
-        return (booking1==null)||(booking1.getState().equalsIgnoreCase(cancelled)) ? null : booking1;
+        return (booking1 == null) || (booking1.getState().equalsIgnoreCase(cancelled)) ? null : booking1;
     }
-    @Transactional(propagation= Propagation.SUPPORTS)
+
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
-    public Page4Navigator<Booking> searchWithoutDelete(Booking booking, int start, int size, int navigatePages){
+    public Page4Navigator<Booking> searchWithoutDelete(Booking booking, int start, int size, int navigatePages) {
         Sort sort = new Sort(Sort.Direction.DESC, "id");
-        Pageable pageable = new PageRequest(start, size,sort);
-        Page pageFromJPA =null;
+        Pageable pageable = new PageRequest(start, size, sort);
+        boolean flag = false;
+        Page pageFromJPA = null;
         Booking b = new Booking();
         b.setId(null);
-        if(StringUtils.isBlank(booking.getState())) booking.setState(null);
+        if (StringUtils.isBlank(booking.getState())) booking.setState(null);
         b.setState(booking.getState());
-        b.setUser(userService.findByName(booking.getUser().getName()));
-        if(booking.getVenue()!=null)
-            b.setVenue(venueService.findByName(booking.getVenue().getName()));
-        else b.setVenue(null);
-        Example<Booking> example = Example.of(b);
-        List<Booking> list = new ArrayList<>();
-        List<Booking> list1 = bookingDAO.findAll(example,sort);
-        for(Booking booking1:list1){
-            if(!booking1.getState().equalsIgnoreCase(delete)){
-                list.add(booking1);
+
+        if (StringUtils.isBlank(booking.getUser().getName())) {
+            b.setUser(null);
+        } else {
+            User user = userService.findByName(booking.getUser().getName());
+            if (user != null) {//存在这个user
+                b.setUser(user);
+            } else {//不存在该user
+                flag = true;
             }
         }
-        List<Booking> res = new ArrayList<>();
+        if (StringUtils.isBlank(booking.getVenue().getName())) {
+            b.setVenue(null);
+        } else {
+            Venue venue = venueService.findByName(booking.getVenue().getName());
+            if (venue != null) {//存在这个venue
+                b.setVenue(venue);
+            } else {//不存在这个venue
+                flag = true;
+            }
+        }
+//        b.setUser(userService.findByName(booking.getUser().getName()));
+//        if(booking.getVenue()!=null)
+//            b.setVenue(venueService.findByName(booking.getVenue().getName()));
+//        else b.setVenue(null);
         int count = 0;
-        int i = 0;
-        if(booking.getTimeSlot()==null||booking.getTimeSlot().getBookingDate()==null) {
-            for(i=start*size;i<(start+1)*size&&i<list.size();i++) {//start=0 size=2
-                Booking booking1 =  list.get(i);
-                res.add(booking1);
+        List<Booking> res = new ArrayList<>();
+
+        if (!flag) {
+            Example<Booking> example = Example.of(b);
+            List<Booking> list = new ArrayList<>();
+            List<Booking> list1 = bookingDAO.findAll(example, sort);
+            for (Booking booking1 : list1) {
+                if (!booking1.getState().equalsIgnoreCase(delete)) {
+                    list.add(booking1);
+                }
             }
-            count = list.size();
-        }
-        else {
-            List<TimeSlot> tsList = timeSlotService.findByBookingDate(booking.getTimeSlot().getBookingDate());
-            for (Booking booking1 : list) {
-                TimeSlot timeSlot = booking1.getTimeSlot();
-                for (TimeSlot ts : tsList) {
-                    if (timeSlot.getId() == ts.getId()) {
-                        if(count>=start*size&&count<(start+1)*size){
-                            res.add(booking1);
+            int i = 0;
+            if (booking.getTimeSlot() == null || booking.getTimeSlot().getBookingDate() == null) {
+                for (i = start * size; i < (start + 1) * size && i < list.size(); i++) {//start=0 size=2
+                    Booking booking1 = list.get(i);
+                    res.add(booking1);
+                }
+                count = list.size();
+            } else {
+                List<TimeSlot> tsList = timeSlotService.findByBookingDate(booking.getTimeSlot().getBookingDate());
+                for (Booking booking1 : list) {
+                    TimeSlot timeSlot = booking1.getTimeSlot();
+                    for (TimeSlot ts : tsList) {
+                        if (timeSlot.getId() == ts.getId()) {
+                            if (count >= start * size && count < (start + 1) * size) {
+                                res.add(booking1);
+                            }
+                            count++;
+                            break;
                         }
-                        count++;
-                        break;
                     }
                 }
             }
         }
-        pageFromJPA = new PageImpl<Booking>(res,pageable,count);
-        return new Page4Navigator<>(pageFromJPA,navigatePages);
+
+        pageFromJPA = new PageImpl<Booking>(res, pageable, count);
+        return new Page4Navigator<>(pageFromJPA, navigatePages);
     }
 
-    @Transactional(propagation= Propagation.SUPPORTS)
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
-    public Page4Navigator<Booking> search(Booking booking, int start, int size, int navigatePages){
+    public Page4Navigator<Booking> search(Booking booking, int start, int size, int navigatePages) {
         Sort sort = new Sort(Sort.Direction.DESC, "id");
-        Pageable pageable = new PageRequest(start, size,sort);
-        Page pageFromJPA =null;
+        boolean flag = false;
+        Pageable pageable = new PageRequest(start, size, sort);
+        Page pageFromJPA = null;
         Booking b = new Booking();
         b.setId(null);
-        if(StringUtils.isBlank(booking.getState())) booking.setState(null);
+        if (StringUtils.isBlank(booking.getState())) booking.setState(null);
         b.setState(booking.getState());
-        b.setUser(userService.findByName(booking.getUser().getName()));
-        if(booking.getVenue()!=null)
-            b.setVenue(venueService.findByName(booking.getVenue().getName()));
-        else b.setVenue(null);
-        Example<Booking> example = Example.of(b);
-        List<Booking> list = bookingDAO.findAll(example,sort);
+        if (StringUtils.isBlank(booking.getUser().getName())) {
+            b.setUser(null);
+        } else {
+            User user = userService.findByName(booking.getUser().getName());
+            if (user != null) {//存在这个user
+                b.setUser(user);
+            } else {//不存在该user
+                flag = true;
+            }
+        }
+        if (StringUtils.isBlank(booking.getVenue().getName())) {
+            b.setVenue(null);
+        } else {
+            Venue venue = venueService.findByName(booking.getVenue().getName());
+            if (venue != null) {//存在这个venue
+                b.setVenue(venue);
+            } else {//不存在这个venue
+                flag = true;
+            }
+        }
         List<Booking> res = new ArrayList<>();
         int count = 0;
-        int i = 0;
-        if(booking.getTimeSlot()==null||booking.getTimeSlot().getBookingDate()==null) {
-            for(i=start*size;i<(start+1)*size&&i<list.size();i++)//start=0 size=2
-                res.add(list.get(i));
-            count = list.size();
-        }
-        else {
-            List<TimeSlot> tsList = timeSlotService.findByBookingDate(booking.getTimeSlot().getBookingDate());
-            for (Booking booking1 : list) {
-                TimeSlot timeSlot = booking1.getTimeSlot();
-                for (TimeSlot ts : tsList) {
-                    if (timeSlot.getId() == ts.getId()) {
-                        if(count>=start*size&&count<(start+1)*size){
-                            res.add(booking1);
+
+        if (!flag) {
+            Example<Booking> example = Example.of(b);
+            List<Booking> list = bookingDAO.findAll(example, sort);
+            int i = 0;
+            if (booking.getTimeSlot() == null || booking.getTimeSlot().getBookingDate() == null) {
+                for (i = start * size; i < (start + 1) * size && i < list.size(); i++)//start=0 size=2
+                    res.add(list.get(i));
+                count = list.size();
+            } else {
+                List<TimeSlot> tsList = timeSlotService.findByBookingDate(booking.getTimeSlot().getBookingDate());
+                for (Booking booking1 : list) {
+                    TimeSlot timeSlot = booking1.getTimeSlot();
+                    for (TimeSlot ts : tsList) {
+                        if (timeSlot.getId() == ts.getId()) {
+                            if (count >= start * size && count < (start + 1) * size) {
+                                res.add(booking1);
+                            }
+                            count++;
+                            break;
                         }
-                        count++;
-                        break;
                     }
                 }
             }
         }
-        pageFromJPA = new PageImpl<Booking>(res,pageable,count);
-        return new Page4Navigator<>(pageFromJPA,navigatePages);
-    }
-    @Transactional(propagation= Propagation.REQUIRED)
-    @Override
-    public void update(Booking booking){
-    bookingDAO.save(booking);
-}
-
-    @Transactional(propagation= Propagation.SUPPORTS)
-    @Override
-    public Booking get(int id){
-        return bookingDAO.findOne(id);
-    }
-    @Transactional(propagation= Propagation.SUPPORTS)
-    @Override
-    public Integer total(Venue venue){
-        return bookingDAO.countByVenueAndStateNot(venue,refused);
+        pageFromJPA = new PageImpl<Booking>(res, pageable, count);
+        return new Page4Navigator<>(pageFromJPA, navigatePages);
     }
 
-    @Transactional(propagation= Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public void saveBooking(Booking booking){
+    public void update(Booking booking) {
         bookingDAO.save(booking);
     }
 
-    @Transactional(propagation= Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
-    public List<Booking> findAll(){
+    public Booking get(int id) {
+        return bookingDAO.findOne(id);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public Integer total(Venue venue) {
+        return bookingDAO.countByVenueAndStateNot(venue, refused);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void saveBooking(Booking booking) {
+        bookingDAO.save(booking);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public List<Booking> findAll() {
         return bookingDAO.findAll();
     }
 

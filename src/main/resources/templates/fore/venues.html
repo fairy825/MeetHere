@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="include/fore/navigator::html('Venues Information')" ></head>
-<head th:include="include/admin/adminHeader::html('Venues')" ></head>
+<head th:include="include/fore/navigator::html('所有场馆')" ></head>
+<head th:include="include/admin/adminHeader::html('所有场馆')" ></head>
+<link href="https://fonts.googleapis.com/css?family=Bentham|Playfair+Display|Raleway:400,500|Suranna|Trocchi" rel="stylesheet">
 
+<title>所有场馆</title>
 <body>
 
 <!--<div th:replace="include/fore/navigator::html('Vunues Information')" ></div>-->
@@ -142,36 +144,31 @@
                     </table>
                 </div>
 
+                <div v-for="bean in beans" class="product-wrapper">
 
-                <div style="position:absolute;top: 600px;left: 42%" align="center">
-                    <div th:replace="include/admin/adminPage::html" ></div>
-                </div>
-
-                <div class="wrapper" style="position:relative; margin-top: 80px;margin-left: 20%">
-                    <div  v-for="bean in beans " style="margin-right: 20px ">
-                        <div class="productUnit" style="margin-right: 20px ">
-                            <div class="productUnitFrame" >
-                                <a :href="'venue?id='+bean.id">
-                                    <div class="special">
-                                        <img :src="'img/venueImage_middle/'+bean.id+'/'+bean.firstVenueImage.id+'.jpg'" height="311" width="311" alt="image">
-                                        <div class="special__box">
-                                            <h5 class="special__category yel_line">
-                                                {{bean.name}}
-                                            </h5>
-                                            <a class="special__link" style="color: black">{{bean.introduction}}</a>
-                                            <a class="special__link" style="color: black">{{bean.district.name}}</a>
-                                        </div>
-                                    </div>
-                                    <span class="productPrice">¥{{bean.price | formatMoneyFilter}}</span>
-
-                                    <div class="show1 productInfo" style="margin-right: 10px">
-                                        <span class="productReview">评价<span class="productReviewNumber">{{bean.reviewCount}}</span></span>
-                                    </div>
-
-                                </a>
+                    <a :href="'venue?id='+bean.id">
+                        <div class="product-img">
+                            <img :src="'img/venueImage_middle/11/23.jpg'" height="200px" width="200px" alt="image">                        </div>
+                        <div class="product-info">
+                            <div class="product-text">
+                                <h1>{{bean.name}}</h1>
+                                <h2>{{bean.district.name}}</h2>
+                                <p>{{bean.introduction}}<br>
+                                    <span class="product-span">评价
+                                                <span class="product-span">{{bean.reviewCount}}</span>
+                                            </span>
+                                </p>
+                            </div>
+                            <div class="product-price-btn">
+                                <p> ¥{{bean.price | formatMoneyFilter}}</p>
                             </div>
                         </div>
-                    </div>
+                    </a>
+                </div>
+                <div style="height:100px"></div>
+<!--                style="position:absolute;top: 600px;left: 42%"-->
+                <div align="center">
+                    <div th:replace="include/admin/adminPage::html" ></div>
                 </div>
             </div>
 

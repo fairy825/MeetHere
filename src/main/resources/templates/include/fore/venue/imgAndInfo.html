@@ -3,54 +3,13 @@
 
 <script> 
 function imgAndInfoPageRegisterListeners(vue){
-    // $("button.loginSubmitButton").click(function(){
-    //     var url =  "forelogin";
-    //     if(0==vue.user.name.length){
-    //         $("span.errorMessage").html("请输入用户名");
-    //         $("div.loginErrorMessageDiv").css("visibility","visible");
-    //         return;
-    //     }
-    //     if(0==vue.user.password.length){
-    //         $("span.errorMessage").html("请输入密码");
-    //         $("div.loginErrorMessageDiv").css("visibility","visible");
-    //         return;
-    //     }
-    //
-    //     axios.post(url,vue.user).then(function(response) {
-    //     	var result = response.data;
-    //     	if(result.code==0){
-    //     		location.href="product?pid="+vue.p.id;
-    //     	}
-    //     	else{
-    //             $("span.errorMessage").html(result.message);
-    //             $("div.loginErrorMessageDiv").css("visibility","visible");
-    //     	}
-    //     });
-    // });
-    //
-
     $("img.smallImage").mouseenter(function(){
         var bigImageURL = $(this).attr("bigImageURL");
         $("img.bigImg").attr("src",bigImageURL);
     });
-
-    // $("img.bigImg").load(
-    //     function(){
-    //         $("img.smallImage").each(function(){
-    //             var bigImageURL = $(this).attr("bigImageURL");
-    //             img = new Image();
-    //             img.src = bigImageURL;
-    //
-    //             img.onload = function(){
-    //                 $("div.img4load").append($(img));
-    //             };
-    //         });
-    //     }
-    // );
 }
  
 </script>
-	 
 	<div class="imgAndInfo">
 	    <div class="imgInimgAndInfo">
 	        <img :src="'img/venueImage/'+bean.id+'/'+bean.firstVenueImage.id+'.jpg'" class="bigImg">
@@ -108,7 +67,7 @@ function imgAndInfoPageRegisterListeners(vue){
 				<div style="color: #6C6C6C;width: 100px">累计评价: <span class="redColor boldWord"> {{ bean.reviewCount }}</span></div>
 			</div>
 	    </div>
-	     
+
 	    <div style="clear:both"></div>
 	</div>
 

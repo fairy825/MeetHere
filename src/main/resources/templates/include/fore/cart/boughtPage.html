@@ -1,5 +1,5 @@
 
-<div th:fragment="html"> 
+<div th:fragment="html">
 	<script>
 		$(function(){
 	        var data4Vue = {
@@ -21,8 +21,8 @@
 	            data: data4Vue,
 	            mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
 	            	this.list(0);
-	            },        
-	            methods: {     	
+	            },
+	            methods: {
 	            	list:function(start){
 						var url =  this.uri+"?start="+start;
 						console.log(this.searchbean);
@@ -159,7 +159,7 @@
 						jumpByNumber(start,vue);
 					}
 	            }
-	        });       			
+	        });
 		});
 		var bid = 0;
 		var mid = 0;
@@ -244,8 +244,6 @@
 			});
 		}
 	</script>
-
-
 	<style>
 		#register_div{
 			/* 居中*/
@@ -316,7 +314,6 @@
 			padding:5px;
 		}
 	</style>
-
 	<div style="position: relative">
 		<div style="position: absolute;z-index: 1">
 			<img src="img/3.jpg" style="height: 100%;width: 100%">
@@ -325,19 +322,10 @@
 		<div style="position: absolute;z-index:3;width: 100%;height: 100%">
 
 
-		<div style="position: relative">
-			<div align="right" style="position: relative;margin-left: 22%">
-				<div class="searchDiv" style="position: relative; width: 400px">
-					<div style="position: absolute;z-index: 1">
-						<input type="text" @keyup.enter="list(0)" v-model.trim="searchbean.venue.name" placeholder="请输入场馆名" />
-					</div>
-					<div style="position: absolute;z-index:2;right: 0px">
-						<button @click="list(0)" class="searchButton btn-primary">搜索</button>
-					</div>
-				</div>
-			</div>
+		<div align="center" style="position: relative">
 
-			<div class="dropdown" style="z-index: 2;margin-top:-90px;height: 39px;margin-left: 380px">
+				<div class="dropdown"
+					 style="margin: 50px auto;width:30%;z-index: 2;position: relative;display:inline-block">
 					<select v-model="searchbean.state" style="height: 40px;font-size:medium;border-radius: 4px;">
 						<option value="">请选择状态</option>
 						<option value="waitApprove">待审核</option>
@@ -350,8 +338,21 @@
 						<option value="finish">已结束</option>
 						<option value="cancelled">已取消</option>
 					</select>
-			</div>
+				</div>
+
+
+				<div class="searchDiv" style="width:70%;position: relative; width: 400px;display:inline-block;top: 66px;">
+					<div style="position: absolute;z-index: 2">
+						<input type="text" @keyup.enter="list(0)" v-model.trim="searchbean.venue.name" placeholder="请输入场馆名" />
+					</div>
+					<div style="position: absolute;z-index:2;right: 0px">
+						<button @click="list(0)" class="searchButton btn-primary">搜索</button>
+					</div>
+				</div>
+
 		</div>
+
+
 		<br>
 		<br>
 
@@ -373,7 +374,7 @@
 										<th>预约终止时间</th>
 										<th>订单创建时间</th>
 										<th>状态</th>
-										<th>操作</th>
+										<th style="width: 300px">操作</th>
 
 									</tr>
 									</thead>
@@ -391,34 +392,23 @@
 											<td>{{bean.stateDesc}}</td>
 											<td valign="top" class="orderListItemButtonTD orderItemOrderInfoPartTD" width="100px">
 
-												<div v-if="bean.state=='waitPay'">
-														<button  @click="pay(bean.id,bean.venue.price)" class="orderListItemConfirm">付款</button>
-												</div>
-												<div v-else-if="bean.state=='waitArrive'">
-													<button class="btn btn-primary orderListItemArrive" @click="arrive(bean.id)">我已到达</button>
-												</div>
-												<div v-else-if="bean.state=='waitReview'">
-														<button  @click="review(bean.venue.id,bean.id)" class=" btn btn-primary orderListItemReview">留言</button>
-												</div>
-												<div v-else-if="bean.state=='finish'">
-														<button  @click="showMyReview(bean.id)" class=" btn btn-primary orderListItemReview">查看我的留言</button>
-												</div>
-												<div v-if="bean.state=='waitApprove'||bean.state=='waitPay'">
-													<a  class="cancelLink" :bid="bean.id" type="button">
+												<button v-if="bean.state=='waitPay'" @click="pay(bean.id,bean.venue.price)" class="orderListItemConfirm">付款</button>
+												<button  v-else-if="bean.state=='waitArrive'" class="btn btn-primary orderListItemArrive" @click="arrive(bean.id)">我已到达</button>
+
+														<button v-else-if="bean.state=='waitReview'" @click="review(bean.venue.id,bean.id)" class=" btn btn-primary orderListItemReview">留言</button>
+
+														<button  v-else-if="bean.state=='finish'" @click="showMyReview(bean.id)" class=" btn btn-primary orderListItemReview">查看我的留言</button>
+													<a v-if="bean.state=='waitApprove'||bean.state=='waitPay'" class="cancelLink" :bid="bean.id" type="button">
 														<button class="btn btn-warning">取消预订</button>
 													</a>
-												</div>
-												<div v-if="bean.state=='waitApprove'||bean.state=='waitPay'||bean.state=='waitTime'">
-														<button @click="changeRemark(bean.id)" class="btn btn-primary">修改</button>
-												</div>
-												<div>
+
+														<button v-if="bean.state=='waitApprove'||bean.state=='waitPay'||bean.state=='waitTime'" @click="changeRemark(bean.id)" class="btn btn-primary">修改</button>
 													<a  class="deleteOrderLink" :bid="bean.id" type="button">
 														<span  class="orderListItemDelete glyphicon glyphicon-trash"></span></a>
-												</div>
 
 											</td>
 										</tr>
-										<tr class="orderPageOrderItemTR"  :id="'remarkTR'+bean.id">
+										<tr class="orderPageOrderItemTR" style="display: none" :id="'remarkTR'+bean.id">
 											<td colspan="10" align="center">
 
 												<div  class="orderPageOrderItem">
@@ -434,23 +424,24 @@
 
 											</td>
 										</tr>
-										<tr class="orderPageOrderItemTR"  :id="'myReview'+bean.id">
+										<tr class="orderPageOrderItemTR"  style="display: none" :id="'myReview'+bean.id">
 											<td colspan="10" align="center">
 
 												<div  class="orderPageOrderItem">
 													<table width="400px" align="center" class="orderPageOrderItemTable">
 
-														<tr><td  colspan="2">{{myreview.content}}</td></tr>
 														<tr>
-															<td>{{myreview.createDate}}</td>
-															<td>{{myreview.stateDesc}}</td>
-														</tr>
-														<tr>
+															<td  colspan="2">{{myreview.content}}</td>
 															<td  colspan="2">
 																<a  class="deleteReviewLink" :mid="myreview.id" :bid="bean.id" type="button" >
 																	<span  class="orderListItemDelete glyphicon glyphicon-trash" style="margin-left: 180px"></span>
 																</a>	<!--<button  @click="deleteMyReview(bean.id, myreview.id)" class=" btn btn-primary orderListItemReview">删除我的留言</button>-->
 															</td>
+														</tr>
+														<tr>
+															<td>{{myreview.createDate}}</td>
+															<td>{{myreview.stateDesc}}</td>
+
 														</tr>
 
 													</table>

@@ -1,7 +1,3 @@
-<!-- 模仿天猫整站springboot 教程 为how2j.cn 版权所有-->
-<!-- 本教程仅用于学习使用，切勿用于非法用途，由此引起一切后果与本站无关-->
-<!-- 供购买者学习，请勿私自传播，否则自行承担相关法律责任-->
-
 <div th:fragment="html">
 	<script>
 		function remarkListener(vue) {
@@ -86,8 +82,6 @@
 															<button :disabled="ts.seat==0"
 																	:tid="ts.id"
 															   class="btn-primary booklink">
-<!--															   data-toggle="modal" data-target="#remarkEnterModal"-->
-
 																预约
 															</button>
 														</td>
@@ -105,25 +99,8 @@
 						</div>
 					</div>
 				</div>
-
-
 			</div>
 		</div>
-		<div class="modal fade" id="remarkEnterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-body">
-						<p>备注</p>
-						<textarea class="form-control" v-model.trim="remark" placeholder="告诉管理员你的需求吧！"></textarea>
-					</div>
-					<div class="modal-footer">
-						<button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
-						<button class="btn btn-primary" @click="buy(tid,remark)" type="button">提交</button>
-					</div>
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div>
 
-		<!--<div style="height:200px"></div>-->
 	</section>
 </div>

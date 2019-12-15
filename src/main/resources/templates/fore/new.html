@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <!--<head th:include="include/admin/adminHeader::html('News Detail')" ></head>  不能加载，一加载就是css失效-->
-
+<head th:include="include/fore/navigator::html('新闻')" ></head>
+<title>新闻</title>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -21,7 +22,6 @@
     <script src="js/vue/2.5.16/vue.min.js"></script>
     <script src="js/axios/0.17.1/axios.min.js"></script>
     <script src="js/moment/2.22.2/moment.js"></script> <!-- vue.js 格式化日期用的 -->
-    <title>News Detail</title>
 </head>
 
 <script>
@@ -106,232 +106,21 @@
             <!--</div>-->
         <!--</article>-->
     <!--</div>-->
-    <header id="header" class="header">
-        <div class="header__top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="wrap-logo">
-                            <a class="tab-pane__title">News Detail</a>
-                        </div>
-                    </div>
-                    <div class="col-sm-offset-2 col-md-offset-5 col-sm-6 col-md-4 hidden-xs">
-                        <div class="col-xs-4 col-sm-5">
-                            <div class="weather">
-                                <div class="weather__temperature">
 
-                                    <em class="active"></em>
-                                    <em></em>
-                                    <em></em>
-                                </div>
-                                <div class="weather__city">
-                                    <em>Swimming Pool</em>
-                                    <div class="weather__city__list">
-                                        <ul>
-                                            <li class="active">
-                                                <a href="#">Indoor Climbing</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Yoga</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="text-align: right;">
-                        <a style="color: mintcream;font-family: 'Arial Black';size: A3">注销</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="wsmenucontent overlapblackbg"></div>
-        <div class="wsmenuexpandermain slideRight">
-            <a id="navToggle" class="animated-arrow slideLeft">
-                <span></span>
-            </a>
-        </div>
-        <div class="header_down">
-            <div class="container">
-                <div class="wrapper clearfix bigmegamenu">
-                    <!--Main Menu HTML Code-->
-                    <nav class="wsmenu slideLeft clearfix">
-                        <ul class="mobile-sub wsmenu-list">
-
-
-                            <li class="active">
-                                <span class="wsmenu-click"></span>
-                                <a href="http://localhost:8080/user/signIn?name=fbo&password=fb701701">首页</a>
-                            </li>
-                            <li>
-                                <span class="wsmenu-click"></span>
-                                <a href="">场馆
-                                    <span class="arrow"></span>
-                                </a>
-                                <ul class="wsmenu-submenu">
-                                    <li>
-                                        <a href="404.html">场馆介绍</a>
-                                    </li>
-                                    <li>
-                                        <a href="category.html">场馆预约</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <span class="wsmenu-click"></span>
-                                <a href="category.html">新闻</a>
-                            </li>
-                            <li>
-                                <span class="wsmenu-click"></span>
-                                <a href="http://localhost:8080/message/messageList">留言</a>
-                            </li>
-                            <li>
-                                <span class="wsmenu-click"></span>
-                                <a href="">个人中心
-                                    <span class="arrow"></span>
-                                </a>
-                                <ul class="wsmenu-submenu">
-                                    <li>
-                                        <a href="404.html">订单查看</a>
-                                    </li>
-                                    <li>
-                                        <a href="category.html">修改信息</a>
-                                    </li>
-
-                                </ul>
-                            </li>
-                            <li class="navbar-right hidden-xs">
-                                <form class="navbar-form " role="search" style="margin-top: 5px;margin-bottom: 5px">
-                                    <div class="form-group" style="height: 1cm;">
-                                        <input type="text" class="form-control" style="height: 1cm" placeholder="Search">
-                                    </div>
-                                    <button type="submit" class="btn btn-search" style="height: 1cm">
-                                        <i class="icon-search"></i>Search
-                                    </button>
-                                </form>
-                            </li>
-                            <li>
-                                <div class="visible-xs col-sm-offset-5 col-sm-4">
-                                    <div class="col-sm-5">
-                                        <div class="weather">
-                                            <div class="weather__temperature">
-                                                <span class="icon-sun"></span>
-                                                <em></em>
-                                            </div>
-                                            <div class="weather__city">
-                                                <em>Swimming Pool</em>
-                                                <div class="weather__city__list">
-                                                    <ul>
-                                                        <li class="active">
-                                                            <a href="#">Indoor Climbing</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">Yoga</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </li>
-                        </ul>
-                    </nav>
-                    <!--Menu HTML Code-->
-                </div>
-            </div>
-        </div>
-    </header>
     <!-- END header -->
     <!-- header slider -->
     <div class="wrapper">
         <article class="container articles">
-            <div class="row">
-                <div class="col-sm-4 col-md-3 right_sidebar hidden-xs hidden-sm" data-spy="affix" data-offset-top="112" data-offset-bottom="80">
-                    <div class="news-tabs">
-                        <p class="news-tabs__title h2">新闻标题</p>
-                        <ul class="news-tabs__nav nav nav-tabs shadow_text" role="tablist">
-                            <li role="presentation">
-                                <a href="#settings" role="tab" data-toggle="tab">
-                                    {{bean.title}}
-                                    <span class="time">{{bean.createDate | formatDateFilter}}</span>
-                                </a>
-                            </li>
-                            <li role="presentation" class="active">
-                                <a href="#home" role="tab" data-toggle="tab">
-                                    <span class="time">公告</span>
-                                    所有场馆开放时间：9：00-16：00
-                                </a>
-                            </li>
-
-                            <!--<li role="presentation">-->
-                                <!--<a href="#profile" role="tab" data-toggle="tab">-->
-                                    <!--<span class="time">2018-12-27 16:22:29.000000</span>-->
-                                    <!--攀岩好处多-->
-                                <!--</a>-->
-                            <!--</li>-->
-                            <!--<li role="presentation">-->
-                                <!--<a href="#messages" role="tab" data-toggle="tab">-->
-                                    <!--<span class="time">2018-12-27 14:41:58.000000</span>-->
-                                    <!--瑜伽的益处，你知道吗？-->
-                                <!--</a>-->
-                            <!--</li>-->
-                        </ul>
-                    </div>
+            <div class="col-sm-12 col-md-9 article_text">
+                <div class="current">
+                    <h1 class="text-center current__title">{{bean.title}}</h1>
+                    <h5 class="text-center">{{bean.createDate}}</h5>
+                    <br><br>
+                    <p class="current__text">{{bean.content}}</p>
                 </div>
-                <div class="col-sm-12 col-md-9 p0 wrap-headline">
-                    <img src="img/gym.jpg" alt="img" class="wrap-headline__img">
-                    <div class="headline clearfix">
-                        <div class="headline__data">
-                            <a href="category.html" class="headline__category headline__category_orange">Venue</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12 col-md-9 article_text">
-                    <div class="current">
-                        <h1 class="text-center yel_line current__title">{{bean.title}}</h1>
-                        <p class="current__text">{{bean.content}}</p>
-                        <img src="img/swmming.jpg" alt="img" class="current__img">
-                        <!--<h1 class="text-center yel_line current__title">攀岩好处多</h1>-->
-                        <!--<p class="current__text">攀岩运动是一项对人的身体、意志要求都比较严格的运动。做攀岩运动，我们需要强健的身体，坚韧不拔的意志，以及一些必须的攀岩技巧。通过这项运动，我们可以收获快乐，也可以使我们的身体更加强壮，意志更加坚强。攀岩运动比较耗体能，所以注定我们的体魄会通过攀岩运动得到锻炼。身体方面好处比较明显的有，手的抓力，手臂伸缩的力量，以及腿的蹬力和腰腹的力量。具体对体能好处体现在以下几个方面：一，通过攀岩运动，增加身体柔软度与协调感，这是攀岩的关键能力，其重要性更胜于体力；国外已有医疗领域，将攀岩用来矫治。孩童肌肉发展及手、眼、身体之协调训练上。二，增强体力。攀岩运动要的是手脚均衡的力与美，并且足以负荷自己的体重、对抗地心引力，这件事，女孩可是一点儿也不输男孩的。三，集中力。脚下全神灌注地踏着岩块，留意身体在岩块上位移的每个细节，可以培养一个人对事物的专注程度。四，进取心。当自己靠着攀登绳承受体重、挂在高高的岩壁或岩塔上时，是放弃、还是继续坚持？已经不只是勇气可形容，还有意志力、荣誉感，及自我超越的决心。五，自信心面对比自己身高还高至少3、4倍的岩场，仍毅然中的困难，心性自然要比常人自重与自信。 六,平衡感。被称为在岩壁上行走的「蜘蛛人」，行走的基本姿势是三点不动一点动，靠的就是平衡感！而在意志方面的好处更是不少。总之攀岩运动是一项深受青年人喜欢的运动，对我们的身心健康大有好处。 </p>-->
-                        <!--<img src="img/climbing.jpg" alt="img" class="current__img">-->
-                        <!--<h1 class="text-center yel_line current__title">瑜伽的益处，你知道吗？</h1>-->
-                        <!--<p class="current__text">瑜伽是生理上的动态运动及心灵上的练习，也是应用在每天的生活哲学。瑜伽的习练目标是达到对自身心灵的良好理解以及调控，能熟知并掌握肉身感官，感官的集中点就是心意，能够驾御心意，即代表能够驾御感官；通过把感官、身体与有意识的呼吸相配合来实现对身体的控制。这些技巧不但对肌肉和骨骼的锻炼有益，也能强化神经系统、内分泌腺体和主要器官的功能，通过激发人体潜在能量来促进身体健康。人体的神经系统、内分泌腺体和主要器官的状况决定着一个人的健康程度。有规律的瑜伽练习有助于消除心理紧张，以及由于疏忽身体健康或提早衰老而造成的体能下降。因此练习瑜伽能保持活力，令思路清晰。现代生活节奏快，竞争激烈，压力较大。当然，适度的压力也是必要的，因为压力可以激发兴趣，振奋精神，使人精力充沛。但是，如果这种压力超过我们所能承受的限度，身体就会感到紧张不适，自我免疫力下降，体力不支，有时还包括心理上的挫败感、肌肉紧张（可导致脊椎疼痛）、疲累不堪、呼吸短促甚至神志不清等。 瑜伽包含伸展、力量、耐力和强化心肺功能的练习，促进身体健康，有协调整个机体的功能，学习如何使身体健康运作的同时也增加了身体的活力。此外，培养心灵和谐和情感稳定的状态也引导你改善自身的生理、感情、心理和精神状态，使身体协调平衡，保持健康。</p>-->
-                        <!--<img src="img/yoga1.jpg" alt="img" class="current__img">-->
-                        <blockquote class="quote current__quote">谱写生命之歌，弘杨运动精神。</blockquote>
-                        <p class="current__text">发展体育事业必须始终坚持两手抓：一手抓竞技体育人才的培养；一手抓群众体育运动的普及。</p>
-                    </div>
-                </div>
-                <div class="col-sm-12 col-md-9 tags">
-                    <p>标签:</p>
-                    <ul>
-                        <li>
-                            <a href="#" title="World" class="font">游泳馆</a>
-                        </li>
-                        <li>
-                            <a class="yellow font" href="#" title="Sport">室内攀爬</a>
-                        </li>
-                        <li>
-                            <a href="#" title="Cats" class="font">瑜伽</a>
-                        </li>
-                    </ul>
-                </div>
-
             </div>
         </article>
     </div>
-    <!-- Footer -->
-    <footer class="footer slate_gray">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6">
-                    <p class="copyright"><a href="http://www.cssmoban.com/" target="_blank" style="color: mintcream">Made By </a><a href="http://www.cssmoban.com/"  target="_blank"></a></p>
-                </div>
-            </div>
-        </div>
-    </footer>
 </div>
 
 <script src="js/jquery/2.0.0/jquery.min.js"></script>

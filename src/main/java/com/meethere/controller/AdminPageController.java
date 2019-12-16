@@ -3,6 +3,7 @@ package com.meethere.controller;
 import com.meethere.pojo.Admin;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 
@@ -71,11 +72,6 @@ public class AdminPageController extends BasicController{
 	@GetMapping(value="/admin_timeSlot_list")
 	public String listTimeSlot(){
 		return "admin/listTimeSlot";
-	}
-
-	@GetMapping(value="/admin_timeSlot_edit")
-	public String editTimeSlot(){
-		return "admin/editTimeSlot";
 	}
 
 	@GetMapping(value="/admin_booking_list")

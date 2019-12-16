@@ -130,7 +130,7 @@ public class VenueServiceImplTest {
 	public void should_create_3_times_when_save_venue() throws ParseException {
 		when(venueDAO.save(venue)).thenReturn(venue);
 
-		venueService.search(1,null,venue,0,100,1,5,8);
+		venueService.saveVenue(venue);
 
 		verify(timeSlotService).createByVenue(venue,0);
 		verify(timeSlotService).createByVenue(venue,1);

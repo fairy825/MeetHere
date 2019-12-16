@@ -24,14 +24,16 @@ public class News {
 	public News() {
 	}
 
-	public News(Integer id,String title) {
+	public News(Integer id,String title,Date createDate) {
 		this.id=id;
 		this.title=title;
+		this.createDate=createDate;
 	}
 
 	public static class NewsBuilder{
 		private Integer id;
 		private String title;
+		private Date createDate;
 
 		public News.NewsBuilder id(Integer id){
 			this.id = id;
@@ -42,9 +44,13 @@ public class News {
 			this.title = title;
 			return this;
 		}
+		public News.NewsBuilder createDate(Date date){
+			this.createDate=date;
+			return this;
+		}
 
 		public News build(){
-			return new News(id,title);
+			return new News(id,title,createDate);
 		}
 	}
 

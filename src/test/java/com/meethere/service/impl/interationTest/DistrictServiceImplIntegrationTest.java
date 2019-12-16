@@ -54,9 +54,9 @@ public class DistrictServiceImplIntegrationTest {
 		District district2=new District.DistrictBuilder().id(2).name("ds2").venues(venues).build();
 		District district3=new District.DistrictBuilder().id(3).name("ds3").venues(venues).build();
 
-		districtDAO.save(district1);
-		districtDAO.save(district2);
-		districtDAO.save(district3);
+		district1=districtDAO.save(district1);
+		district2=districtDAO.save(district2);
+		district3=districtDAO.save(district3);
 
 		//list
 		Page4Navigator<District> entries= districtService.list(null,0,8,5);
@@ -64,14 +64,14 @@ public class DistrictServiceImplIntegrationTest {
 		assertEquals(3,entries.getTotalElements());
 		assertEquals(1,entries.getTotalPages());
 		assertEquals(3,entries.getContent().size());
-		assertEquals(district1.getId(),entries.getContent().get(0).getId());
+		assertEquals("ds3",entries.getContent().get(0).getName());
 
 		entries= districtService.list("",0,8,5);
 		assertEquals(8,entries.getSize());
 		assertEquals(3,entries.getTotalElements());
 		assertEquals(1,entries.getTotalPages());
 		assertEquals(3,entries.getContent().size());
-		assertEquals(district1.getId(),entries.getContent().get(0).getId());
+		assertEquals("ds3",entries.getContent().get(0).getName());
 
 		entries= districtService.list("ds1",0,8,5);
 		assertEquals(8,entries.getSize());

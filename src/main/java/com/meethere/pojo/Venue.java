@@ -40,7 +40,7 @@ public class Venue {
 		this.name = name;
 	}
 
-	public Venue(Integer id, String name,Integer startTime,Integer endTime,Integer totalSeat,Float price
+	public Venue(Integer id, String name,Integer startTime,Integer endTime,Integer totalSeat,Float price,District district
 	) {
 		this.id=id;
 		this.name = name;
@@ -48,6 +48,7 @@ public class Venue {
 		this.endTime=endTime;
 		this.totalSeat=totalSeat;
 		this.price=price;
+		this.district=district;
 
 	}
 
@@ -58,6 +59,7 @@ public class Venue {
 		private Integer endTime;
 		private Integer totalSeat;
 		private Float price;
+		private District district;
 
 
 		public VenueBuilder id(Integer id){
@@ -89,8 +91,13 @@ public class Venue {
 			return this;
 		}
 
+		public VenueBuilder district(District district){
+			this.district = district;
+			return this;
+		}
+
 		public Venue build(){
-			return new Venue(id,name,startTime,endTime,totalSeat,price);
+			return new Venue(id,name,startTime,endTime,totalSeat,price,district);
 		}
 	}
 

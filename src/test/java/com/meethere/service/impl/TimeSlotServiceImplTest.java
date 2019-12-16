@@ -75,7 +75,7 @@ public class TimeSlotServiceImplTest {
 		Date d=dateArgumentCaptor.getValue();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String dateString = formatter.format(d);
-		assertEquals(dateString,"2019-12-12");
+		assertEquals("2019-12-17",dateString);
 
 	}
 

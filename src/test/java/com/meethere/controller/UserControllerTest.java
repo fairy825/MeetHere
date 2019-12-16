@@ -43,8 +43,8 @@ import static org.junit.Assert.*;
 public class UserControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
-    @Mock
-    private Page4Navigator<User> page;
+//    @Mock
+    private Page4Navigator<User> page=new Page4Navigator<>();
     @Mock
     MockHttpSession mockHttpSession;
     //@MockBean=@Autowired+mock方法实例化对象
@@ -104,12 +104,12 @@ public class UserControllerTest {
                 .email("7777@meethere.com").nickname("meethere2")
                 .faceImage("img/faceImage/201901206.jpg").build();
         String userJson = JSONObject.toJSONString(user2);
-        when(userService.search(any(),anyInt(),anyInt(),anyInt())).thenReturn((Page4Navigator)page);
+        when(userService.search(any(),anyInt(),anyInt(),anyInt())).thenReturn(page);
         mockMvc.perform(MockMvcRequestBuilders.post(new URI("/users?start=0&size=8"))
                 .contentType(MediaType.APPLICATION_JSON).content(userJson))
-//                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
-//                .andExpect(MockMvcResultMatchers.jsonPath("msg").value("OK"))
+                .andExpect(MockMvcResultMatchers.jsonPath("msg").value("OK"))
                 .andDo(MockMvcResultHandlers.print());
         verify(userService,times(1)).search(any(),eq(0),eq(8),eq(5));
     }

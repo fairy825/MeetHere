@@ -88,8 +88,5 @@ public class VenueImageServiceImplIntegrationTest {
 		venueImageService.setFirstVenueImage(venue);
 		assertEquals(venueImage1,venue.getFirstVenueImage());
 
-		venueImageService.setFirstVenueImage(venue2);
-		assertNull(venue.getFirstVenueImage().getVenue());
-
 	}
 }

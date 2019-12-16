@@ -35,8 +35,7 @@ public class VenueImageController extends BasicController{
 	@GetMapping("/venues/{vid}/venueImages")
     public IMoocJSONResult list(@PathVariable("vid") int vid) throws Exception {
 //        Venue venue = venueService.get(vid);
-        List<VenueImage> venueImages = new ArrayList<>();
-		venueImages =  venueImageService.listByVenue(vid);
+        List<VenueImage> venueImages =  venueImageService.listByVenue(vid);
         return IMoocJSONResult.ok(venueImages);
 
     }

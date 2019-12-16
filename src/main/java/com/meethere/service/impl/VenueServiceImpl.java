@@ -129,6 +129,8 @@ public class VenueServiceImpl implements VenueService {
                 case "all":
                     Collections.sort(res,new VenueAllComparator());
                     break;
+                default:
+                    break;
             }
         }
 
@@ -164,6 +166,8 @@ public class VenueServiceImpl implements VenueService {
                     break;
                 case "all":
                     Collections.sort(venueList,new VenueAllComparator());
+                    break;
+                default:
                     break;
             }
         }

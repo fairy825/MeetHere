@@ -130,13 +130,13 @@ public class Booking {
 		this.remark = remark;
 	}
 	public Date getPayDate() {
-		return payDate;
+		return (Date)payDate.clone();
 	}
 	public void setPayDate(Date payDate) {
 		this.payDate = payDate;
 	}
 	public Date getArriveDate() {
-		return arriveDate;
+		return (Date)arriveDate.clone();
 	}
 	public void setArriveDate(Date arriveDate) {
 		this.arriveDate = arriveDate;
@@ -148,7 +148,7 @@ public class Booking {
 		this.state = state;
 	}
 	public Date getCreateDate() {
-		return createDate;
+		return (Date)createDate.clone();
 	}
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;

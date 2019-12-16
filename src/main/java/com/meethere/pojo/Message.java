@@ -113,7 +113,7 @@ public class Message {
 		this.content = content;
 	}
 	public Date getCreateDate() {
-		return createDate;
+		return (Date)createDate.clone();
 	}
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;

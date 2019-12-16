@@ -120,7 +120,7 @@ public class TimeSlot {
 	}
 
 	public Date getBookingDate() {
-		return bookingDate;
+		return (Date)bookingDate.clone();
 	}
 	public void setBookingDate(Date bookingDate) {
 		this.bookingDate = bookingDate;

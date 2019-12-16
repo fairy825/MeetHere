@@ -48,7 +48,7 @@ public class MessageController extends BasicController{
             throws Exception {
         User user = (User)session.getAttribute("user");
         Booking booking = bookingService.get(bid);
-        if(user==null||booking.getUser().getId()!=user.getId())
+        if(user==null||booking.getUser().getId().equals(user.getId()))
             return IMoocJSONResult.build(501,"未登录",null);
         return IMoocJSONResult.ok(messageService.queryByBooking(booking));
     }
@@ -70,7 +70,7 @@ public class MessageController extends BasicController{
         if(!booking.getState().equalsIgnoreCase(bookingService.waitReview))
             return IMoocJSONResult.errorMsg("评论已超期");
         User user = (User)session.getAttribute("user");
-        if(user==null||booking.getUser().getId()!=user.getId())
+        if(user==null||booking.getUser().getId().equals(user.getId()))
             return IMoocJSONResult.build(501,"未登录",null);
 
         message.setUser(user);

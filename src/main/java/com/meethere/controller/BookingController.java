@@ -98,7 +98,7 @@ public class BookingController extends BasicController{
     public IMoocJSONResult delete(@PathVariable("id") int id,HttpSession session) throws Exception {
         User user = (User)session.getAttribute("user");
         Booking booking = bookingService.get(id);
-        if(user==null||booking.getUser().getId()!=user.getId())
+        if(user==null||booking.getUser().getId().equals(user.getId()))
             return IMoocJSONResult.build(501,"未登录",null);
         booking.setState(delete);
         bookingService.update(booking);
@@ -126,7 +126,7 @@ public class BookingController extends BasicController{
     public IMoocJSONResult payed( @PathVariable("id")Integer id, HttpSession session) throws Exception {
         User user = (User)session.getAttribute("user");
         Booking booking = bookingService.get(id);
-        if(user==null||booking.getUser().getId()!=user.getId())
+        if(user==null||booking.getUser().getId().equals(user.getId()))
             return IMoocJSONResult.build(501,"未登录",null);
         if(!booking.getState().equalsIgnoreCase("waitPay"))
             return IMoocJSONResult.errorMsg("付款已超期");
@@ -153,7 +153,7 @@ public class BookingController extends BasicController{
     public IMoocJSONResult cancel(@PathVariable("id") int id,HttpSession session) throws Exception {
         User user = (User)session.getAttribute("user");
         Booking booking = bookingService.get(id);
-        if(user==null||booking.getUser().getId()!=user.getId())
+        if(user==null||booking.getUser().getId().equals(user.getId()))
             return IMoocJSONResult.build(501,"未登录",null);
         booking.setState(cancelled);
         bookingService.update(booking);

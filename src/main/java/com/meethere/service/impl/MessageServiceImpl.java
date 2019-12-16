@@ -13,10 +13,7 @@ import com.meethere.service.VenueService;
 import com.meethere.util.Page4Navigator;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +35,7 @@ public class MessageServiceImpl implements MessageService {
         Venue venue = venueService.get(vid);
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         Pageable pageable = new PageRequest(start, size,sort);
-        Page pageFromJPA = null;
+        Page pageFromJPA = (Page) new Object();
         if(status==0)
             pageFromJPA = messageDAO.findByVenue(venue,pageable);
         else if(status==1)//只查找已通过的留言

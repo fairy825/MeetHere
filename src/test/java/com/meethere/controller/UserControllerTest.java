@@ -205,7 +205,4 @@ public class UserControllerTest {
         verify(userService).update(any());
 
     }
-    @Test
-    public void upload() {
-    }
 }

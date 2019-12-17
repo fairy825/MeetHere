@@ -176,32 +176,32 @@ public class BookingController extends BasicController{
         return IMoocJSONResult.ok(booking);
     }
 
-    @Scheduled(cron = "0 0 * * * ? ")//每个小时更新
-    public void changeBookingState() throws ParseException {
-        Calendar rightNow = Calendar.getInstance();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = formatter.format(rightNow.getTime());
-        Date nowDate = new Timestamp(formatter.parse(dateString).getTime());
-
-        int nowHour = rightNow.get(Calendar.HOUR_OF_DAY);
-        String nextState = "";
-        List<Booking> bookings = bookingService.findAll();
-        for(Booking b : bookings) {
-            int begin = b.getTimeSlot().getBeginTime();
-            int end = b.getTimeSlot().getEndTime();
-            Date bookingDate = b.getTimeSlot().getBookingDate();
-            String curState = b.getState();
-            nextState = curState;
-            if((bookingDate.before(nowDate))||(nowHour>=end&&bookingDate.equals(nowDate))){
-                if(curState.equals(waitPay)||curState.equals(waitTime)
-                        ||curState.equals(waitArrive)||curState.equals(waitApprove))
-                    nextState = cancelled;
-            }else if(nowHour==begin&&bookingDate.equals(nowDate)){
-                if(curState.equals(waitTime))
-                    nextState = waitArrive;
-            }
-            b.setState(nextState);
-            bookingService.update(b);
-        }
-    }
+//    @Scheduled(cron = "0 0 * * * ? ")//每个小时更新
+//    public void changeBookingState() throws ParseException {
+//        Calendar rightNow = Calendar.getInstance();
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//        String dateString = formatter.format(rightNow.getTime());
+//        Date nowDate = new Timestamp(formatter.parse(dateString).getTime());
+//
+//        int nowHour = rightNow.get(Calendar.HOUR_OF_DAY);
+//        String nextState = "";
+//        List<Booking> bookings = bookingService.findAll();
+//        for(Booking b : bookings) {
+//            int begin = b.getTimeSlot().getBeginTime();
+//            int end = b.getTimeSlot().getEndTime();
+//            Date bookingDate = b.getTimeSlot().getBookingDate();
+//            String curState = b.getState();
+//            nextState = curState;
+//            if((bookingDate.before(nowDate))||(nowHour>=end&&bookingDate.equals(nowDate))){
+//                if(curState.equals(waitPay)||curState.equals(waitTime)
+//                        ||curState.equals(waitArrive)||curState.equals(waitApprove))
+//                    nextState = cancelled;
+//            }else if(nowHour==begin&&bookingDate.equals(nowDate)){
+//                if(curState.equals(waitTime))
+//                    nextState = waitArrive;
+//            }
+//            b.setState(nextState);
+//            bookingService.update(b);
+//        }
+//    }
 }

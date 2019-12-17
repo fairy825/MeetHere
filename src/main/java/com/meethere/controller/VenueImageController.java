@@ -8,14 +8,18 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import com.meethere.pojo.User;
 import com.meethere.pojo.Venue;
 import com.meethere.pojo.VenueImage;
+import com.meethere.service.UserService;
 import com.meethere.service.VenueImageService;
 import com.meethere.service.VenueService;
 import com.meethere.util.IMoocJSONResult;
 import com.meethere.util.ImageUtil;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +32,8 @@ import com.meethere.service.VenueService;
  
 @RestController
 public class VenueImageController extends BasicController{
+	@Autowired
+	UserService userService;
 	@Autowired
 	VenueService venueService;
 	@Autowired
@@ -96,4 +102,36 @@ public class VenueImageController extends BasicController{
 
 		return IMoocJSONResult.ok();
     }
+	@PostMapping("/users/upload")
+	public IMoocJSONResult upload(@RequestParam("image") MultipartFile image, HttpSession session) throws Exception {
+		User user = (User)session.getAttribute("user");
+		String folder = FILE_SPACE + "/faceImage";
+		String fName = image.getOriginalFilename();
+//        String path = folder + "/" + user.getId()+".jpg";
+//        String pathDB =  "img/faceImage/" + user.getId()+".jpg";
+		String path = folder + "/" + fName;
+		String pathDB =  "img/faceImage/" + fName;
+		User userDB = new User();
+		BeanUtils.copyProperties(user,userDB);
+		userDB.setFaceImage(pathDB);
+		userService.update(user);
+		System.out.println(path);
+		System.out.println(pathDB);
+		File file = new File(path);
+		String fileName = file.getName();
+		if(!file.getParentFile().exists())
+			file.getParentFile().mkdirs();
+		try {
+			image.transferTo(file);
+			BufferedImage img = ImageUtil.change2jpg(file);
+			ImageIO.write(img, "jpg", file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String imageFolder_small= FILE_SPACE+"/faceImage_small";
+		File f_small = new File(imageFolder_small, fileName);
+		f_small.getParentFile().mkdirs();
+		ImageUtil.resizeImage(file, 56, 56, f_small);
+		return IMoocJSONResult.ok(pathDB);
+	}
 }

@@ -78,7 +78,7 @@ public class MessageControllerTest {
 
 		existBooking=new Booking.BookingBuilder().user(user).state(BookingService.waitReview).id(1).build();
 		nullBooking=new Booking.BookingBuilder().id(0).build();
-		message=new Message.MessageBuilder().id(1).state(MessageService.refused).build();
+		message=new Message.MessageBuilder().id(1).booking(existBooking).state(MessageService.refused).build();
 
 	}
 
@@ -184,6 +184,54 @@ public class MessageControllerTest {
 		ArgumentCaptor<Message> messageArgumentCaptor=ArgumentCaptor.forClass(Message.class);
 		verify(messageService).saveMessage(messageArgumentCaptor.capture());
 		assertEquals(MessageService.waitApprove,messageArgumentCaptor.getValue().getState());
+	}
+
+	//list
+	@Test
+	public void should_list_all() throws Exception {
+		when(messageService.get(anyInt())).thenReturn(message);
+		when(bookingService.get(anyInt())).thenReturn(existBooking);
+		when(venueService.get(anyInt())).thenReturn(venue);
+
+		String messageJson= JSONObject.toJSONString(message);
+
+		mockMvc.perform(MockMvcRequestBuilders.get(new URI(baseUrl+"?start=0&size=8"))
+				.contentType(MediaType.APPLICATION_JSON).content(messageJson))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(MockMvcResultMatchers.jsonPath("msg").value("OK"))
+				.andDo(MockMvcResultHandlers.print());
+
+		ArgumentCaptor<Integer> intArgCaptor1 = ArgumentCaptor.forClass(Integer.class);
+		ArgumentCaptor<Integer> intArgCaptor2 = ArgumentCaptor.forClass(Integer.class);
+		verify(messageService).list(intArgCaptor1.capture(),intArgCaptor2.capture(),eq(5));
+		assertEquals(Integer.valueOf(0), intArgCaptor1.getValue());
+		assertEquals(Integer.valueOf(8), intArgCaptor2.getValue());
+	}
+
+	//suspend
+	@Test
+	public void should_delete() throws Exception {
+		when(messageService.get(anyInt())).thenReturn(message);
+		when(bookingService.get(anyInt())).thenReturn(existBooking);
+		doNothing().when(messageService).delete(anyInt());
+		when(mockHttpSession.getAttribute("user")).thenReturn(user);
+
+
+		String messageJson= JSONObject.toJSONString(message);
+
+		mockMvc.perform(MockMvcRequestBuilders.delete(new URI(baseUrl+"/1"))
+				.session(mockHttpSession)
+				.contentType(MediaType.APPLICATION_JSON).content(messageJson))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(MockMvcResultMatchers.jsonPath("msg").value("OK"))
+				.andDo(MockMvcResultHandlers.print());
+
+		ArgumentCaptor<Booking> bookingArgumentCaptor=ArgumentCaptor.forClass(Booking.class);
+		verify(bookingService).update(bookingArgumentCaptor.capture());
+		assertEquals("waitReview", bookingArgumentCaptor.getValue().getState());
+
 	}
 
 }

@@ -75,7 +75,7 @@ public class TimeSlotServiceImplTest {
 		Date d=dateArgumentCaptor.getValue();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String dateString = formatter.format(d);
-		assertEquals("2019-12-17",dateString);
+		assertEquals("2019-12-18",dateString);
 
 	}
 
@@ -98,5 +98,32 @@ public class TimeSlotServiceImplTest {
 		timeSlotService.addNewTimeSlot(1);
 
 		verify(timeSlotDAO,times(16)).save((TimeSlot) any());//2*8
+	}
+
+	@Test
+	public void should_update_success() throws ParseException {
+		when(timeSlotDAO.save(timeSlot)).thenReturn(timeSlot);
+
+		timeSlotService.update(timeSlot);
+
+		verify(timeSlotDAO).save(timeSlot);
+	}
+
+	@Test
+	public void should_get_success() throws ParseException {
+		when(timeSlotDAO.findOne(anyInt())).thenReturn(timeSlot);
+
+		timeSlotService.get(1);
+
+		verify(timeSlotDAO).getOne(1);
+	}
+
+	@Test
+	public void should_save_success() throws ParseException {
+		when(timeSlotDAO.save(timeSlot)).thenReturn(timeSlot);
+
+		timeSlotService.saveTimeSlot(timeSlot);
+
+		verify(timeSlotDAO).save(timeSlot);
 	}
 }

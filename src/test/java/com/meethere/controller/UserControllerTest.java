@@ -93,10 +93,6 @@ public class UserControllerTest {
         verify(userService,times(1)).get(1);
     }
 
-    /**
-     *
-     * 我让他强行通过了 但是返回的status应该是200，实际却返回500 找到原因了请告诉我谢谢
-     * */
     //search
     @Test
     public void should_get_first_user_page() throws Exception {

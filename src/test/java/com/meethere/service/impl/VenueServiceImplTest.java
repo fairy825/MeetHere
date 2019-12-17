@@ -3,6 +3,7 @@ package com.meethere.service.impl;
 import com.meethere.Application;
 import com.meethere.dao.VenueDAO;
 import com.meethere.pojo.District;
+import com.meethere.pojo.User;
 import com.meethere.pojo.Venue;
 import com.meethere.service.*;
 import org.junit.Before;
@@ -59,11 +60,11 @@ public class VenueServiceImplTest {
 	@Before
 	public void setUp() {
 		pageFromJPA = mock(Page.class);
-		venue=new Venue.VenueBuilder().id(1).price(2f).name("vn").startTime(1).endTime(9).totalSeat(100).build();
+		district=new District.DistrictBuilder().id(1).name("dis1").venues(venueList).build();
+		venue=new Venue.VenueBuilder().id(1).price(2f).name("vn").district(district).startTime(1).endTime(9).totalSeat(100).build();
 		venueList=new ArrayList<>();
 		venueList.add(venue);
 		venueList.add(venue);
-		district=new District.DistrictBuilder().id(1).name("dis1").venues(venueList).build();
 
 	}
 
@@ -137,6 +138,50 @@ public class VenueServiceImplTest {
 		verify(timeSlotService).createByVenue(venue,2);
 
 	}
+
+	@Test
+	public void should_get_by_keyWord(){
+		when(districtService.get(1)).thenReturn(district);
+		when(venueDAO.findByNameLike(anyString())).thenReturn(venueList);
+
+		venueService.searchByKeyword(1,"all","ex",1,100,0,5,8);
+
+		verify(venueDAO).findByNameLike(anyString());
+	}
+
+	@Test
+	public void should_delete_success(){
+		doNothing().when(venueDAO).delete(anyInt());
+
+		venueService.delete(1);
+
+		verify(venueDAO).delete(anyInt());
+	}
+
+	//saveVenue
+	@Test
+	public void should_save_venue() throws ParseException {
+		when(venueDAO.save((Venue) any())).thenReturn(venue);
+		doNothing().when(timeSlotService).createByVenue(any(),anyInt());
+		//Execute
+		venueService.saveVenue(venue);
+		//verify mapping
+		verify(venueDAO, times(1)).save(venue);
+	}
+
+	//update
+	@Test
+	public void should_update_venue() throws ParseException {
+		when(venueDAO.save((Venue) any())).thenReturn(venue);
+		//Execute
+		venueService.update(venue);
+		//verify mapping
+		verify(venueDAO, times(1)).save(venue);
+	}
+
+
+
+
 
 
 

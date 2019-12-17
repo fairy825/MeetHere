@@ -35,15 +35,17 @@ public class Message {
 	public Message(Integer id) {
 		this.id=id;
 	}
-	public Message(Integer id,Venue venue,String state) {
+	public Message(Integer id,Venue venue,String state,Booking booking) {
 		this.id=id;
 		this.venue=venue;
 		this.state=state;
+		this.booking=booking;
 	}
 	public static class MessageBuilder{
 		private Integer id;
 		private Venue venue;
 		private String state;
+		private Booking booking;
 
 		public Message.MessageBuilder id(Integer id){
 			this.id = id;
@@ -59,9 +61,13 @@ public class Message {
 			this.state = state;
 			return this;
 		}
+		public Message.MessageBuilder booking(Booking booking){
+			this.booking = booking;
+			return this;
+		}
 
 		public Message build(){
-			return new Message(id,venue,state);
+			return new Message(id,venue,state,booking);
 		}
 	}
 

@@ -4,8 +4,6 @@ import com.meethere.Application;
 import com.meethere.dao.AdminDAO;
 import com.meethere.pojo.Admin;
 import com.meethere.service.AdminService;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

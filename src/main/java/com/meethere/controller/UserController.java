@@ -76,36 +76,36 @@ public class UserController extends BasicController{
 
         }
     }
-    @PostMapping("/upload")
-    public IMoocJSONResult upload(@RequestParam("image") MultipartFile image, HttpSession session) throws Exception {
-        User user = (User)session.getAttribute("user");
-        String folder = FILE_SPACE + "/faceImage";
-        String fName = image.getOriginalFilename();
-//        String path = folder + "/" + user.getId()+".jpg";
-//        String pathDB =  "img/faceImage/" + user.getId()+".jpg";
-        String path = folder + "/" + fName;
-        String pathDB =  "img/faceImage/" + fName;
-        User userDB = new User();
-        BeanUtils.copyProperties(user,userDB);
-        userDB.setFaceImage(pathDB);
-        userService.update(user);
-        System.out.println(path);
-        System.out.println(pathDB);
-        File file = new File(path);
-        String fileName = file.getName();
-        if(!file.getParentFile().exists())
-            file.getParentFile().mkdirs();
-        try {
-            image.transferTo(file);
-            BufferedImage img = ImageUtil.change2jpg(file);
-            ImageIO.write(img, "jpg", file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String imageFolder_small= FILE_SPACE+"/faceImage_small";
-        File f_small = new File(imageFolder_small, fileName);
-        f_small.getParentFile().mkdirs();
-        ImageUtil.resizeImage(file, 56, 56, f_small);
-        return IMoocJSONResult.ok(pathDB);
-    }
+//    @PostMapping("/upload")
+//    public IMoocJSONResult upload(@RequestParam("image") MultipartFile image, HttpSession session) throws Exception {
+//        User user = (User)session.getAttribute("user");
+//        String folder = FILE_SPACE + "/faceImage";
+//        String fName = image.getOriginalFilename();
+////        String path = folder + "/" + user.getId()+".jpg";
+////        String pathDB =  "img/faceImage/" + user.getId()+".jpg";
+//        String path = folder + "/" + fName;
+//        String pathDB =  "img/faceImage/" + fName;
+//        User userDB = new User();
+//        BeanUtils.copyProperties(user,userDB);
+//        userDB.setFaceImage(pathDB);
+//        userService.update(user);
+//        System.out.println(path);
+//        System.out.println(pathDB);
+//        File file = new File(path);
+//        String fileName = file.getName();
+//        if(!file.getParentFile().exists())
+//            file.getParentFile().mkdirs();
+//        try {
+//            image.transferTo(file);
+//            BufferedImage img = ImageUtil.change2jpg(file);
+//            ImageIO.write(img, "jpg", file);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        String imageFolder_small= FILE_SPACE+"/faceImage_small";
+//        File f_small = new File(imageFolder_small, fileName);
+//        f_small.getParentFile().mkdirs();
+//        ImageUtil.resizeImage(file, 56, 56, f_small);
+//        return IMoocJSONResult.ok(pathDB);
+//    }
 }

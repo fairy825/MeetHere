@@ -57,7 +57,7 @@ public class AdminPageControllerTest {
 	private Page4Navigator<User> page;
 	@Mock
 	MockHttpSession mockHttpSession;
-	@Mock
+	@MockBean
 	RedisOperator mockRedis;
 	private Admin admin;
 
@@ -80,11 +80,29 @@ public class AdminPageControllerTest {
 	}
 
 	@Test
+	public void should_return_index() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get(new URI("/")))
+				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("first"))
+				.andDo(MockMvcResultHandlers.print());
+	}
+
+	@Test
 	public void should_return_alogin() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get(new URI("/alogin")))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentType("text/html;charset=UTF-8"))
 				.andExpect(MockMvcResultMatchers.view().name("admin/adminLogin"))
+				.andDo(MockMvcResultHandlers.print());
+	}
+
+	@Test
+	public void should_return_alogout() throws Exception {
+		when(mockHttpSession.getAttribute("admin")).thenReturn(admin);
+		doNothing().when(mockRedis).del(anyString());
+		mockMvc.perform(MockMvcRequestBuilders.get(new URI("/alogout")).session(mockHttpSession))
+				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+				.andExpect(MockMvcResultMatchers.redirectedUrl("first"))
 				.andDo(MockMvcResultHandlers.print());
 	}
 
@@ -130,6 +148,16 @@ public class AdminPageControllerTest {
 				.andExpect(MockMvcResultMatchers.view().name("admin/listVenue"))
 				.andDo(MockMvcResultHandlers.print());
 	}
+
+	@Test
+	public void should_return_admin_news_list() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get(new URI("/admin_news_list")))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.content().contentType("text/html;charset=UTF-8"))
+				.andExpect(MockMvcResultMatchers.view().name("admin/listNews"))
+				.andDo(MockMvcResultHandlers.print());
+	}
+
 	@Test
 	public void should_return_admin_venue_edit() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get(new URI("/admin_venue_edit")))

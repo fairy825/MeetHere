@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -8,6 +9,7 @@
         <version>1.5.9.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.meethere</groupId>
     <artifactId>meethere</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -164,7 +166,29 @@
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>0.8.2</version>
         </dependency>
+
+        <!--allure-->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-junit4</artifactId>
+            <version>2.13.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>1.4.9</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tngtech.java</groupId>
+            <artifactId>junit-dataprovider</artifactId>
+            <version>1.13.1</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
+
+
 
     <build>
         <plugins>
@@ -192,10 +216,18 @@
                     <destFile>target/coverage-reports/jacoco-unit.exec</destFile>
                     <dataFile>target/coverage-reports/jacoco-unit.exec</dataFile>
                     <includes>
-                        <!--<include>**/service/**</include>-->
+                        <include>**/service/**</include>
                         <include>**/controller/**</include>
-                        <include>**/service/impl/*.class</include>
+                        <!--<include>**/service/impl/*.class</include>-->
                     </includes>
+                    <excludes>
+                        <exclude>**/controller/ForePageController.*</exclude>
+                        <exclude>**/controller/VenueImageController.*</exclude>
+                        <exclude>**/controller/RegistLoginController.*</exclude>
+                        <exclude>**/controller/BasicController.*</exclude>
+                        <exclude>**/service/impl/VenueImageServiceImpl.*</exclude>
+
+                    </excludes>
                     <!-- rules里面指定覆盖规则 -->
                     <rules>
                         <rule implementation="org.jacoco.maven.RuleConfiguration">
@@ -248,6 +280,45 @@
                 </executions>
 
             </plugin>
+
+
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-surefire-plugin</artifactId>-->
+                <!--<version>2.22.2</version>-->
+                <!--<configuration>-->
+                    <!--<useSystemClassLoader>false</useSystemClassLoader>-->
+                    <!--<argLine>-->
+                        <!-- -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"-->
+                    <!--</argLine>-->
+                    <!--<properties>-->
+                        <!--<property>-->
+                            <!--<name>listener</name>-->
+                            <!--<value>io.qameta.allure.junit4.AllureJunit4</value>-->
+                        <!--</property>-->
+                    <!--</properties>-->
+                    <!--<systemProperties>-->
+                        <!--<property>-->
+                            <!--<name>allure.results.directory</name>-->
+                            <!--<value>${project.build.directory}/allure-results</value>-->
+                        <!--</property>-->
+                    <!--</systemProperties>-->
+                    <!--&lt;!&ndash;测试失败后，是否忽略并继续测试&ndash;&gt;-->
+                    <!--<testFailureIgnore>true</testFailureIgnore>-->
+                <!--</configuration>-->
+                <!--<dependencies>-->
+                    <!--<dependency>-->
+                        <!--<groupId>org.aspectj</groupId>-->
+                        <!--<artifactId>aspectjweaver</artifactId>-->
+                        <!--<version>${aspectj.version}</version>-->
+                    <!--</dependency>-->
+                <!--</dependencies>-->
+            <!--</plugin>-->
+            <!--<plugin>-->
+                <!--<groupId>io.qameta.allure</groupId>-->
+                <!--<artifactId>allure-maven</artifactId>-->
+                <!--<version>2.10.0</version>-->
+            <!--</plugin>-->
         </plugins>
     </build>
 

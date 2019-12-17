@@ -4,6 +4,8 @@ import com.meethere.Application;
 import com.meethere.dao.AdminDAO;
 import com.meethere.pojo.Admin;
 import com.meethere.service.AdminService;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +19,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+//@Epic("用户单元测试")
+//@Feature("AdminFeature")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 public class AdminServiceImplTest {
@@ -57,5 +61,16 @@ public class AdminServiceImplTest {
         //verify mapping
         verify(adminDAO, times(1)).findByNameAndPassword("a","123");
         assertNull(admin_for_login);
+    }
+
+    @Test
+    public void should_get_admin() {
+        //Stub to return value
+        when(adminDAO.findByName(anyString())).thenReturn(admin);
+        //Execute
+        boolean success = adminService.queryUsernameIsExist("123");
+        //verify mapping
+        verify(adminDAO, times(1)).findByName("123");
+        assertTrue(success);
     }
 }

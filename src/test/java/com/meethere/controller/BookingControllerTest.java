@@ -1,5 +1,6 @@
 package com.meethere.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.meethere.Application;
 import com.meethere.dao.BookingDAO;
 import com.meethere.pojo.Booking;
@@ -48,8 +49,8 @@ public class BookingControllerTest {
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
-	@Mock
-	private Page4Navigator<User> page;
+
+	private Page4Navigator<Booking> page=new Page4Navigator<>();
 	@Mock
 	MockHttpSession mockHttpSession;
 	//@MockBean=@Autowired+mock方法实例化对象
@@ -84,7 +85,7 @@ public class BookingControllerTest {
 				.faceImage("img/faceImage/20190906012034.jpg").build();
 
 		venue=new Venue.VenueBuilder().id(1).name("vn").build();
-		booking=new Booking.BookingBuilder().id(1).venue(venue).user(user).state(BookingService.waitPay).build();
+		booking=new Booking.BookingBuilder().id(1).venue(venue).user(user).timeSlot(timeSlot).state(BookingService.waitPay).build();
 
 
 	}
@@ -207,6 +208,154 @@ public class BookingControllerTest {
 				.andExpect(MockMvcResultMatchers.jsonPath("msg").value("付款已超期"))
 				.andDo(MockMvcResultHandlers.print());
 	}
+
+	//refuse
+	@Test
+	public void should_refuse_booking() throws Exception {
+
+		when(bookingService.get(anyInt())).thenReturn(booking);
+
+		mockMvc.perform(MockMvcRequestBuilders.put(new URI(baseUrl+"/refuse/1")))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(MockMvcResultMatchers.jsonPath("msg").value("OK"))
+				.andDo(MockMvcResultHandlers.print());
+
+		ArgumentCaptor<Booking> bookingArgumentCaptor=ArgumentCaptor.forClass(Booking.class);
+
+		verify(bookingService).update(bookingArgumentCaptor.capture());
+		assertEquals("refused",bookingArgumentCaptor.getValue().getState());
+	}
+
+	//cancel
+	@Test
+	public void should_cancel_booking() throws Exception {
+
+		when(bookingService.get(anyInt())).thenReturn(booking);
+		when(mockHttpSession.getAttribute("user")).thenReturn(user);
+
+		mockMvc.perform(MockMvcRequestBuilders.put(new URI(baseUrl+"/cancel/1")).session(mockHttpSession))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(MockMvcResultMatchers.jsonPath("msg").value("OK"))
+				.andDo(MockMvcResultHandlers.print());
+
+		ArgumentCaptor<Booking> bookingArgumentCaptor=ArgumentCaptor.forClass(Booking.class);
+
+		verify(bookingService).update(bookingArgumentCaptor.capture());
+		assertEquals("cancelled",bookingArgumentCaptor.getValue().getState());
+	}
+
+	//approve
+	@Test
+	public void should_approve_booking() throws Exception {
+
+		when(bookingService.get(anyInt())).thenReturn(booking);
+
+		mockMvc.perform(MockMvcRequestBuilders.put(new URI(baseUrl+"/approve/1")))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(MockMvcResultMatchers.jsonPath("msg").value("OK"))
+				.andDo(MockMvcResultHandlers.print());
+
+		ArgumentCaptor<Booking> bookingArgumentCaptor=ArgumentCaptor.forClass(Booking.class);
+
+		verify(bookingService).update(bookingArgumentCaptor.capture());
+		assertEquals("waitPay",bookingArgumentCaptor.getValue().getState());
+	}
+
+	//add
+	@Test
+	public void should_add_booking() throws Exception {
+
+
+		doNothing().when(bookingService).saveBooking(eq(booking));
+		when(mockHttpSession.getAttribute("user")).thenReturn(user);
+		when(timeSlotService.get(anyInt())).thenReturn(timeSlot);
+
+
+		mockMvc.perform(MockMvcRequestBuilders.get(new URI(baseUrl+"/buy/1"))
+				.session(mockHttpSession))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(MockMvcResultMatchers.jsonPath("msg").value("OK"))
+				.andDo(MockMvcResultHandlers.print());
+
+		verify(bookingService).saveBooking(any());
+	}
+
+	//delete
+	@Test
+	public void should_delete_booking() throws Exception {
+		when(bookingService.get(anyInt())).thenReturn(booking);
+		when(mockHttpSession.getAttribute("user")).thenReturn(user);
+
+		mockMvc.perform(MockMvcRequestBuilders.put(new URI(baseUrl+"/delete/1")).session(mockHttpSession))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(MockMvcResultMatchers.jsonPath("msg").value("OK"))
+				.andDo(MockMvcResultHandlers.print());
+
+		ArgumentCaptor<Booking> bookingArgumentCaptor=ArgumentCaptor.forClass(Booking.class);
+
+		verify(bookingService).update(bookingArgumentCaptor.capture());
+		assertEquals("delete",bookingArgumentCaptor.getValue().getState());
+	}
+
+	//update
+	@Test
+	public void should_update_booking() throws Exception {
+
+		String bookingJson = JSONObject.toJSONString(booking);
+		when(mockHttpSession.getAttribute("user")).thenReturn(user);
+
+
+		mockMvc.perform(MockMvcRequestBuilders.put(new URI(baseUrl)).session(mockHttpSession)
+				.contentType(MediaType.APPLICATION_JSON).content(bookingJson)
+				.session(mockHttpSession))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+				.andDo(MockMvcResultHandlers.print());
+
+		verify(bookingService).update(any());
+	}
+
+	//search
+	@Test
+	public void should_getAll() throws Exception {
+		String bookingJson = JSONObject.toJSONString(booking);
+
+		when(bookingService.search(eq(booking),anyInt(),anyInt(),anyInt())).thenReturn(page);
+		mockMvc.perform(MockMvcRequestBuilders.post(new URI(baseUrl+"?date=0&start=0&size=9"))
+				.contentType(MediaType.APPLICATION_JSON).content(bookingJson))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(MockMvcResultMatchers.jsonPath("msg").value("OK"))
+				.andDo(MockMvcResultHandlers.print());
+
+		verify(bookingService).search(any(),anyInt(),anyInt(),anyInt());
+	}
+
+
+	//myreview
+	@Test
+	public void should_review_when_user_is_not_null() throws Exception {
+		String bookingJson = JSONObject.toJSONString(booking);
+
+		when(mockHttpSession.getAttribute("user")).thenReturn(user);
+		when(bookingService.searchWithoutDelete(eq(booking),anyInt(),anyInt(),anyInt())).thenReturn(page);
+
+		mockMvc.perform(MockMvcRequestBuilders.post(new URI(baseUrl+"/mine?start=0&size=8"))
+				.session(mockHttpSession)
+				.contentType(MediaType.APPLICATION_JSON).content(bookingJson))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(MockMvcResultMatchers.jsonPath("msg").value("OK"))
+				.andDo(MockMvcResultHandlers.print());
+
+		verify(bookingService).searchWithoutDelete(any(),anyInt(),anyInt(),anyInt());
+	}
+
 
 
 

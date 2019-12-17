@@ -4,11 +4,11 @@ package com.meethere.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-
+import java.io.Serializable;
 @Entity
 @Table(name = "user")
 @JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
-public class User {
+public class User implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -143,20 +143,20 @@ public class User {
 	public String getAnonymousName(){
 		if(null==nickname)
 			return null;
-		
+
 		if(nickname.length()<=1)
 			return "*";
-		
+
 		if(nickname.length()==2)
 			return nickname.substring(0,1) +"*";
-		
+
 		char[] cs =nickname.toCharArray();
 		for (int i = 1; i < cs.length-1; i++) {
 			cs[i]='*';
 		}
 		return new String(cs);
-		
-		
+
+
 	}
 
 }

@@ -3,11 +3,12 @@ package com.meethere.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "admin")
 @JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
-public class Admin {
+public class Admin  implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")

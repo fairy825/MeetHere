@@ -35,12 +35,15 @@ public class MessageServiceImpl implements MessageService {
         Venue venue = venueService.get(vid);
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         Pageable pageable = new PageRequest(start, size,sort);
-        Page pageFromJPA = (Page) new Object();
-        if(status==0)
-            pageFromJPA = messageDAO.findByVenue(venue,pageable);
-        else if(status==1)//只查找已通过的留言
-            pageFromJPA = messageDAO.findByVenueAndState(venue,pass,pageable);
-        return new Page4Navigator<>(pageFromJPA,navigatePages);
+        if(status==0||status==1){
+            Page pageFromJPA = null;
+            if(status==0)
+                pageFromJPA = messageDAO.findByVenue(venue,pageable);
+            else//只查找已通过的留言
+                pageFromJPA = messageDAO.findByVenueAndState(venue,pass,pageable);
+            return new Page4Navigator<>(pageFromJPA,navigatePages);
+        }
+        return null;
     }
 
     @Transactional(propagation= Propagation.SUPPORTS)

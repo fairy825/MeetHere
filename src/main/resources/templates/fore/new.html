@@ -21,7 +21,7 @@
     <script src="js/axios/0.17.1/axios.min.js"></script>
     <script src="js/moment/2.22.2/moment.js"></script> <!-- vue.js 格式化日期用的 -->
 
-    <title>News Detail</title>
+    <title>新闻</title>
 </head>
 
 <script>
@@ -94,43 +94,15 @@
 <body>
 <div id="workingArea">
 
-    <header id="header" class="header">
+    <header id="header" class="header" style="z-index: 1">
         <div class="header__top">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="wrap-logo">
-                            <a class="tab-pane__title">News Detail</a>
+                            <a class="tab-pane__title" style="width: 20cm;margin-top: 20px" th:text="新闻"></a>
                         </div>
                     </div>
-
-                    <div class="col-sm-offset-2 col-md-offset-5 col-sm-6 col-md-4 hidden-xs">
-                        <div class="col-xs-4 col-sm-5">
-                            <div class="weather">
-                                <div class="weather__temperature">
-                                    <em class="active"></em>
-                                    <em></em>
-                                    <em></em>
-                                </div>
-                                <div class="weather__city">
-                                    <em>Swimming Pool</em>
-                                    <div class="weather__city__list">
-                                        <ul>
-                                            <li class="active">
-                                                <a href="#">Indoor Climbing</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Yoga</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--<div style="text-align: right;">-->
-                        <!--<a style="color: mintcream;font-family: 'Arial Black';size: A3">注销</a>-->
-                    <!--</div>-->
                 </div>
             </div>
         </div>
@@ -143,88 +115,44 @@
         <div class="header_down">
             <div class="container">
                 <div class="wrapper clearfix bigmegamenu">
-                    <!--Main Menu HTML Code-->
-
                     <nav class="wsmenu slideLeft clearfix">
                         <ul class="mobile-sub wsmenu-list">
-                            <li class="active">
+                            <li>
                                 <span class="wsmenu-click"></span>
-                                <a href="http://localhost:8080/user/signIn?name=fbo&password=fb701701">首页</a>
+                                <a href="home">首页</a>
                             </li>
                             <li>
                                 <span class="wsmenu-click"></span>
-                                <a href="">场馆
+                                <a href="forevenues">场馆</a>
+                            </li>
+                            <li>
+                                <span class="wsmenu-click"></span>
+                                <a href="forenews">新闻</a>
+                            </li>
+                            <li th:if="${null!=session.user}">
+                                <span class="wsmenu-click"></span>
+                                <a href="#nowhere">个人中心
                                     <span class="arrow"></span>
                                 </a>
                                 <ul class="wsmenu-submenu">
                                     <li>
-                                        <a href="404.html">场馆介绍</a>
+                                        <a href="bought">我的订单</a>
                                     </li>
                                     <li>
-                                        <a href="category.html">场馆预约</a>
+                                        <a th:href="'profile?id='+${session.user.id}">修改信息</a>                                    </li>
+                                    <li>
+                                        <a th:href="'password?id='+${session.user.id}">修改密码</a>                                    </li>
+                                    <li>
+                                        <a href="forelogout" >注销</a>
                                     </li>
                                 </ul>
                             </li>
-                            <li>
+                            <li th:if="${null==session.user}">
                                 <span class="wsmenu-click"></span>
-                                <a href="category.html">新闻</a>
-                            </li>
-                            <li>
-                                <span class="wsmenu-click"></span>
-                                <a href="http://localhost:8080/message/messageList">留言</a>
-                            </li>
-                            <li>
-                                <span class="wsmenu-click"></span>
-                                <a href="">个人中心
-                                    <span class="arrow"></span>
-                                </a>
-                                <ul class="wsmenu-submenu">
-                                    <li>
-                                        <a href="404.html">订单查看</a>
-                                    </li>
-                                    <li>
-                                        <a href="category.html">修改信息</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="navbar-right hidden-xs">
-                                <form class="navbar-form " role="search" style="margin-top: 5px;margin-bottom: 5px">
-                                    <div class="form-group" style="height: 1cm;">
-                                        <input type="text" class="form-control" style="height: 1cm" placeholder="Search">
-                                    </div>
-                                    <!--<button type="submit" class="btn btn-search" style="height: 1cm">-->
-                                        <!--<i class="icon-search"></i>Search-->
-                                    <!--</button>-->
-                                </form>
-                            </li>
-                            <li>
-                                <div class="visible-xs col-sm-offset-5 col-sm-4">
-                                    <div class="col-sm-5">
-                                        <div class="weather">
-                                            <div class="weather__temperature">
-                                                <span class="icon-sun"></span>
-                                                <em></em>
-                                            </div>
-                                            <div class="weather__city">
-                                                <em>Swimming Pool</em>
-                                                <div class="weather__city__list">
-                                                    <ul>
-                                                        <li class="active">
-                                                            <a href="#">Indoor Climbing</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">Yoga</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <a href="login">登录/注册</a>
                             </li>
                         </ul>
                     </nav>
-                    <!--Menu HTML Code-->
                 </div>
             </div>
         </div>
@@ -245,54 +173,35 @@
                     <!--</div>-->
 
                     <div class="news-tabs">
-                        <p class="news-tabs__title h2">新闻标题</p>
-                        <ul class="news-tabs__nav nav nav-tabs shadow_text" role="tablist">
-                            <li role="presentation">
-                                <a href="#home" role="tab" data-toggle="tab">
-                                    {{bean.title}}
-                                    <span class="time">{{bean.createDate}}</span>
-                                </a>
-                            </li>
+<!--                        <p class="news-tabs__title h2">新闻标题</p>-->
+<!--                        <ul class="news-tabs__nav nav nav-tabs shadow_text" role="tablist">-->
+<!--                            <li role="presentation">-->
+<!--                                <a href="#home" role="tab" data-toggle="tab">-->
+<!--                                    {{bean.title}}-->
+<!--                                    <span class="time">{{bean.createDate}}</span>-->
+<!--                                </a>-->
+<!--                            </li>-->
 
-                            <li role="presentation" class="active">
-                                <a href="#home" role="tab" data-toggle="tab">
-                                    <span class="time">公告</span>
-                                    所有场馆都新装修过
-                                </a>
-                            </li>
-                        </ul>
+<!--                           -->
+<!--                        </ul>-->
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-9 p0 wrap-headline">
                     <img src="img/gym.jpg" alt="img" class="wrap-headline__img">
                     <div class="headline clearfix">
-                        <div class="headline__data">
-                            <a href="category.html" class="headline__category headline__category_orange">Venue</a>
-                        </div>
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-9 article_text">
                     <div class="current">
                         <h1 class="text-center yel_line current__title">{{bean.title}}</h1>
+                        <br>
+                        <h5 class="text-center yel_line">{{bean.createDate}}</h5>
+                        <br>
+                        <br>
                         <p class="current__text">{{bean.content}}</p>
-                        <blockquote class="quote current__quote">谱写生命之歌，弘杨运动精神。</blockquote>
-                        <p class="current__text">发展体育事业必须始终坚持两手抓：一手抓竞技体育人才的培养；一手抓群众体育运动的普及。</p>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-9 tags">
-                    <p>标签:</p>
-                    <ul>
-                        <li>
-                            <a href="#" title="World" class="font">游泳馆</a>
-                        </li>
-                        <li>
-                            <a class="yellow font" href="#" title="Sport">室内攀爬</a>
-                        </li>
-                        <li>
-                            <a href="#" title="Cats" class="font">瑜伽</a>
-                        </li>
-                    </ul>
-                </div>
+
             </div>
         </article>
     </div>

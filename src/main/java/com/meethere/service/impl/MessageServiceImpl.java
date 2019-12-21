@@ -35,7 +35,7 @@ public class MessageServiceImpl implements MessageService {
         Venue venue = venueService.get(vid);
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         Pageable pageable = new PageRequest(start, size,sort);
-        Page pageFromJPA = (Page) new Object();
+        Page pageFromJPA = null;
         if(status==0)
             pageFromJPA = messageDAO.findByVenue(venue,pageable);
         else if(status==1)//只查找已通过的留言

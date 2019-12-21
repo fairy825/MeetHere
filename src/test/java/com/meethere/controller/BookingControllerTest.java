@@ -32,6 +32,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.net.URI;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
@@ -85,7 +86,7 @@ public class BookingControllerTest {
 				.faceImage("img/faceImage/20190906012034.jpg").build();
 
 		venue=new Venue.VenueBuilder().id(1).name("vn").build();
-		booking=new Booking.BookingBuilder().id(1).venue(venue).user(user).timeSlot(timeSlot).state(BookingService.waitPay).build();
+		booking=new Booking.BookingBuilder().id(1).venue(venue).user(user).timeSlot(timeSlot).arriveDate(new Date()).state(BookingService.waitPay).build();
 
 
 	}
@@ -184,7 +185,8 @@ public class BookingControllerTest {
 		doNothing().when(bookingService).update(booking);
 		when(mockHttpSession.getAttribute("user")).thenReturn(user);
 
-		mockMvc.perform(MockMvcRequestBuilders.put(new URI(baseUrl+"/payed/1")).session(mockHttpSession))
+		mockMvc.perform(MockMvcRequestBuilders.put(new URI(baseUrl+"/payed/1"))
+				.session(mockHttpSession))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8))
 				.andExpect(MockMvcResultMatchers.jsonPath("msg").value("OK"))

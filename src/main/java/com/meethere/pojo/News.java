@@ -61,7 +61,7 @@ public class News {
 		this.id = id;
 	}
 	public Date getCreateDate() {
-		return (Date)createDate.clone();
+		return createDate;
 	}
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;

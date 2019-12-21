@@ -5,13 +5,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.meethere.service.BookingService;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
 
 @Entity
 @Table(name = "booking")
 @JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
-public class Booking {
+public class Booking implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -40,12 +41,13 @@ public class Booking {
 	public Booking() {
 	}
 
-	public Booking(Integer id, User user, Venue venue, String state, TimeSlot timeSlot) {
+	public Booking(Integer id, User user, Venue venue, String state, TimeSlot timeSlot,Date arriveDate) {
 		this.id=id;
 		this.user=user;
 		this.venue=venue;
 		this.state=state;
 		this.timeSlot=timeSlot;
+		this.arriveDate=arriveDate;
 	}
 
 	public static class BookingBuilder{
@@ -54,6 +56,7 @@ public class Booking {
 		private Venue venue;
 		private String state;
 		private TimeSlot timeSlot;
+		private Date arriveDate;
 
 		public Booking.BookingBuilder id(Integer id){
 			this.id = id;
@@ -75,13 +78,20 @@ public class Booking {
 			return this;
 		}
 
+		public Booking.BookingBuilder arriveDate(Date date){
+			this.arriveDate = date;
+			return this;
+		}
+
 		public Booking.BookingBuilder timeSlot(TimeSlot timeSlot){
 			this.timeSlot = timeSlot;
 			return this;
 		}
 
+
+
 		public Booking build(){
-			return new Booking(id,user,venue,state,timeSlot);
+			return new Booking(id,user,venue,state,timeSlot,arriveDate);
 		}
 	}
 
@@ -138,13 +148,13 @@ public class Booking {
 		this.remark = remark;
 	}
 	public Date getPayDate() {
-		return (Date)payDate.clone();
+		return (Date)payDate;
 	}
 	public void setPayDate(Date payDate) {
 		this.payDate = payDate;
 	}
 	public Date getArriveDate() {
-		return (Date)arriveDate.clone();
+		return (Date)arriveDate;
 	}
 	public void setArriveDate(Date arriveDate) {
 		this.arriveDate = arriveDate;
@@ -156,7 +166,7 @@ public class Booking {
 		this.state = state;
 	}
 	public Date getCreateDate() {
-		return (Date)createDate.clone();
+		return (Date)createDate;
 	}
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;

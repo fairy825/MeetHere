@@ -54,7 +54,7 @@ public class VenueController extends BasicController{
                                   Integer size)
             throws Exception {
         start = start<0?0:start;
-        if(size == null) size = PAGE_SIZE;
+        if(size == null) size = 3;
         Page4Navigator<Venue> page = venueService.searchByKeyword(did,sort,keyword,minPrice,maxPrice,start,size,5);
         venueImageService.setFirstVenueImages(page.getContent());
 

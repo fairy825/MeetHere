@@ -197,11 +197,13 @@
 			$("button.deleteConfirmButton").click(function(){
 				flag = true;
 				$("#deleteConfirmModal").modal('hide');
+				console.log(current);
 				if(flag){
 					if(current == 1) {
 						var url = "bookings/cancel/" + bid;
 						axios.put(url).then(function (response) {
 							var res = response.data.status;
+							console.log(res);
 							if(res==200) {
 								vue.list(vue.pagination.number);
 								vue.msgFromMyModal = "成功取消订单！";

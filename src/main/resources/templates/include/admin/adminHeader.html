@@ -61,17 +61,94 @@
 	    }else{
 	        return arrVal;
 	    }
-    }	
-    
-    //判断是否数字 (小数和整数)
+    }
+
+	//判断是否时间 (0-24整数)
+	function checkHour(value, text){
+		if(value.length==0){
+			alert(text+ "不能为空");
+			return false;
+		}
+		var hour = parseInt(value);
+		if(hour!=value){
+			alert(text+ "必须是整数");
+			return false;
+		}
+		if(hour<0||hour>24){
+			alert(text+ "必须在0-24之间");
+			return false;
+		}
+		return true;
+	}
+	//判断是否正数 (小数和整数)
 	function checkNumber(value, text){
-		
+
 		if(value.length==0){
 			alert(text+ "不能为空");
 			return false;
 		}
 		if(isNaN(value)){
 			alert(text+ "必须是数字");
+			return false;
+		}
+		return true;
+	}
+    //判断是否为价格 (非负两位小数和非负整数)
+	function checkPrice(value, text){
+
+		if(value.length==0){
+			alert(text+ "不能为空");
+			return false;
+		}
+		var y = value.indexOf(".") + 1;//获取小数点的位置
+		var count = value.length - y;//获取小数点后的个数
+		if(count>2){
+			alert(text+ "最多只能有两位小数");
+			return false;
+		}
+		var a = parseFloat(value);
+		if(a!=value){
+			alert(text+ "必须是数字");
+			return false;
+		}
+		if(a<0){
+			alert(text+ "必须是非负数");
+			return false;
+		}
+		return true;
+	}
+	//判断是否正整数
+	function checkPositiveInt(value, text){
+
+		if(value.length==0){
+			alert(text+ "不能为空");
+			return false;
+		}
+		var a = parseInt(value);
+		if(a!=value){
+			alert(text+ "必须是整数");
+			return false;
+		}
+		if(a<=0){
+			alert(text+ "必须是正数");
+			return false;
+		}
+		return true;
+	}
+	//判断是否非负整数
+	function checkNotNegInt(value, text){
+
+		if(value.length==0){
+			alert(text+ "不能为空");
+			return false;
+		}
+		var a = parseInt(value);
+		if(a!=value){
+			alert(text+ "必须是整数");
+			return false;
+		}
+		if(a<0){
+			alert(text+ "必须是非负数");
 			return false;
 		}
 		return true;

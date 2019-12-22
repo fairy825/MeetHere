@@ -67,20 +67,20 @@
                         return;
                     // if (!checkEmpty(this.bean.introduction, "介绍"))
                     //     return;
-                    if (!checkNumber(this.bean.price, "租金"))
+                    if (!checkPrice(this.bean.price, "租金"))
                         return;
-                    if (!checkInt(this.bean.totalSeat, "容量"))
+                    if (!checkPositiveInt(this.bean.totalSeat, "容量"))
                         return;
-                    if (!checkInt(this.bean.startTime, "营业时间"))
+                    if (!checkHour(this.bean.startTime, "营业时间"))
                         return;
-                    if (!checkInt(this.bean.endTime, "营业时间"))
+                    if (!checkHour(this.bean.endTime, "营业时间"))
                         return;
 
                     var url = this.uri;
                     this.bean.district.id=did;
                     axios.post(url,this.bean).then(function(response){
                         vue.list(0);
-                        vue.bean={};
+                        vue.bean={price:'',totalSeat:'',startTime:'',endTime:'',district:{'id':0,'name':''}};
                         // vue.bean =  {id:0,name:'','subTitle':'','originalPrice':99.98,'promotePrice':19.98,'stock':99,category:{'id':0}};
                     });
                 },

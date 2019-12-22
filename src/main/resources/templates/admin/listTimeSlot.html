@@ -45,6 +45,8 @@
                 },
                 update:function(bean){
                     console.log(bean);
+                    if(!checkNotNegInt(bean.seat, "剩余容量"))
+                        return;
                     var url =  this.uri;
                     var id = bean.id;
                     $("#tsid"+bean.id).css("border","2px solid yellow");

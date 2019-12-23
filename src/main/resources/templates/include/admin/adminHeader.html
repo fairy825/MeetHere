@@ -62,7 +62,24 @@
 	        return arrVal;
 	    }
     }
+   //判断是否手机号 
+    function checkPhone(phone){ 
+        if(!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(phone))){ 
+            alert("手机号码有误，请重填");  
+            return false; 
+        } 
+		return true;
+    }
+  //判断是否邮箱
+    function checkEmail(email){ 
+    	 var pattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        if(!(pattern.test(email))){ 
+            alert("邮箱格式有误，请重填");  
+            return false; 
+        } 
+		return true;
 
+    }
 	//判断是否时间 (0-24整数)
 	function checkHour(value, text){
 		if(value.length==0){
@@ -93,30 +110,6 @@
 		}
 		return true;
 	}
-    //判断是否为价格 (非负两位小数和非负整数)
-	// function checkPrice(value, text){
-	//
-	// 	if(value.length==0){
-	// 		alert(text+ "不能为空");
-	// 		return false;
-	// 	}
-	// 	var y = value.indexOf(".") + 1;//获取小数点的位置
-	// 	var count = value.length - y;//获取小数点后的个数
-	// 	if(count>2){
-	// 		alert(text+ "最多只能有两位小数");
-	// 		return false;
-	// 	}
-	// 	var a = parseFloat(value);
-	// 	if(a!=value){
-	// 		alert(text+ "必须是数字");
-	// 		return false;
-	// 	}
-	// 	if(a<0){
-	// 		alert(text+ "必须是非负数");
-	// 		return false;
-	// 	}
-	// 	return true;
-	// }
 
     //判断是否为价格 (非负两位小数和非负整数)
     function checkPrice(value, text){

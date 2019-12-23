@@ -9,7 +9,8 @@
         <version>1.5.9.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-
+    
+    <packaging>war</packaging>
     <groupId>com.meethere</groupId>
     <artifactId>meethere</artifactId>
     <version>0.0.1-SNAPSHOT</version>

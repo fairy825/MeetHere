@@ -1,10 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:include="include/fore/navigator::html('个人信息')" ></head>
+<head th:include="include/admin/adminHeader::html('个人信息')" ></head>
 <title>个人信息</title>
 
 <body>
 <script>
+//判断是否手机号 
+function checkPhone(phone){ 
+    if(!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(phone))){ 
+        alert("手机号码有误，请重填");  
+        return false; 
+    } 
+	return true;
+}
+//判断是否邮箱
+function checkEmail(email){ 
+	 var pattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    if(!(pattern.test(email))){ 
+        alert("邮箱格式有误，请重填");  
+        return false; 
+    } 
+	return true;
+
+}
     $(function(){
         var data4Vue = {
             uri: 'users',
@@ -39,6 +58,10 @@
                     })
                 },
                 update:function () {
+                	if(!checkPhone(this.bean.phoneNumber))
+                        return;
+                	if(!checkEmail(this.bean.email))
+                        return;
                     var url = this.uri;
                     axios.put(url,vue.bean).then(function(response){
                         var result = response.data;

@@ -118,6 +118,7 @@
 	// 	return true;
 	// }
 
+    //判断是否为价格 (非负两位小数和非负整数)
     function checkPrice(value, text){
 
         if(value.length==0){
@@ -130,7 +131,7 @@
             alert(text+ "必须是数字");
             return false;
         }
-        var y = value.indexOf(".") + 1;//获取小数点的位置
+        var y = value.toString().indexOf(".") + 1;//获取小数点的位置
         if(y!=0) {
             var count = value.length - y;//获取小数点后的个数
             if (count > 2) {

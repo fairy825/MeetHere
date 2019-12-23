@@ -86,8 +86,7 @@ public class BookingControllerTest {
 				.faceImage("img/faceImage/20190906012034.jpg").build();
 
 		venue=new Venue.VenueBuilder().id(1).name("vn").build();
-		booking=new Booking.BookingBuilder().id(1).venue(venue).user(user).timeSlot(timeSlot).arriveDate(new Date()).state(BookingService.waitPay).build();
-
+		booking=new Booking.BookingBuilder().id(1).venue(venue).user(user).timeSlot(timeSlot).state(BookingService.waitPay).build();
 
 	}
 	//list

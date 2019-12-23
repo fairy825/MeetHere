@@ -397,16 +397,16 @@
 												<button v-if="bean.state=='waitPay'" @click="pay(bean.id,bean.venue.price)" class="orderListItemConfirm">付款</button>
 												<button  v-else-if="bean.state=='waitArrive'" class="btn btn-primary orderListItemArrive" @click="arrive(bean.id)">我已到达</button>
 
-														<button v-else-if="bean.state=='waitReview'" @click="review(bean.venue.id,bean.id)" class=" btn btn-primary orderListItemReview">留言</button>
+														<button v-else-if="bean.state=='waitReview'" @click="review(bean.venue.id,bean.id)" class=" btn btn-primary ">留言</button>
 
-														<button  v-else-if="bean.state=='finish'" @click="showMyReview(bean.id)" class=" btn btn-primary orderListItemReview">查看我的留言</button>
+														<button  v-else-if="bean.state=='finish'" @click="showMyReview(bean.id)" class=" btn btn-primary ">查看我的留言</button>
 													<a v-if="bean.state=='waitApprove'||bean.state=='waitPay'" class="cancelLink" :bid="bean.id" type="button">
 														<button class="btn btn-warning">取消预订</button>
 													</a>
 
 														<button v-if="bean.state=='waitApprove'||bean.state=='waitPay'||bean.state=='waitTime'" @click="changeRemark(bean.id)" class="btn btn-primary">修改</button>
-													<a  class="deleteOrderLink" :bid="bean.id" type="button">
-														<span  class="orderListItemDelete glyphicon glyphicon-trash"></span></a>
+												<a  v-if="bean.state=='waitReview'||bean.state=='finish'||bean.state=='refused'||bean.state=='cancelled'"  class="deleteOrderLink" :bid="bean.id" type="button">
+													<span  class="orderListItemDelete glyphicon glyphicon-trash"></span></a>
 
 											</td>
 										</tr>

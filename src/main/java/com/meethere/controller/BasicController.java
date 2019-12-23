@@ -21,7 +21,7 @@ import static com.meethere.service.BookingService.*;
 
 @Controller
 public class BasicController {
-	
+
 	@Autowired
 	public RedisOperator redis;
 	@Autowired
@@ -31,8 +31,8 @@ public class BasicController {
 
 	public static final String USER_REDIS_SESSION = "user-redis-session";
 	public static final String ADMIN_REDIS_SESSION = "admin-redis-session";
-	public static final String FILE_SPACE = "D:/workspace/meethere/src/main/webapp/img";
-		
+	public static final String FILE_SPACE = "/Users/yangxiaoyan/Desktop/meethere1222/meethere/src/main/webapp/img";
+
 		// 每页分页的记录数
 	public static final Integer PAGE_SIZE = 9;
 

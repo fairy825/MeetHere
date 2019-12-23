@@ -1804,7 +1804,7 @@ button.orderListItemConfirm:hover {
 button.orderListItemReview {
 	border: 1px solid #DCDCDC;
 	background-color: #fff;
-	border-radius: 2px;
+	border-radius: 4px;
 	color: #3C3C3C;
 	font-size: 12px;
 	font-weight: bold;
@@ -1812,8 +1812,9 @@ button.orderListItemReview {
 }
 
 button.orderListItemReview:hover {
-	border-color: #C40000;
-	color: #C40000;
+	border-color: #b9def0;
+	background-color: #c7ddef;
+	color:#3C3C3C ;
 }
 
 td.orderItemDeleteTD {

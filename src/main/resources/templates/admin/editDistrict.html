@@ -28,7 +28,7 @@
                     })
                 },
                 update:function () {
-                    if(!checkEmpty(this.bean.name, "分类名称"))
+                    if(!checkEmpty(this.bean.name, "区域名称"))
                         return;
                     var url = this.uri;
                     axios.put(url,vue.bean).then(function(response){

@@ -94,29 +94,57 @@
 		return true;
 	}
     //判断是否为价格 (非负两位小数和非负整数)
-	function checkPrice(value, text){
+	// function checkPrice(value, text){
+	//
+	// 	if(value.length==0){
+	// 		alert(text+ "不能为空");
+	// 		return false;
+	// 	}
+	// 	var y = value.indexOf(".") + 1;//获取小数点的位置
+	// 	var count = value.length - y;//获取小数点后的个数
+	// 	if(count>2){
+	// 		alert(text+ "最多只能有两位小数");
+	// 		return false;
+	// 	}
+	// 	var a = parseFloat(value);
+	// 	if(a!=value){
+	// 		alert(text+ "必须是数字");
+	// 		return false;
+	// 	}
+	// 	if(a<0){
+	// 		alert(text+ "必须是非负数");
+	// 		return false;
+	// 	}
+	// 	return true;
+	// }
 
-		if(value.length==0){
-			alert(text+ "不能为空");
-			return false;
-		}
-		var y = value.indexOf(".") + 1;//获取小数点的位置
-		var count = value.length - y;//获取小数点后的个数
-		if(count>2){
-			alert(text+ "最多只能有两位小数");
-			return false;
-		}
-		var a = parseFloat(value);
-		if(a!=value){
-			alert(text+ "必须是数字");
-			return false;
-		}
-		if(a<0){
-			alert(text+ "必须是非负数");
-			return false;
-		}
-		return true;
-	}
+    function checkPrice(value, text){
+
+        if(value.length==0){
+            alert(text+ "不能为空");
+            return false;
+        }
+
+        var a = parseFloat(value);
+        if(a!=value){
+            alert(text+ "必须是数字");
+            return false;
+        }
+        var y = value.indexOf(".") + 1;//获取小数点的位置
+        if(y!=0) {
+            var count = value.length - y;//获取小数点后的个数
+            if (count > 2) {
+                alert(text + "最多只能有两位小数");
+                return false;
+            }
+        }
+        if(a<0){
+            alert(text+ "必须是非负数");
+            return false;
+        }
+        return true;
+    }
+
 	//判断是否正整数
 	function checkPositiveInt(value, text){
 

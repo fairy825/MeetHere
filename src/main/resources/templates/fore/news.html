@@ -87,12 +87,12 @@
 
             <div style="position: absolute;left: 32%" >
                 <p class="h2">最新新闻</p>
-                <div style="position: absolute;left: 50px">
+                <div style="position: absolute;left: 50px;width: 300px">
                     <ul class="news-tabs__nav nav nav-tabs shadow_text" role="tablist">
                         <div v-for="bean in beans " style="margin-top: 10px">
                             <li role="presentation">
                                 <div>
-                                    <span class="time" style="width: 200px;color">{{bean.createDate | formatDateFilter}}</span>
+                                    <span class="time" style="width: 200px;">{{bean.createDate | formatDateFilter}}</span>
                                 </div>
                                 <a :href="'new?id='+bean.id" role="tab"  style="margin-top: -8px;	color: #3C3C3C;font-size: 16px;font-weight: bold;">
                                     &nbsp;&nbsp;&nbsp;{{bean.title}}

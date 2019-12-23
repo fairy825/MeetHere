@@ -1,10 +1,265 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head th:include="include/fore/navigator::html('所有场馆')" ></head>-->
+<!--<head th:include="include/admin/adminHeader::html('所有场馆')" ></head>-->
+<!--<link href="https://fonts.googleapis.com/css?family=Bentham|Playfair+Display|Raleway:400,500|Suranna|Trocchi" rel="stylesheet">-->
+
+<!--<title>所有场馆</title>-->
+<!--<body>-->
+
+<!--&lt;!&ndash;<div th:replace="include/fore/navigator::html('Vunues Information')" ></div>&ndash;&gt;-->
+
+<!--<script>-->
+    <!--//跳转函数-->
+    <!--function jump(page,vue){-->
+        <!--if('first'== page && !vue.pagination.first)-->
+            <!--vue.list(0);-->
+
+        <!--else if('pre'== page &&	vue.pagination.hasPrevious )-->
+            <!--vue.list(vue.pagination.number-1);-->
+
+        <!--else if('next'== page && vue.pagination.hasNext)-->
+            <!--vue.list(vue.pagination.number+1);-->
+
+        <!--else if('last'== page && !vue.pagination.last)-->
+            <!--vue.list(vue.pagination.totalPages-1);-->
+    <!--}-->
+    <!--//跳转函数-->
+    <!--function jumpByNumber(start,vue){-->
+        <!--if(start!=vue.pagination.number)-->
+            <!--vue.list(start);-->
+    <!--}-->
+
+    <!--$(function(){-->
+        <!--var data4Vue = {-->
+            <!--uri:'venues',-->
+            <!--beans: [],-->
+            <!--// bean:{},-->
+            <!--// searchbean:{id:null,name:null,district:{},price:null,totalSeat:null,startTime:null,endTime:null,reviewCount:null,saleCount:null},-->
+            <!--keyword:'',-->
+            <!--did:0,-->
+            <!--districts:[],-->
+            <!--minPrice:'',-->
+            <!--maxPrice:'',-->
+            <!--sort:'',-->
+            <!--t:'0',-->
+            <!--pagination:{}-->
+        <!--};-->
+
+        <!--//ViewModel-->
+        <!--var vue = new Vue({-->
+            <!--el: '#workingArea',-->
+            <!--data: data4Vue,-->
+            <!--mounted:function(){ //mounted　表示这个 Vue 对象加载成功了-->
+                <!--this.get();-->
+                <!--this.list(0);-->
+            <!--},-->
+            <!--methods: {-->
+                <!--get:function(){-->
+                    <!--var keyword = getUrlParms("keyword");-->
+                    <!--if(keyword=="null"||keyword=="") keyword = null;-->
+                    <!--this.keyword = keyword;-->
+                    <!--var url =  "districts/all";-->
+                    <!--axios.get(url).then(function(response) {-->
+                        <!--console.log(response.data);-->
+                        <!--vue.districts = response.data.data;-->
+                        <!--console.log(vue.districts);-->
+                    <!--});-->
+                <!--},-->
+                <!--list:function(start){-->
+                    <!--var sort = getUrlParms("sort");-->
+                    <!--this.sort = sort;-->
+                    <!--var url =  "districts/"+this.did+"/"+this.uri+"/"+sort+"/"+this.keyword+"?start="+start-->
+                        <!--+"&minPrice="+this.minPrice+"&maxPrice="+this.maxPrice;-->
+
+                    <!--axios.get(url).then(function(response) {-->
+                        <!--console.log(response.data);-->
+                        <!--vue.pagination = response.data.data;-->
+                        <!--vue.beans = response.data.data.content;-->
+                        <!--console.log(vue.beans);-->
+                    <!--});-->
+                <!--},-->
+                <!--jump: function(page){-->
+                    <!--jump(page,vue); //定义在adminHeader.html 中-->
+                <!--},-->
+                <!--jumpByNumber: function(start){-->
+                    <!--jumpByNumber(start,vue);-->
+                <!--}-->
+            <!--}-->
+        <!--});-->
+        <!--Vue.filter("formatMoneyFilter", function(value){-->
+            <!--return formatMoney(value);-->
+        <!--});-->
+    <!--});-->
+
+<!--</script>-->
+
+<!--<div id="workingArea"  >-->
+    <!--&lt;!&ndash;style="position: relative;background-color: #dca7a7;height:600px "&ndash;&gt;-->
+    <!--<div style="position: relative">-->
+        <!--<div style="position: absolute;z-index: 1">-->
+            <!--<img src="img/3.jpg" style="height: 100%;width: 100%">-->
+        <!--</div>-->
+        <!--<div style="position: absolute;z-index: 2;background-color:rgba(255,255,255,0.6);width: 1265px;height:790px">    </div>-->
+        <!--<div style="position: absolute;z-index:3;width: 100%;height: 100%">-->
+            <!--<div style="position: relative">-->
+                <!--<div align="right" style="position: relative;margin-left: 35%">-->
+                    <!--<div class="searchDiv" style="position: relative; width: 300px">-->
+                        <!--<div style="position: absolute;z-index: 1">-->
+                            <!--<input type="text" @keyup.enter="list(0)" v-model.trim="keyword" placeholder="请输入场馆名" />-->
+                        <!--</div>-->
+                        <!--<div style="position: absolute;z-index:2;right: 0px">-->
+                            <!--<button @click="list(0)" class="searchButton btn-primary">搜索</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div align="left" style="position: absolute;top: 0px;left: 100px;z-index: 2">-->
+                    <!--<table class="categorySortBarTable categorySortTable" style="size: A3;background-color: white">-->
+                        <!--<tr style="border-radius: 4px">-->
+                            <!--<td :class="{'grayColumn':(sort==null||sort=='all')}"><a :href="'?keyword='+keyword+'&sort=all'">综合<span class="glyphicon glyphicon-arrow-down"></span></a></td>-->
+                            <!--<td :class="{'grayColumn':(sort=='review')}"><a :href="'?keyword='+keyword+'&sort=review'">人气<span class="glyphicon glyphicon-arrow-down"></span></a></td>-->
+                            <!--<td :class="{'grayColumn':(sort=='saleCount')}"><a :href="'?keyword='+keyword+'&sort=saleCount'">销量<span class="glyphicon glyphicon-arrow-down"></span></a></td>-->
+
+                            <!--<td style="border-top: white;border-bottom: white;width: 3px"></td>-->
+                            <!--<td :class="{'grayColumn':(sort=='price')}"><a :href="'?keyword='+keyword+'&sort=price'">价格<span class="glyphicon glyphicon-resize-vertical"></span></a></td>-->
+                            <!--<td><input class="sortBarPrice"  v-model.trim="minPrice" type="text" placeholder="请输入"></td>-->
+                            <!--<td class="grayColumn priceMiddleColumn">-</td>-->
+                            <!--<td><input class="sortBarPrice"  v-model.trim="maxPrice" type="text" placeholder="请输入"></td>-->
+
+                            <!--<td style="border-top: white;border-bottom: white;width: 3px"></td>-->
+                            <!--<td :class="{'grayColumn':(sort=='price')}"><a :href="'?keyword='+keyword+'&sort=price'">区域：</a></td>-->
+                            <!--<td>-->
+                                <!--<div class="dropdown">-->
+                                    <!--<select v-model="did" >-->
+                                        <!--<option value="0">全部</option>-->
+                                        <!--<option v-for="district in districts" :value="district.id" >-->
+                                            <!--{{district.name}}-->
+                                        <!--</option>-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                            <!--</td>-->
+
+                        <!--</tr>-->
+                    <!--</table>-->
+                <!--</div>-->
+
+                <!--<div v-for="bean in beans" class="product-wrapper">-->
+
+                    <!--<a :href="'venue?id='+bean.id">-->
+                        <!--<div class="product-img">-->
+                            <!--<img :src="'img/venueImage_middle/11/23.jpg'" height="200px" width="200px" alt="image">                        </div>-->
+                        <!--<div class="product-info">-->
+                            <!--<div class="product-text">-->
+                                <!--<h1>{{bean.name}}</h1>-->
+                                <!--<h2>{{bean.district.name}}</h2>-->
+                                <!--<p>{{bean.introduction}}<br>-->
+                                    <!--<span class="product-span">评价-->
+                                                <!--<span class="product-span">{{bean.reviewCount}}</span>-->
+                                            <!--</span>-->
+                                <!--</p>-->
+                            <!--</div>-->
+                            <!--<div class="product-price-btn">-->
+                                <!--<p> ¥{{bean.price | formatMoneyFilter}}</p>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</a>-->
+                <!--</div>-->
+                <!--<div style="height:100px"></div>-->
+<!--&lt;!&ndash;                style="position:absolute;top: 600px;left: 42%"&ndash;&gt;-->
+                <!--<div align="center">-->
+                    <!--<div th:replace="include/admin/adminPage::html" ></div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+        <!--</div>-->
+
+    <!--&lt;!&ndash;<div style="position: relative">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div align="right" style="position: relative;margin-left: 35%">&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="searchDiv" style="position: relative; width: 300px">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div style="position: absolute;z-index: 1">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<input type="text" @keyup.enter="list(0)" v-model.trim="keyword" placeholder="请输入场馆名" />&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div style="position: absolute;z-index:2;right: 0px">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<button @click="list(0)" class="searchButton btn-primary">搜索</button>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<div align="left" style="position: absolute;top: 0px;left: 100px;z-index: 2">&ndash;&gt;-->
+            <!--&lt;!&ndash;<table class="categorySortBarTable categorySortTable" style="size: A3;background-color: white">&ndash;&gt;-->
+                <!--&lt;!&ndash;<tr style="border-radius: 4px">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td :class="{'grayColumn':(sort==null||sort=='all')}"><a :href="'?keyword='+keyword+'&sort=all'">综合<span class="glyphicon glyphicon-arrow-down"></span></a></td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td :class="{'grayColumn':(sort=='review')}"><a :href="'?keyword='+keyword+'&sort=review'">人气<span class="glyphicon glyphicon-arrow-down"></span></a></td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td :class="{'grayColumn':(sort=='saleCount')}"><a :href="'?keyword='+keyword+'&sort=saleCount'">销量<span class="glyphicon glyphicon-arrow-down"></span></a></td>&ndash;&gt;-->
+
+                    <!--&lt;!&ndash;<td style="border-top: white;border-bottom: white;width: 3px"></td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td :class="{'grayColumn':(sort=='price')}"><a :href="'?keyword='+keyword+'&sort=price'">价格<span class="glyphicon glyphicon-resize-vertical"></span></a></td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td><input class="sortBarPrice"  v-model.trim="minPrice" type="text" placeholder="请输入"></td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td class="grayColumn priceMiddleColumn">-</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td><input class="sortBarPrice"  v-model.trim="maxPrice" type="text" placeholder="请输入"></td>&ndash;&gt;-->
+
+                    <!--&lt;!&ndash;<td style="border-top: white;border-bottom: white;width: 3px"></td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td :class="{'grayColumn':(sort=='price')}"><a :href="'?keyword='+keyword+'&sort=price'">区域：</a></td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="dropdown">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<select v-model="did" >&ndash;&gt;-->
+                                <!--&lt;!&ndash;<option value="0">全部</option>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<option v-for="district in districts" :value="district.id" >&ndash;&gt;-->
+                                    <!--&lt;!&ndash;{{district.name}}&ndash;&gt;-->
+                                <!--&lt;!&ndash;</option>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
+
+                <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+            <!--&lt;!&ndash;</table>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+
+        <!--&lt;!&ndash;<div style="position:absolute;top: 600px;left: 45%" align="center">&ndash;&gt;-->
+            <!--&lt;!&ndash;<div th:replace="include/admin/adminPage::html" ></div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<div class="wrapper" style="position:relative; margin-top: 100px;margin-left: 18%">&ndash;&gt;-->
+            <!--&lt;!&ndash;<div  v-for="bean in beans " style="margin-right: 20px ">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="productUnit">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="productUnitFrame" >&ndash;&gt;-->
+                        <!--&lt;!&ndash;<a :href="'venue?id='+bean.id">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="special">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<img :src="'img/venueImage_middle/'+bean.id+'/'+bean.firstVenueImage.id+'.jpg'" height="311" width="311" alt="image">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<div class="special__box">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<h5 class="special__category yel_line">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;{{bean.name}}&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</h5>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<a class="special__link" style="color: black">{{bean.introduction}}</a>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<a class="special__link" style="color: black">{{bean.district.name}}</a>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<span class="productPrice">¥{{bean.price | formatMoneyFilter}}</span>&ndash;&gt;-->
+
+                            <!--&lt;!&ndash;<div class="show1 productInfo" style="margin-right: 10px">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<span class="productReview">评价<span class="productReviewNumber">{{bean.reviewCount}}</span></span>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+                        <!--&lt;!&ndash;</a>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="include/fore/navigator::html('所有场馆')" ></head>
-<head th:include="include/admin/adminHeader::html('所有场馆')" ></head>
-<link href="https://fonts.googleapis.com/css?family=Bentham|Playfair+Display|Raleway:400,500|Suranna|Trocchi" rel="stylesheet">
+<head th:include="include/fore/navigator::html('场馆信息')" ></head>
+<head th:include="include/admin/adminHeader::html('Venues')" ></head>
 
-<title>所有场馆</title>
 <body>
 
 <!--<div th:replace="include/fore/navigator::html('Vunues Information')" ></div>-->
@@ -144,112 +399,43 @@
                     </table>
                 </div>
 
-                <div v-for="bean in beans" class="product-wrapper">
 
-                    <a :href="'venue?id='+bean.id">
-                        <div class="product-img">
-                            <img :src="'img/venueImage_middle/11/23.jpg'" height="200px" width="200px" alt="image">                        </div>
-                        <div class="product-info">
-                            <div class="product-text">
-                                <h1>{{bean.name}}</h1>
-                                <h2>{{bean.district.name}}</h2>
-                                <p>{{bean.introduction}}<br>
-                                    <span class="product-span">评价
-                                                <span class="product-span">{{bean.reviewCount}}</span>
-                                            </span>
-                                </p>
-                            </div>
-                            <div class="product-price-btn">
-                                <p> ¥{{bean.price | formatMoneyFilter}}</p>
+                <div style="position:absolute;top: 600px;left: 42%" align="center">
+                    <div th:replace="include/admin/adminPage::html" ></div>
+                </div>
+
+                <div class="wrapper" style="position:relative; margin-top: 60px;margin-left: 13%">
+                    <div  v-for="bean in beans ">
+                        <div class="productUnit"  style="margin-right: 20px ">
+                            <div class="productUnitFrame" >
+                                <a :href="'venue?id='+bean.id">
+                                    <div class="special">
+                                        <img :src="'img/venueImage/'+bean.id+'/'+bean.firstVenueImage.id+'.jpg'" height="311" width="400" alt="image">
+                                        <div class="special__box">
+                                            <h5 class="special__category yel_line">
+                                                {{bean .name}}
+                                            </h5>
+                                            <a class="special__link" style="color: black;margin-top: 20px">{{bean.introduction}}</a>
+                                            <br>
+                                            <a class="special__link" style="color: black;font-size: 15px">{{bean.district.name}}</a>
+                                        </div>
+                                    </div>
+                                    <!--<div style="margin-right: 20px ">-->
+                                        <span class="productPrice">¥{{bean.price | formatMoneyFilter}}</span>
+                                    <!--</div>-->
+
+                                    <div class="show1 productInfo" style="margin-right: 10px">
+                                        <span class="productReview">评价<span class="productReviewNumber">{{bean.reviewCount}}</span></span>
+                                    </div>
+                                </a>
                             </div>
                         </div>
-                    </a>
-                </div>
-                <div style="height:100px"></div>
-<!--                style="position:absolute;top: 600px;left: 42%"-->
-                <div align="center">
-                    <div th:replace="include/admin/adminPage::html" ></div>
+                    </div>
                 </div>
             </div>
 
         </div>
-
-    <!--<div style="position: relative">-->
-        <!--<div align="right" style="position: relative;margin-left: 35%">-->
-            <!--<div class="searchDiv" style="position: relative; width: 300px">-->
-                <!--<div style="position: absolute;z-index: 1">-->
-                    <!--<input type="text" @keyup.enter="list(0)" v-model.trim="keyword" placeholder="请输入场馆名" />-->
-                <!--</div>-->
-                <!--<div style="position: absolute;z-index:2;right: 0px">-->
-                    <!--<button @click="list(0)" class="searchButton btn-primary">搜索</button>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-
-        <!--<div align="left" style="position: absolute;top: 0px;left: 100px;z-index: 2">-->
-            <!--<table class="categorySortBarTable categorySortTable" style="size: A3;background-color: white">-->
-                <!--<tr style="border-radius: 4px">-->
-                    <!--<td :class="{'grayColumn':(sort==null||sort=='all')}"><a :href="'?keyword='+keyword+'&sort=all'">综合<span class="glyphicon glyphicon-arrow-down"></span></a></td>-->
-                    <!--<td :class="{'grayColumn':(sort=='review')}"><a :href="'?keyword='+keyword+'&sort=review'">人气<span class="glyphicon glyphicon-arrow-down"></span></a></td>-->
-                    <!--<td :class="{'grayColumn':(sort=='saleCount')}"><a :href="'?keyword='+keyword+'&sort=saleCount'">销量<span class="glyphicon glyphicon-arrow-down"></span></a></td>-->
-
-                    <!--<td style="border-top: white;border-bottom: white;width: 3px"></td>-->
-                    <!--<td :class="{'grayColumn':(sort=='price')}"><a :href="'?keyword='+keyword+'&sort=price'">价格<span class="glyphicon glyphicon-resize-vertical"></span></a></td>-->
-                    <!--<td><input class="sortBarPrice"  v-model.trim="minPrice" type="text" placeholder="请输入"></td>-->
-                    <!--<td class="grayColumn priceMiddleColumn">-</td>-->
-                    <!--<td><input class="sortBarPrice"  v-model.trim="maxPrice" type="text" placeholder="请输入"></td>-->
-
-                    <!--<td style="border-top: white;border-bottom: white;width: 3px"></td>-->
-                    <!--<td :class="{'grayColumn':(sort=='price')}"><a :href="'?keyword='+keyword+'&sort=price'">区域：</a></td>-->
-                    <!--<td>-->
-                        <!--<div class="dropdown">-->
-                            <!--<select v-model="did" >-->
-                                <!--<option value="0">全部</option>-->
-                                <!--<option v-for="district in districts" :value="district.id" >-->
-                                    <!--{{district.name}}-->
-                                <!--</option>-->
-                            <!--</select>-->
-                        <!--</div>-->
-                    <!--</td>-->
-
-                <!--</tr>-->
-            <!--</table>-->
-        <!--</div>-->
-
-
-        <!--<div style="position:absolute;top: 600px;left: 45%" align="center">-->
-            <!--<div th:replace="include/admin/adminPage::html" ></div>-->
-        <!--</div>-->
-
-        <!--<div class="wrapper" style="position:relative; margin-top: 100px;margin-left: 18%">-->
-            <!--<div  v-for="bean in beans " style="margin-right: 20px ">-->
-                <!--<div class="productUnit">-->
-                    <!--<div class="productUnitFrame" >-->
-                        <!--<a :href="'venue?id='+bean.id">-->
-                            <!--<div class="special">-->
-                                <!--<img :src="'img/venueImage_middle/'+bean.id+'/'+bean.firstVenueImage.id+'.jpg'" height="311" width="311" alt="image">-->
-                                <!--<div class="special__box">-->
-                                    <!--<h5 class="special__category yel_line">-->
-                                        <!--{{bean.name}}-->
-                                    <!--</h5>-->
-                                    <!--<a class="special__link" style="color: black">{{bean.introduction}}</a>-->
-                                    <!--<a class="special__link" style="color: black">{{bean.district.name}}</a>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<span class="productPrice">¥{{bean.price | formatMoneyFilter}}</span>-->
-
-                            <!--<div class="show1 productInfo" style="margin-right: 10px">-->
-                                <!--<span class="productReview">评价<span class="productReviewNumber">{{bean.reviewCount}}</span></span>-->
-                            <!--</div>-->
-
-                        <!--</a>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-
-    <!--</div>-->
-
+    </div>
 </div>
 </body>
 </html>

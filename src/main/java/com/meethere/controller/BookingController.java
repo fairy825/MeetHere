@@ -8,6 +8,10 @@ import com.meethere.service.TimeSlotService;
 import com.meethere.util.DateUtils;
 import com.meethere.util.IMoocJSONResult;
 import com.meethere.util.Page4Navigator;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -28,6 +32,7 @@ import java.util.List;
 import static com.meethere.service.BookingService.*;
 
 @RestController
+@Api(value="订单的接口", tags= {"订单管理的controller"})
 @RequestMapping("/bookings")
 public class BookingController extends BasicController{
 
@@ -50,6 +55,10 @@ public class BookingController extends BasicController{
         Page4Navigator<Booking> page = bookingService.list(start,size,5);
         return IMoocJSONResult.ok(page);
     }
+    @ApiOperation(value="场馆预订", notes="用户预定场馆的接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="tid", value="时段的id", required = true, dataType="Integer")
+    })
     @GetMapping("/booked/{tid}")
     public IMoocJSONResult booked(@PathVariable("tid")Integer tid, HttpSession session){
         User user = (User)session.getAttribute("user");
@@ -74,6 +83,11 @@ public class BookingController extends BasicController{
         bookingService.update(booking);
         return IMoocJSONResult.ok();
     }
+    @ApiOperation(value="查询我的订单", notes="用户查询我的订单的接口（不包括已删除的订单）")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="start", value="页码", required = true, dataType="Integer"),
+            @ApiImplicitParam(name="size", value="每页的显示个数",  dataType="Integer")
+    })
     @PostMapping("/mine")
     public IMoocJSONResult listMyBookings(@RequestBody Booking booking,
             @RequestParam(value = "start", defaultValue = "0") Integer start,

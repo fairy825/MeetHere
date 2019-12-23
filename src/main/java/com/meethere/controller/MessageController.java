@@ -4,6 +4,10 @@ import com.meethere.pojo.*;
 import com.meethere.service.*;
 import com.meethere.util.IMoocJSONResult;
 import com.meethere.util.Page4Navigator;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +16,7 @@ import java.awt.print.Book;
 import java.util.Date;
 
 @RestController
+@Api(value="留言的接口", tags= {"留言管理的controller"})
 public class MessageController extends BasicController{
 
     @Autowired
@@ -32,6 +37,12 @@ public class MessageController extends BasicController{
     	Page4Navigator<Message> page = messageService.listByVenue(vid,0,start,size,5);
         return IMoocJSONResult.ok(page);
     }
+    @ApiOperation(value="查询某一场馆下的已通过的可以展示评论", notes="管理员或用户查询某一场馆下的已通过的评论的接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="vid", value="场馆id", required = true, dataType="Integer"),
+            @ApiImplicitParam(name="start", value="页码", required = true, dataType="Integer"),
+            @ApiImplicitParam(name="size", value="每页的显示个数",  dataType="Integer")
+    })
     @GetMapping("/venues/{vid}/messages/show")
     public IMoocJSONResult show(@PathVariable("vid") int vid,
                                 @RequestParam(value = "start", defaultValue = "0") Integer start,
@@ -63,6 +74,11 @@ public class MessageController extends BasicController{
         return IMoocJSONResult.ok(page);
     }
 
+    @ApiOperation(value="对某一场馆留言评论", notes="用户在服务结束后给场馆留言的接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="vid", value="场馆id", required = true, dataType="Integer"),
+            @ApiImplicitParam(name="bid", value="订单id", required = true, dataType="Integer")
+    })
     @PostMapping("/messages/{vid}")
     public IMoocJSONResult add(@RequestBody Message message, @PathVariable("vid")int vid,
                                @RequestParam(value = "bid") int bid, HttpSession session) throws Exception {

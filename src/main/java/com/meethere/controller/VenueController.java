@@ -8,12 +8,17 @@ import com.meethere.service.VenueImageService;
 import com.meethere.service.VenueService;
 import com.meethere.util.IMoocJSONResult;
 import com.meethere.util.Page4Navigator;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@Api(value="场馆的接口", tags= {"场馆管理的controller"})
 public class VenueController extends BasicController{
 	@Autowired
     DistrictService districtService;
@@ -43,6 +48,16 @@ public class VenueController extends BasicController{
         return IMoocJSONResult.ok(page);
     }
     //用户的搜索
+    @ApiOperation(value="用户查询场馆", notes="用户根据条件查询场馆的接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="did", value="场馆所属的区域id", dataType="Integer"),
+            @ApiImplicitParam(name="sort", value="排序方式", dataType="String"),
+            @ApiImplicitParam(name="keyword", value="搜索关键词", dataType="String"),
+            @ApiImplicitParam(name="minPrice", value="要搜索的最低价格", dataType="Integer"),
+            @ApiImplicitParam(name="maxPrice", value="要搜索的最高价格", dataType="Integer"),
+            @ApiImplicitParam(name="start", value="页码", required = true, dataType="Integer"),
+            @ApiImplicitParam(name="size", value="每页的显示个数",  dataType="Integer")
+    })
     @GetMapping("/districts/{did}/venues/{sort}/{keyword}")
     public IMoocJSONResult search2(
                                   @PathVariable("did") int did,
@@ -60,6 +75,7 @@ public class VenueController extends BasicController{
 
         return IMoocJSONResult.ok(page);
     }
+
     //listVenue.html中管理员的搜索
     @GetMapping("/districts/{did}/venues/{keyword}")
     public IMoocJSONResult search3(

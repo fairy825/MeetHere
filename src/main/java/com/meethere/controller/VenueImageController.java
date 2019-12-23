@@ -18,6 +18,10 @@ import com.meethere.service.VenueImageService;
 import com.meethere.service.VenueService;
 import com.meethere.util.IMoocJSONResult;
 import com.meethere.util.ImageUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.meethere.service.VenueService;
  
 @RestController
+@Api(value="场馆图片的接口", tags= {"场馆图片管理的controller"})
 public class VenueImageController extends BasicController{
 	@Autowired
 	UserService userService;
@@ -45,7 +50,10 @@ public class VenueImageController extends BasicController{
         return IMoocJSONResult.ok(venueImages);
 
     }
-    
+	@ApiOperation(value="上传场馆图片新闻", notes="管理员上传场馆图片的接口")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name="vid", value="场馆id", dataType="Integer"),
+	})
     @PostMapping("/venueImages")
     public IMoocJSONResult add(@RequestParam("vid") int vid,  MultipartFile image, HttpServletRequest request) throws Exception {
 		VenueImage bean = new VenueImage();

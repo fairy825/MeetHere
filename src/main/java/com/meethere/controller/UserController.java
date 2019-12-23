@@ -2,6 +2,10 @@ package com.meethere.controller;
 import com.meethere.util.IMoocJSONResult;
 import com.meethere.util.ImageUtil;
 import com.meethere.util.MD5Utils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +24,16 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/users")
+@Api(value="用户注册登录的接口", tags= {"注册和登录的controller"})
 public class UserController extends BasicController{
 	@Autowired
     UserService userService;
 
+    @ApiOperation(value="分页查询所有用户", notes="管理员分页查看用户信息的接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="start", value="页码", required = true, dataType="Integer"),
+            @ApiImplicitParam(name="size", value="每页的显示个数",  dataType="Integer")
+    })
     @GetMapping("")
     public IMoocJSONResult list(@RequestParam(value = "start", defaultValue = "0") Integer start,
                                      Integer size)
@@ -38,6 +48,12 @@ public class UserController extends BasicController{
         User user = userService.get(id);
         return IMoocJSONResult.ok(user);
     }
+
+    @ApiOperation(value="查找用户", notes="管理员根据条件查找用户的接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="start", value="页码", required = true, dataType="Integer"),
+            @ApiImplicitParam(name="size", value="每页的显示个数",  dataType="Integer")
+    })
     @PostMapping("")
     public IMoocJSONResult search(@RequestBody User user,@RequestParam(value = "start", defaultValue = "0") Integer start,
                                 Integer size)
@@ -48,6 +64,8 @@ public class UserController extends BasicController{
         IMoocJSONResult result = IMoocJSONResult.ok(page);
         return  result;
     }
+
+    @ApiOperation(value="更新用户个人信息", notes="用户更新自己的个人信息的接口")
     @PutMapping("")
     public IMoocJSONResult update(@RequestBody User user,HttpSession session) throws Exception {
         User user1 = (User)session.getAttribute("user");
@@ -57,6 +75,8 @@ public class UserController extends BasicController{
         userService.update(user);
         return IMoocJSONResult.ok(user);
     }
+
+//    @ApiOperation(value="更新用户密码", notes="用户修改密码的接口")
     @PutMapping("/password")
     public IMoocJSONResult changePassword(@RequestBody User user,@RequestParam(value = "newPassword")String newPassword) throws Exception {
         String password = user.getPassword();

@@ -8,6 +8,9 @@ import com.meethere.service.AdminService;
 import com.meethere.service.UserService;
 import com.meethere.util.IMoocJSONResult;
 import com.meethere.util.MD5Utils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ import javax.servlet.http.HttpSession;
 
 
 @RestController
+@Api(value="用户注册登录的接口", tags= {"注册和登录的controller"})
 public class RegistLoginController extends BasicController{
 	
 	@Autowired
@@ -27,6 +31,7 @@ public class RegistLoginController extends BasicController{
 	@Autowired
 	AdminService adminService;
 
+	@ApiOperation(value="用户注册", notes="用户注册的接口")
 	@PostMapping("/regist")
 	public IMoocJSONResult regist(@RequestBody User user) throws Exception{
 		
@@ -56,7 +61,7 @@ public class RegistLoginController extends BasicController{
 		user.setUserToken(uniqueToken);
 		return user;
 	}
-
+	@ApiOperation(value="用户登录", notes="用户登录的接口")
 	@PostMapping("/login")
 	public IMoocJSONResult login(@RequestBody User user, HttpSession session) throws Exception {
 		String username = user.getName();
@@ -79,7 +84,6 @@ public class RegistLoginController extends BasicController{
 		}
 	}
 
-	@GetMapping("/logout")
 	public IMoocJSONResult logout(String userId,HttpSession session) throws Exception {
 		redis.del(USER_REDIS_SESSION + ":" + userId);
 		session.removeAttribute("user");
@@ -96,6 +100,7 @@ public class RegistLoginController extends BasicController{
 		return admin1;
 	}
 
+//	@ApiOperation(value="管理员登录", notes="管理员登录的接口")
 	@PostMapping("/loginAdmin")
 	public IMoocJSONResult adminLogin(@RequestBody Admin admin, HttpSession session) throws Exception {
 		String username = admin.getName();
